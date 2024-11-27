@@ -1,16 +1,16 @@
-package com.example.cosc341_project.ui.dashboard;
+package com.example.cosc341_project.ui.post;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class PostViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public PostViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is post fragment");
     }
 
     public LiveData<String> getText() {
