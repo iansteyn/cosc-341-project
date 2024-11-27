@@ -1,17 +1,23 @@
 package com.example.cosc341_project.data_classes;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Post {
     private int postId;
     private int userId;
     private String title;
     private String description;
-    private LocalDateTime timestamp;
+    private final Timestamp timestamp;
     private int numLikes;
     private int numDislikes;
     private String[] tags;
     private Comment[] comments;
+
+    public Post() {
+        numLikes = 0;
+        numDislikes = 0;
+        timestamp = new Timestamp(System.currentTimeMillis());
+    }
 
     // GETTERS
     public int getPostId() {
@@ -30,7 +36,7 @@ public class Post {
         return description;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
@@ -50,5 +56,44 @@ public class Post {
         return comments;
     }
 
+    // SETTERS
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void addLike() {
+        numLikes++;
+    }
+
+    public void removeLike() {
+        numLikes--;
+    }
+
+    public void addDislike() {
+        numDislikes++;
+    }
+
+    public void removeDislike() {
+        numDislikes--;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
+    public void setComments(Comment[] comments) {
+        this.comments = comments;
+    }
 }
