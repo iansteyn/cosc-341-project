@@ -5,11 +5,17 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.*;
-
+import android.R.attr;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresExtension;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +26,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     ImageButton chooseImage;
 
+    @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +43,7 @@ public class MainActivity3 extends AppCompatActivity {
                 if (which == 0) {
                     dispatchTakePictureIntent();
                 } else if (which == 1) {
-
+                    dispatchChoosePictureIntent();
                       }
             });
             builder.show();
@@ -45,15 +52,20 @@ public class MainActivity3 extends AppCompatActivity {
     private void dispatchTakePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
-
             startActivityForResult(camera_intent, 1);
-
-
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
-
+    @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
+    private void dispatchChoosePictureIntent(){
+        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+        try {
+            startActivityForResult(camera_intent, 2);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -65,7 +77,24 @@ public class MainActivity3 extends AppCompatActivity {
             // Set the image in imageview for display
             chooseImage.setImageBitmap(photo);
         }
+        if(requestCode == 2) {
+
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                try {
+                    // Convert URI to Bitmap
+                    Bitmap galleryImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+
+                    // Display the chosen image in the ImageButton
+                    chooseImage.setImageBitmap(galleryImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }}
+        }
     }
 
 
-}
+    }
+
+
+
