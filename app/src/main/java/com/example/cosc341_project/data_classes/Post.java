@@ -57,3 +57,17 @@ public class Post {
 
     //TODO - should I have setters and getters for tags and comments?
 }
+
+// THOUGHTS
+/* If the way that post editing works is you overwrite a whole post object,
+ * then the only setters we need are for likes, dislikes, tag and comments.
+ * Everything else can go in the constructor.
+ *
+ * NO wait that doesn't make sense. The postId will be passed to the 'edit'
+ * page when that button gets pressed on the feed. Then the file will have to
+ * read the post info, pre-populate the fields with all that info...
+ *
+ * then we can choose to either save the post as a completely new post (which
+ * seems wrong) well... actually I just make it so that it saves as a 'new' post
+ * object, but then in the file it checks if postId already exists...
+ */
