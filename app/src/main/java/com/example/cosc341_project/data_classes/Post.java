@@ -20,44 +20,19 @@ public class Post {
     }
 
     // GETTERS
-    public int getPostId() {
-        return postId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public int getNumLikes() {
-        return numLikes;
-    }
-
-    public int getNumDislikes() {
-        return numDislikes;
-    }
-
-    public String[] getTags() {
-        return tags;
-    }
-
-    public Comment[] getComments() {
-        return comments;
-    }
+    public int getPostId() { return postId; }
+    public int getUserId() { return userId; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public Timestamp getTimestamp() { return timestamp; }
+    public int getNumLikes() { return numLikes; }
+    public int getNumDislikes() { return numDislikes; }
+    public String[] getTags() { return tags; }
+    public Comment[] getComments() { return comments; }
 
     // SETTERS
     public void setPostId(int postId) {
+        /* TEMPORARY until I figure out how to increment the postId better */
         this.postId = postId;
     }
 
