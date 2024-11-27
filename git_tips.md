@@ -1,7 +1,7 @@
-## Git Tips
-The general flow of development with Git, wh
-These are some common terminal commands used when you are developing with Git. 
-- For all this stuff, you have to be in the folder of your repo
+# Git Tips
+_From @iansteyn_
+
+These are some common terminal commands I use when developing with Git. Make sure your current working directory is your local repository folder, or somewhere inside it. This should be true by default if you open a terminal inside an editor like VS Code or Android Studio, where the project is already open.
 
 ### Getting stuff from remote repo
 - `git clone <clone-url>` - Create a local version of a remote repo
@@ -12,7 +12,7 @@ These are some common terminal commands used when you are developing with Git.
 - `git add .` - stage all changes
   - `git add <file-name1> <file-name2> ...` - stage changes for specific files
 - `git commit -m "<commit-message>"` - commit staged changes
-  - `git commit -m "<commit-message>" -m"<commit-message-details>` - commit changes with a more detailed description
+  - `git commit -m "<commit-message>" -m "<commit-message-details>` - commit changes with a more detailed description
 - `git push` - push changes to remote branch
 
 ### Branching
