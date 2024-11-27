@@ -1,6 +1,7 @@
 package com.example.cosc341_project;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -32,20 +33,21 @@ public class MainActivity3 extends AppCompatActivity {
             builder.setTitle("Select Image");
             builder.setItems(options, (dialog, which) -> {
                 if (which == 0) {
-                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                    Uri selectedImage = intent.getData();
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),selectedImage);
-                        chooseImage.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    dispatchTakePictureIntent();
                 } else if (which == 1) {
 
                       }
             });
             builder.show();
         });
+    }
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, 1);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
     }
 
 }
