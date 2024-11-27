@@ -1,22 +1,33 @@
 package com.example.cosc341_project.data_classes;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
+
 
 public class Post {
+    // ATTRIBUTES
     private int postId;
-    private int userId;
+    private final int userId;
+    private final Timestamp timestamp;
+
     private String title;
     private String description;
-    private final Timestamp timestamp;
     private int numLikes;
     private int numDislikes;
-    private String[] tags;
-    private Comment[] comments;
 
-    public Post() {
+    public LinkedList<String> tags;
+    public LinkedList<Comment> comments;
+
+    // CONSTRUCTORS
+    public Post(int userId) {
+        this.userId = userId; //TODO: maybe check if userId exists on file?
+        timestamp = new Timestamp(System.currentTimeMillis());
+
         numLikes = 0;
         numDislikes = 0;
-        timestamp = new Timestamp(System.currentTimeMillis());
+
+        tags = new LinkedList<String>();
+        comments = new LinkedList<Comment>();
     }
 
     // GETTERS
@@ -27,8 +38,8 @@ public class Post {
     public Timestamp getTimestamp() { return timestamp; }
     public int getNumLikes() { return numLikes; }
     public int getNumDislikes() { return numDislikes; }
-    public String[] getTags() { return tags; }
-    public Comment[] getComments() { return comments; }
+    public LinkedList<String> getTags() { return tags; }
+    public LinkedList<Comment> getComments() { return comments; }
 
     // SETTERS
     public void setPostId(int postId) {
@@ -36,39 +47,13 @@ public class Post {
         this.postId = postId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void addLike() { numLikes++; }
+    public void removeLike() { numLikes--; }
+    public void addDislike() { numDislikes++; }
+    public void removeDislike() { numDislikes--; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void addLike() {
-        numLikes++;
-    }
-
-    public void removeLike() {
-        numLikes--;
-    }
-
-    public void addDislike() {
-        numDislikes++;
-    }
-
-    public void removeDislike() {
-        numDislikes--;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
-
-    public void setComments(Comment[] comments) {
-        this.comments = comments;
-    }
+    //TODO - should I have setters and getters for tags and comments?
 }
