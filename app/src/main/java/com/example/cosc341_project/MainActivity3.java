@@ -19,13 +19,15 @@ import androidx.annotation.RequiresExtension;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.IOException;
 
 public class MainActivity3 extends AppCompatActivity {
 
 
     ImageButton chooseImage;
-
+    Button Map;
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,28 @@ public class MainActivity3 extends AppCompatActivity {
 
 
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
+        Map = findViewById(R.id.startMap);
+
+
+        Map.setOnClickListener(v -> {
+
+            System.out.println("LOG");
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            Button next = new Button(this);
+            next.setText("Done");
+            EditText input = new EditText(this);
+            next.setOnClickListener(v1 -> {
+                //will have method to create a post once the object is ready
+                //createPost(bitmap,location,tags,description)
+            });
+            input.setHint("Location");
+            LinearLayout layout = new LinearLayout(this);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.addView(input);
+            layout.addView(next);
+            builder1.setView(layout);
+            builder1.show();
+                });
 
         chooseImage.setOnClickListener(v -> {
             String[] options = {"Take Photo", "Choose from Gallery"};
@@ -89,10 +113,10 @@ public class MainActivity3 extends AppCompatActivity {
                     chooseImage.setImageBitmap(galleryImage);
                 } catch (IOException e) {
                     e.printStackTrace();
-                }}
+                }
+            }
         }
     }
-
 
     }
 
