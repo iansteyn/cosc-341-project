@@ -1,6 +1,5 @@
 package com.example.cosc341_project;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,21 +8,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.*;
-import android.R.attr;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresExtension;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.io.IOException;
 
-public class MainActivity3 extends AppCompatActivity {
+public class createPost extends AppCompatActivity {
 
 
     ImageButton chooseImage;
@@ -34,7 +26,7 @@ public class MainActivity3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.createpost);
 
 
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image

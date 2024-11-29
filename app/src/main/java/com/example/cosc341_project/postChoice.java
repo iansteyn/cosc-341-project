@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity2 extends AppCompatActivity {
+public class postChoice extends AppCompatActivity {
 Button button1;
 Button button2;
     @Override
@@ -29,7 +29,7 @@ Button button2;
 
 
         button1.setOnClickListener(view -> {
-            Intent i = new Intent(MainActivity2.this, MainActivity3.class);
+            Intent i = new Intent(postChoice.this, createPost.class);
             startActivity(i);
         });
         button2.setOnClickListener(view -> {

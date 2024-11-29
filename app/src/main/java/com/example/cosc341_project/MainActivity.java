@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
         button = findViewById(R.id.button);
         button.setOnClickListener(view -> {
-            Intent i = new Intent(MainActivity.this, MainActivity2.class);
+            Intent i = new Intent(MainActivity.this, postChoice.class);
             startActivity(i);
         });
 
