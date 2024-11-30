@@ -74,17 +74,36 @@ public class Post {
     public void addDislike() { numDislikes++; }
     public void removeDislike() { numDislikes--; }
 
-    public boolean addComment(Comment newComment) {
-        // Returns true if successful, false otherwise
+    /**
+     * Adds a comment to this post
+     * @param userId id of user making comment
+     * @param text Body of the comment
+     * @return <code>true</code> if successful, <code>false</code> otherwise
+     */
+    public boolean addComment(int userId, String text)
+    {
+        int newCommentId;
+        if (comments.isEmpty()) {
+            newCommentId = 0;
+        }
+        else {
+            newCommentId = comments.getLast().getCommentId() + 1;
+        }
+
+        Comment newComment = new Comment(newCommentId, userId, text);
         return comments.add(newComment);
     }
-    public boolean removeComment(int commentId) {
-        // Returns true if successful, false otherwise
 
+    /**
+     * Remove a comment from this post given the <code>commentId</code>
+     * @return <code>true</code> if succesful, <code>false</code> otherwise
+     */
+    public boolean removeComment(int commentId)
+    {
         Iterator<Comment> commentsIterator = comments.iterator();
 
         while (commentsIterator.hasNext()) {
-            if (commentsIterator.next().commentId == commentId) {
+            if (commentsIterator.next().getCommentId()== commentId) {
                 commentsIterator.remove();
                 return true;
             }
