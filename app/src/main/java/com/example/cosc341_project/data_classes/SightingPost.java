@@ -1,5 +1,4 @@
 package com.example.cosc341_project.data_classes;
-
 /**
  * <p>
  *     Extends <code>Post</code>.
