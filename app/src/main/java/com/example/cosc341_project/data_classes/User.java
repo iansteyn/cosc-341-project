@@ -23,4 +23,15 @@ public class User {
     public String getProfilePicName() {
         return profilePicName;
     }
+
+    // TO STRING
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", profilePicName='" + profilePicName + '\'' +
+                '}';
+    }
 }
