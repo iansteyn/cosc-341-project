@@ -4,9 +4,9 @@ import java.sql.Timestamp;
 
 public class Comment {
     // ATTRIBUTES
-    private int commentId;
-    private int userId;
-    private String text;
+    private final int commentId;
+    private final int userId;
+    private final String text;
     private final Timestamp timestamp;
 
     // CONSTRUCTORS
@@ -23,19 +23,8 @@ public class Comment {
     }
 
     // GETTERS
-    public int getCommentId() {
-        return commentId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+    public int getCommentId() { return commentId; }
+    public int getUserId() { return userId; }
+    public String getText() { return text; }
+    public Timestamp getTimestamp() { return timestamp; }
 }
