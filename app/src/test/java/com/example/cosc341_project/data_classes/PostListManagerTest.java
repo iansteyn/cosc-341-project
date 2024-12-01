@@ -37,41 +37,41 @@ public class PostListManagerTest extends TestCase {
         assertEquals(plm, plm3);
     }
 
-//    public void testSaveAndReload() {
-//
-//        // make sure save file is deleted so this test runs properly
-//        Path path = Paths.get("postList.ser");
-//        try {
-//            Files.deleteIfExists(path);
-//        }
-//        catch (IOException e) {
-//            //do nothing
-//        }
-//
-//        // If there is no save file, an empty list should be created
-//        PostListManager plm = PostListManager.getInstance();
-//        assertEquals(plm.instantiationDebugInfo, "")
-//        assertTrue(plm.postList.isEmpty());
-//
-//        // once posts are added, the list should no longer be empty
-//        plm.postList.add(new Post(
-//                0,
-//                "Placeholder Title",
-//                "Placeholder description",
-//                new String[] {"tag1, tag2"}
-//        ));
-//        assertFalse(plm.postList.isEmpty());
-//
-//        // save to file to complete our work, destroy instance and create new reference
-//        plm.saveToFile();
-//        PostListManager.destroyInstance();
-//        plm = null;
-//
-//
-//
-//    }
+    public void testSaveAndReload() {
 
-    public void testSaveToFile() {
+        // make sure save file is deleted so this test runs properly
+        Path path = Paths.get("postList.ser");
+        try {
+            Files.deleteIfExists(path);
+        }
+        catch (IOException e) {
+            //do nothing
+        }
 
+        // If there is no save file, an empty list should be created
+        PostListManager plm = PostListManager.getInstance();
+        assertFalse(plm.instantiatedFromFile);
+        assertTrue(plm.postList.isEmpty());
+
+        // once posts are added, the list should no longer be empty
+        plm.postList.add(new Post(
+                0,
+                "Placeholder Title",
+                "Placeholder description",
+                new String[] {"tag1, tag2"}
+        ));
+        assertFalse(plm.postList.isEmpty());
+
+        // save to file to complete our work, destroy instance and create new reference
+        plm.saveToFile();
+        PostListManager.destroyInstance();
+        plm = null;
+
+        PostListManager plm2 = PostListManager.getInstance();
+
+        // Check that it was instantiated from file and that postList isn't empty
+        assertTrue(plm2.instantiatedFromFile);
+        assertFalse(plm2.postList.isEmpty());
+        assertEquals(0, plm2.postList.get(0).getUserId());
     }
 }
