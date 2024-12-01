@@ -43,8 +43,12 @@ public class Post {
     private ArrayList<Comment> comments;
 
     // CONSTRUCTORS
-    public Post(int userId) {
+    public Post(int userId, String title, String description, String[] tags) {
         this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.tags = tags;
+
         timestamp = new Timestamp(System.currentTimeMillis());
 
         numLikes = 0;
@@ -108,9 +112,3 @@ public class Post {
                 '}';
     }
 }
-
-// THOUGHTS
-/*
- * The "editing mode" of Evan's stuff will get the whole post object passed to it.
- * Modifications are made, and then that post object is saved using 'saveEditedPost'
- */
