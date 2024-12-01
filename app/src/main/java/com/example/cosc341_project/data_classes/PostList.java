@@ -1,53 +1,51 @@
 package com.example.cosc341_project.data_classes;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-// Consider making this a singleton
 
 // This is a container class for an arraylist containing posts.
 // Posts are uniquely identified by their position in the ArrayList. Same with comments.
 // It is up to the implementer to keep track of a given post's position in the arraylist
 
-public class PostList {
-    // ATTRIBUTES
+/**
+ * This is a wrapper class for an ArrayList called postList. It is a singleton, which means
+ * there can only be one instance of it at any given time.
+ *
+ * We will see if it is threadsafe.
+ */
+public final class PostList {
+
+    private static PostList INSTANCE;
     public ArrayList<Post> postList;
 
-    // CONSTRUCTOR
-
-    // METHODS
-    public void addPost(int userId) {
-        Post newPost = new Post(userId);
-        postList.add(newPost);
+    private PostList() {
+        postList = new ArrayList<Post>(); // TODO: read from file
     }
 
-    public void addSightingPost(int userId) {
-        Post newPost = new SightingPost(userId);
-        postList.add(newPost);
-    }
-
-    public void removePost(int index) {
-        postList.remove(index);
+    public static PostList getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new PostList();
+        }
+        return INSTANCE;
     }
 
     public void save() {
         //TODO
     }
-
 }
 
 // As Evan, I want to:
 /*
 
 POST CREATION
-PostList postList = new postList();
-addPost(all post info)
+PostList postList = new PostList();
+Post newPost = new Post(...);
+postList.add(newPost)
 
 // before finishing the activity
 postList.save();
 
 EDIT POST
-PostList postList = new postList();
+PostList postList = new PostList();
 Post post = postList.getPost(index);
     get all the info
     post.setString()
