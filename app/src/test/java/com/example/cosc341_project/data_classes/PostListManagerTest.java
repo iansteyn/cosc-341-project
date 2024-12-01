@@ -9,12 +9,6 @@ import java.nio.file.Paths;
 
 public class PostListManagerTest extends TestCase {
 
-    static PostListManager plm;
-
-    void initialize() {
-
-    }
-
     public void testSingletonProperties() {
         PostListManager plm = PostListManager.getInstance();
         PostListManager plm2 = PostListManager.getInstance();
