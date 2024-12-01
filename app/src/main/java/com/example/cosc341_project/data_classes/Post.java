@@ -26,13 +26,12 @@ import java.util.LinkedList;
  */
 public class Post {
     // ATTRIBUTES
-    private int postId; // will probably also be final later on
     private final int userId;
     private final Timestamp timestamp;
 
     private String title;
     private String description;
-    private LinkedList<String> tags;
+    private String[] tags;
 
     private int numLikes;
     private int numDislikes;
@@ -49,25 +48,20 @@ public class Post {
     }
 
     // GETTERS
-    public int getPostId() { return postId; }
     public int getUserId() { return userId; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public Timestamp getTimestamp() { return timestamp; }
     public int getNumLikes() { return numLikes; }
     public int getNumDislikes() { return numDislikes; }
-    public LinkedList<String> getTags() { return tags; }
+    public String[] getTags() { return tags; }
     public LinkedList<Comment> getComments() { return comments; }
 
     // SETTERS
-    public void setPostId(int postId) {
-        /* TEMPORARY until I figure out how to increment the postId better */
-        this.postId = postId;
-    }
 
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
-    public void setTags(LinkedList<String> tags) { this.tags = tags; }
+    public void setTags(String[] tags) { this.tags = tags; }
 
     public void addLike() { numLikes++; }
     public void removeLike() { numLikes--; }
@@ -116,7 +110,6 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "postId=" + postId +
                 ", userId=" + userId +
                 ", timestamp=" + timestamp +
                 ", title='" + title + '\'' +
