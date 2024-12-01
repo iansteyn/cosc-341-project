@@ -1,7 +1,9 @@
 package com.example.cosc341_project.data_classes;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,13 +20,27 @@ import java.util.ArrayList;
  */
 public final class PostList implements Serializable {
 
+    private static final String FILENAME = "postList.ser";
     private static PostList INSTANCE;
     public ArrayList<Post> postList;
 
     private PostList() {
-        postList = new ArrayList<Post>(); // TODO: read from file
+        // read post list from file
+        try {
+            FileInputStream fileIn = new FileInputStream(FILENAME);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            postList = (ArrayList<Post>) in.readObject();
+            in.close();
+            fileIn.close();
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * @return the one and only instance of the PostList class
+     */
     public static PostList getInstance() {
         if(INSTANCE == null) {
             INSTANCE = new PostList();
@@ -38,7 +54,7 @@ public final class PostList implements Serializable {
      */
     public void saveToFile() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("postList.ser");
+            FileOutputStream fileOut = new FileOutputStream(FILENAME);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(postList);
             out.close();
