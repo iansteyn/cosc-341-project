@@ -1,4 +1,4 @@
-package com.example.cosc341_project;
+package com.example.cosc341_project.ui.post;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.*;
 import androidx.annotation.RequiresExtension;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.cosc341_project.R;
 
 import java.io.IOException;
 

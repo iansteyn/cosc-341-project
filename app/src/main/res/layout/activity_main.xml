@@ -33,12 +33,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="416dp"
-        android:layout_height="333dp"
-        android:text="Button"
-        tools:layout_editor_absoluteX="-5dp"
-        tools:layout_editor_absoluteY="314dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
