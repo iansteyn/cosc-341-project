@@ -167,21 +167,29 @@ public final class PostListManager implements Serializable {
     public void addFakePosts() {
         postList.add(new Post(
                 0,
-                "Some post title",
+                "Some post title 0",
                 "Some post description.",
                 new String[] {"ogopogo", "sasquatch"}
         ));
         postList.add(new Post(
-                0,
-                "Some post title",
+                1,
+                "Some post title 1",
                 "Some post description.",
-                new String[] {"ogopogo", "sasquatch"}
+                new String[] {"sasquatch"}
         ));
         postList.add(new Post(
                 0,
-                "Some post title",
+                "Some post title 2",
                 "Some post description.",
                 new String[] {"ogopogo", "sasquatch"}
+        ));
+        postList.add(new SightingPost(
+                2,
+                "sighting post title 1",
+                "Some post description.",
+                new String[] {"bigfoot"},
+                "fakeimage.jpg",
+                "Fake location"
         ));
     }
 }

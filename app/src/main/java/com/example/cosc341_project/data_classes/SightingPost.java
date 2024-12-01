@@ -1,9 +1,12 @@
 /* NOTE: You might see errors in this file that say something like:
  * "Cannot access com.example.cosc341_project.data_classes.Post"
+ * and related "cannot resolve symbol" for superclass variables.
  * It's lying. It can access it. This is an editor bug with Android Studio,
- * not an actual error.
+ * not an actual error. This code compiles and runs.
  */
 package com.example.cosc341_project.data_classes;
+
+import java.util.Arrays;
 
 /**
  * <p>
@@ -49,5 +52,22 @@ public class SightingPost extends Post {
     }
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    // TO STRING
+    @Override
+    public String toString() {
+        return "SightingPost{" +
+                "\nuserId=" + userId +
+                "\ntimestamp=" + timestamp +
+                "\ntitle='" + title + '\'' +
+                "\ndescription='" + description + '\'' +
+                "\ntags=" + Arrays.toString(tags) +
+                "\nnumLikes=" + numLikes +
+                "\nnumDislikes=" + numDislikes +
+                "\ncomments=" + comments +
+                "\nimageName='" + imageName + '\'' +
+                "\nlocation='" + location + '\'' +
+                "\n}";
     }
 }
