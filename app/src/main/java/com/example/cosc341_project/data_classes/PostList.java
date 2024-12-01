@@ -1,6 +1,9 @@
 package com.example.cosc341_project.data_classes;
 
+import android.util.Log;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,17 +16,27 @@ import java.util.ArrayList;
 // It is up to the implementer to keep track of a given post's position in the arraylist
 
 /**
- * This is a wrapper class for an ArrayList called postList. It is a singleton, which means
- * there can only be one instance of it at any given time.
+ * This is a wrapper class for an ArrayList called <code>postList</code>. It is a "singleton", which
+ * means there can only be one instance of it at any given time.
+ *
+ * Because of this, <code>postList</code> is basically a global variable. You cannot construct it
+ * directly, but you can access it with a call to <code>getInstance</code> like this:
+ * PostListWrapper plw = PostListWrapper.getInstance();
+ *
+ * From there I would
  *
  * We will see if it is threadsafe.
  */
 public final class PostList implements Serializable {
 
+    // Class variables
     private static final String FILENAME = "postList.ser";
     private static PostList INSTANCE;
+
+    // Instance variables
     public ArrayList<Post> postList;
 
+    // Constructor
     private PostList() {
         // read post list from file
         try {
@@ -32,6 +45,11 @@ public final class PostList implements Serializable {
             postList = (ArrayList<Post>) in.readObject();
             in.close();
             fileIn.close();
+        }
+        // or initialize an empty one if the save file does not exist
+        catch (FileNotFoundException fe) {
+            Log.d("IAN", "postList.ser not found, initializing empty ArrayList.");
+            postList = new ArrayList<Post>();
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
