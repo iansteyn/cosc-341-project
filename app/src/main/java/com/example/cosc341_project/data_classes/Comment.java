@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 public class Comment {
     // ATTRIBUTES
-    private final int commentId;
     private final int userId;
     private final String text;
     private final Timestamp timestamp;
@@ -15,15 +14,13 @@ public class Comment {
      * It is not intended for use outside of this package. If you want to add comments
      * to a post, you have to do so through the <code>addComment</code> method from the <code>Post</code> class.
      */
-    protected Comment(int commentId, int userId, String text) {
-        this.commentId = commentId;
+    protected Comment(int userId, String text) {
         this.userId = userId;
         this.text = text;
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     // GETTERS
-    public int getCommentId() { return commentId; }
     public int getUserId() { return userId; }
     public String getText() { return text; }
     public Timestamp getTimestamp() { return timestamp; }
@@ -32,7 +29,6 @@ public class Comment {
     @Override
     public String toString() {
         return "Comment{" +
-                "commentId=" + commentId +
                 ", userId=" + userId +
                 ", text='" + text + '\'' +
                 ", timestamp=" + timestamp +
