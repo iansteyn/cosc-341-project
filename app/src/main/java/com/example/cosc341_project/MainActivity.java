@@ -1,7 +1,9 @@
 package com.example.cosc341_project;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.cosc341_project.data_classes.PostListManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        //TESTING PostListManager and posts
+        PostListManager plm = PostListManager.getInstance();
+        plm.addFakePosts();
+        Log.d("IAN TESTING", plm.postList.toString());
+
     }
 
 }
