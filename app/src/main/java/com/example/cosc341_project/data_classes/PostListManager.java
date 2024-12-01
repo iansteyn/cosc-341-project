@@ -1,10 +1,3 @@
-/* NOTE: You might see errors in this file that say something like:
- * "Cannot access com.example.cosc341_project.data_classes.Post"
- * It's lying. It can access it. This is an editor bug with Android Studio,
- * not an actual error.
- */
-
-
 package com.example.cosc341_project.data_classes;
 
 import android.util.Log;
