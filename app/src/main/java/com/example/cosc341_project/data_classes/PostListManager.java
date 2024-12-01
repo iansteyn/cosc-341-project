@@ -108,6 +108,7 @@ public final class PostListManager implements Serializable {
     private static PostListManager INSTANCE;
 
     // Instance variables
+    public boolean instantiatedFromFile; //exists for testing purposes only
     public ArrayList<Post> postList;
 
     // Constructor
@@ -119,11 +120,13 @@ public final class PostListManager implements Serializable {
             postList = (ArrayList<Post>) in.readObject();
             in.close();
             fileIn.close();
+            instantiatedFromFile = true;
         }
         // or initialize an empty one if the save file does not exist
         catch (FileNotFoundException fe) {
             Log.d("IAN", "postList.ser not found, initializing empty ArrayList.");
             postList = new ArrayList<Post>();
+            instantiatedFromFile = false;
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -155,6 +158,13 @@ public final class PostListManager implements Serializable {
         catch (IOException i) {
             i.printStackTrace();
         }
+    }
+
+    /**
+     * This exists for testing purposes only.
+     */
+    public static void destroyInstance() {
+        INSTANCE = null;
     }
 
     public void addFakePosts() {
