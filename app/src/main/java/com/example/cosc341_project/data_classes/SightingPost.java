@@ -16,8 +16,17 @@ public class SightingPost extends Post {
     private String location;
 
     // CONSTRUCTOR
-    public SightingPost(int userId) {
-        super(userId);
+    public SightingPost(
+            int userId,
+            String title,
+            String description,
+            String[] tags,
+            String imageName,
+            String location
+    ) {
+        super(userId, title, description, tags);
+        this.imageName = imageName;
+        this.location = location;
     }
 
     //GETTERS
