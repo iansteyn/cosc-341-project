@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *     This is a data class for storing information related to posts. It is a supertype of <code>sightingPost</code>
  * </p>
  * <ul>
- *     <li> All attributes are private. </li>
+ *     <li> All attributes are protected --- you cannot access them directly. </li>
  *     <li>
  *         All attributes have getters.
  *         <b>Please do not modify the values or objects returned by the getters.</b>
@@ -30,16 +30,16 @@ import java.util.ArrayList;
  */
 public class Post implements Serializable {
     // ATTRIBUTES
-    private final int userId;
-    private final Timestamp timestamp;
+    protected final int userId;
+    protected final Timestamp timestamp;
 
-    private String title;
-    private String description;
-    private String[] tags;
+    protected String title;
+    protected String description;
+    protected String[] tags;
 
-    private int numLikes;
-    private int numDislikes;
-    private ArrayList<Comment> comments;
+    protected int numLikes;
+    protected int numDislikes;
+    protected ArrayList<Comment> comments;
 
     // CONSTRUCTORS
     public Post(int userId, String title, String description, String[] tags) {
