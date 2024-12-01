@@ -17,7 +17,8 @@ import java.util.ArrayList;
  * </h2>
  * <p>
  *     This is a manager class for the ArrayList <code>postList</code>, which is basically supposed to
- *     be a global variable. This is possible because <code>PostListManager</code> is a "singleton"
+ *     be a global variable from which all our post data can be accessed for display and modification.
+ *     This is possible because <code>PostListManager</code> is a "singleton"
  *     class, which means there can only be one instance of it at any given time. Because of this,
  *     you cannot construct the <code>PostListManager</code> directly, but you can access it like this:
  *     <pre>
@@ -90,7 +91,7 @@ import java.util.ArrayList;
  * </h4>
  * <pre>
  * {@code
- *     Post post = postList.getPost(index);
+ *     Post post = plm.postList.getPost(index);
  *     post.addLike();
  *     post.removeDislike();
  *     post.addComment(userId, text);

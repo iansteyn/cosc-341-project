@@ -3,8 +3,6 @@ package com.example.cosc341_project.data_classes;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * <h4> Notes </h4>
@@ -23,7 +21,7 @@ import java.util.LinkedList;
  *         <ul>
  *             <li> <code>UserId</code>, and <code>timestamp</code> are final (immutable) and initialized at construction. </li>
  *             <li> <code>numDislikes</code>, <code>numLikes</code> and <code>comments</code> are initialized as 0, 0 and empty list. These all have <b><i>add</i></b> and <b><i>remove</i></b> methods. </li>
- *             <li> There are no default initialized values for <code>title</code>, <code>description</code> and <code>tags</code>. The user is forced to use their <b><i>setters</i></b> to set these even if they are supposed to be empty. </li>
+ *             <li> <code>title</code>, <code>description</code> and <code>tags</code> must be specified at construction, but they can also be modified with setters. </li>
  *
  *         </ul>
  *     </li>
