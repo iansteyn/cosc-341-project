@@ -27,17 +27,17 @@ import java.util.ArrayList;
  *
  * We will see if it is threadsafe.
  */
-public final class PostList implements Serializable {
+public final class PostListManager implements Serializable {
 
     // Class variables
     private static final String FILENAME = "postList.ser";
-    private static PostList INSTANCE;
+    private static PostListManager INSTANCE;
 
     // Instance variables
     public ArrayList<Post> postList;
 
     // Constructor
-    private PostList() {
+    private PostListManager() {
         // read post list from file
         try {
             FileInputStream fileIn = new FileInputStream(FILENAME);
@@ -59,9 +59,9 @@ public final class PostList implements Serializable {
     /**
      * @return the one and only instance of the PostList class
      */
-    public static PostList getInstance() {
+    public static PostListManager getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new PostList();
+            INSTANCE = new PostListManager();
         }
         return INSTANCE;
     }
