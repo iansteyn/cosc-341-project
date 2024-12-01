@@ -16,16 +16,92 @@ import java.util.ArrayList;
 // It is up to the implementer to keep track of a given post's position in the arraylist
 
 /**
- * This is a wrapper class for an ArrayList called <code>postList</code>. It is a "singleton", which
- * means there can only be one instance of it at any given time.
+ * <h2>
+ *     About PostListManager
+ * </h2>
+ * <p>
+ *     This is a manager class for the ArrayList <code>postList</code>, which is basically supposed to
+ *     be a global variable. This is possible because <code>PostListManager</code> is a "singleton"
+ *     class, which means there can only be one instance of it at any given time. Because of this,
+ *     you cannot construct the <code>PostListManager</code> directly, but you can access it like this:
+ *     <pre>
+ *     {@code
+ *         PostListManager plm = PostListManager.getInstance();
+ *     }
+ *     </pre>
+ *     If no instance exists, <code>PostListManager</code> will construct one by reading from the save
+ *     file.
+ * </p>
+ * <p>
+ *     From there I would recommend accessing the postList itself as <code>plm.postList</code>.
+ * </p>
+ * <p>
+ *     It is possible that our Android app will use multiple threads, which could break this
+ *     singleton approach. If we find weird things are happening, we may have to return to this and
+ *     make it synchronized/threadsafe.
+ * </p>
+ * <h2>
+ *     Using postList
+ * </h2>
+ * <h4>
+ *     General Notes
+ * </h4>
+ * <ol>
+ *     <li>
+ *         <b>SORT ORDER:</b> <code>postList</code> is sorted by the <code>timestamp</code> of the
+ *         posts it contains.
+ *     </li>
+ *     <li>
+ *         <b>ACCESS BY INDEX:</b> Posts no longer have a unique id. Instead, it is up to you to
+ *         keep track of a post's position or index within <code>postList</code> to uniquely
+ *         identify it. (The same is true of the comment list within posts themselves)
+ *     </li>
+ *     <li>
+ *         <b>SAVING CHANGES !!!!!!!!!!!!!!</b> In general, you are allowed to make changes to
+ *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile()</code>
+ *         before leaving the activity/fragment, or the changes may not be saved.
+ *     </li>
+ * </ol>
+ * <h4>
+ *     Adding or Removing a Post
+ * </h4>
+ * <p>
+ *     Use ArrayList methods.
+ * </p>
+ * <pre>
+ * {@code
+ *     Post newPost = new Post(...); // or new SightingPost(...);
+ *     plm.postList.add(newPost);
  *
- * Because of this, <code>postList</code> is basically a global variable. You cannot construct it
- * directly, but you can access it with a call to <code>getInstance</code> like this:
- * PostListWrapper plw = PostListWrapper.getInstance();
+ *     plm.postList.remove(index);
+ * }
+ * </pre>
+ * <h4>
+ *     Editing a post
+ * </h4>
+ * <pre>
+ * {@code
+ *     Post postToEdit = plm.postList.get(index);
+ *     // [display all the info with post getters]
+ *     postToEdit.setTitle(newTitle);
+ *     postToEdit.setDescription(newDescription);
+ *     // etc, see Post and SightingPost classes for all setters
+ * }
+ * </pre>
+ * <h4>
+ *     Changing Likes/Comments etc
+ * </h4>
+ * <pre>
+ * {@code
+ *     Post post = postList.getPost(index);
+ *     post.addLike();
+ *     post.removeDislike();
+ *     post.addComment(userId, text);
+ *     post.removeComment(index);
+ *     //etc, see Post class for all methods
+ * }
+ * </pre>
  *
- * From there I would
- *
- * We will see if it is threadsafe.
  */
 public final class PostListManager implements Serializable {
 
