@@ -156,4 +156,27 @@ public final class PostListManager implements Serializable {
             i.printStackTrace();
         }
     }
+
+    public void addFakePosts() {
+        getInstance(); //make sure postList is initialized
+        postList.add(new Post(
+                0,
+                "Some post title",
+                "Some post description.",
+                new String[] {"ogopogo", "sasquatch"}
+        ));
+        postList.add(new Post(
+                0,
+                "Some post title",
+                "Some post description.",
+                new String[] {"ogopogo", "sasquatch"}
+        ));
+        postList.add(new Post(
+                0,
+                "Some post title",
+                "Some post description.",
+                new String[] {"ogopogo", "sasquatch"}
+        ));
+        saveToFile();
+    }
 }
