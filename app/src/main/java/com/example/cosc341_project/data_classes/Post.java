@@ -3,6 +3,7 @@ package com.example.cosc341_project.data_classes;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <h4> Notes </h4>
@@ -100,14 +101,14 @@ public class Post implements Serializable {
     @Override
     public String toString() {
         return "Post{" +
-                ", userId=" + userId +
-                ", timestamp=" + timestamp +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", tags=" + tags +
-                ", numLikes=" + numLikes +
-                ", numDislikes=" + numDislikes +
-                ", comments=" + comments +
-                '}';
+                "\nuserId=" + userId +
+                "\ntimestamp=" + timestamp +
+                "\ntitle='" + title + '\'' +
+                "\ndescription='" + description + '\'' +
+                "\ntags=" + Arrays.toString(tags) +
+                "\nnumLikes=" + numLikes +
+                "\nnumDislikes=" + numDislikes +
+                "\ncomments=" + comments +
+                "\n}";
     }
 }
