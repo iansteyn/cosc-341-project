@@ -30,9 +30,9 @@ public class Comment implements Serializable {
     @Override
     public String toString() {
         return "Comment{" +
-                ", userId=" + userId +
-                ", text='" + text + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
+                "\n\tuserId=" + userId +
+                "\n\ttext='" + text + '\'' +
+                "\n\ttimestamp=" + timestamp +
+                "\n\t}";
     }
 }
