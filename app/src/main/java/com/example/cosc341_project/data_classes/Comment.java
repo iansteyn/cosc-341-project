@@ -1,8 +1,9 @@
 package com.example.cosc341_project.data_classes;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Comment {
+public class Comment implements Serializable {
     // ATTRIBUTES
     private final int userId;
     private final String text;

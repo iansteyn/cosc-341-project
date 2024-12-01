@@ -1,6 +1,8 @@
 package com.example.cosc341_project.data_classes;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     // ATTRIBUTES
     private final int userId;
     private String userName;

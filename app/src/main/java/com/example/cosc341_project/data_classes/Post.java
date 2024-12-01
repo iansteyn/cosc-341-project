@@ -1,5 +1,6 @@
 package com.example.cosc341_project.data_classes;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +30,7 @@ import java.util.LinkedList;
  * </ul>
  *
  */
-public class Post {
+public class Post implements Serializable {
     // ATTRIBUTES
     private final int userId;
     private final Timestamp timestamp;
