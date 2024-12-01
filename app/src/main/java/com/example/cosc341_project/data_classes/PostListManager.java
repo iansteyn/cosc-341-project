@@ -11,10 +11,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-// This is a container class for an arraylist containing posts.
-// Posts are uniquely identified by their position in the ArrayList. Same with comments.
-// It is up to the implementer to keep track of a given post's position in the arraylist
-
 /**
  * <h2>
  *     About PostListManager
@@ -40,6 +36,7 @@ import java.util.ArrayList;
  *     singleton approach. If we find weird things are happening, we may have to return to this and
  *     make it synchronized/threadsafe.
  * </p>
+ * <hr>
  * <h2>
  *     Using postList
  * </h2>
@@ -159,34 +156,3 @@ public final class PostListManager implements Serializable {
         }
     }
 }
-
-// As Evan, I want to:
-/*
-
-POST CREATION
-PostList postList = new PostList();
-Post newPost = new Post(...);
-postList.add(newPost)
-
-// before finishing the activity
-postList.save();
-
-EDIT POST
-PostList postList = new PostList();
-Post post = postList.getPost(index);
-    get all the info
-    post.setString()
-    post.setTitle()
-    post.setStuff()
-
-// before finishing the activity
-postList.save()
-
-LIKE or COMMENT
-PostList
-PostList postList = new postList();
-Post post = postList.getPost(index);
-    post.addLike()
-    post.addComment() etc
-postList.save()
- */
