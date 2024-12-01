@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.cosc341_project.data_classes.PostListManager;
+import com.example.cosc341_project.data_classes.Post;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,21 @@ public class MainActivity extends AppCompatActivity {
         //TESTING PostListManager and posts
         PostListManager plm = PostListManager.getInstance();
         plm.addFakePosts();
-        Log.d("IAN TESTING", plm.postList.toString());
+        Log.d("IAN - TEST ADDFAKEPOSTS", plm.postList.toString());
+
+        Post post0 = plm.postList.get(0);
+        Log.d("IAN - before", post0.toString());
+        post0.addLike();
+        post0.addDislike();
+        post0.addComment(8, "My first comment!");
+        post0.setTags(new String[]{"new tag!"});
+        post0.setTitle("modified title");
+        post0.setDescription("Modified description");
+
+        Post post0Modified = plm.postList.get(0);
+        Log.d("IAN - after", post0Modified.toString());
+
+
 
     }
 
