@@ -3,12 +3,11 @@ package com.example.cosc341_project.data_classes;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-//note: I could potentially just make the read and save methods part of this
+// Consider making this a singleton
 
-// should this be a singleton? maybe
-
-// This is a container class for an arraylist containing posts. Posts are uniquely identified by their
-// position in the ArrayList. Same with comments.
+// This is a container class for an arraylist containing posts.
+// Posts are uniquely identified by their position in the ArrayList. Same with comments.
+// It is up to the implementer to keep track of a given post's position in the arraylist
 
 public class PostList {
     // ATTRIBUTES
@@ -37,8 +36,32 @@ public class PostList {
 
 }
 
-//what if i just take away postId and index only by list position
-//why does tags need to be a linkedList? if it doesn't get dynamically updated it might as well be an array
+// As Evan, I want to:
+/*
 
-// also hmm... I want to access by postId, but also sort by timestamp... and hide certain types of posts
-// what am I doing more... access by index or removing posts?
+POST CREATION
+PostList postList = new postList();
+addPost(all post info)
+
+// before finishing the activity
+postList.save();
+
+EDIT POST
+PostList postList = new postList();
+Post post = postList.getPost(index);
+    get all the info
+    post.setString()
+    post.setTitle()
+    post.setStuff()
+
+// before finishing the activity
+postList.save()
+
+LIKE or COMMENT
+PostList
+PostList postList = new postList();
+Post post = postList.getPost(index);
+    post.addLike()
+    post.addComment() etc
+postList.save()
+ */
