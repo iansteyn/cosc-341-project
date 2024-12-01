@@ -1,5 +1,9 @@
 package com.example.cosc341_project.data_classes;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 // This is a container class for an arraylist containing posts.
@@ -12,7 +16,7 @@ import java.util.ArrayList;
  *
  * We will see if it is threadsafe.
  */
-public final class PostList {
+public final class PostList implements Serializable {
 
     private static PostList INSTANCE;
     public ArrayList<Post> postList;
@@ -28,8 +32,21 @@ public final class PostList {
         return INSTANCE;
     }
 
-    public void save() {
-        //TODO
+    /**
+     * Call this method before leaving or finishing a fragment/activity to ensure
+     * any changes to posts get saved to the file
+     */
+    public void saveToFile() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("postList.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(postList);
+            out.close();
+            fileOut.close();
+        }
+        catch (IOException i) {
+            i.printStackTrace();
+        }
     }
 }
 
