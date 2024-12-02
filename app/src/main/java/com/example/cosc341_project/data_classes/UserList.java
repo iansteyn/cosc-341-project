@@ -19,6 +19,13 @@ public class UserList {
         new User(10, "Bill", "pfp10.png")
     };
 
-
+    public static User get(int userId) {
+        if (0 <= userId && userId <= 10) {
+            return users[userId];
+        }
+        else {
+            return null;
+        }
+    }
 
 }
