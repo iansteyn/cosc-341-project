@@ -171,7 +171,7 @@ public final class PostListManager implements Serializable {
         postList.add(new Post(
                 0,
                 "Some post title 0",
-                "Some post description.",
+                "Some post description 0.",
                 new String[] {"ogopogo", "sasquatch"}
         ));
         postList.add(new Post(
@@ -181,18 +181,18 @@ public final class PostListManager implements Serializable {
                 new String[] {"sasquatch"}
         ));
         postList.add(new Post(
-                0,
-                "Some post title 2",
-                "Some post description.",
-                new String[] {"ogopogo", "sasquatch"}
-        ));
-        postList.add(new SightingPost(
                 2,
-                "sighting post title 1",
-                "Some post description.",
-                new String[] {"bigfoot"},
-                "fakeimage.jpg",
-                "Fake location"
+                "Some post title 2",
+                "Some post description 2.",
+                new String[] {"ogopogo"}
         ));
+//        postList.add(new SightingPost(
+//                2,
+//                "sighting post title 1",
+//                "Some post description.",
+//                new String[] {"bigfoot"},
+//                "fakeimage.jpg",
+//                "Fake location"
+//        ));
     }
 }
