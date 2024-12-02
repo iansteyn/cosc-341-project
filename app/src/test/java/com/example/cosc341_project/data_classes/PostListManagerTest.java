@@ -67,5 +67,13 @@ public class PostListManagerTest extends TestCase {
         assertTrue(plm2.instantiatedFromFile);
         assertFalse(plm2.postList.isEmpty());
         assertEquals(0, plm2.postList.get(0).getUserId());
+
+        // delete file again so it doesn't end up in our code files by accident
+        try {
+            Files.deleteIfExists(path);
+        }
+        catch (IOException e) {
+            //do nothing
+        }
     }
 }
