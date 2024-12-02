@@ -1,5 +1,7 @@
 package com.example.cosc341_project.ui.post;
 
+
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,8 +16,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class createPost extends AppCompatActivity {
 
@@ -24,6 +29,11 @@ public class createPost extends AppCompatActivity {
     Button next;
     EditText description;
     Bitmap PostImage;
+    String[] tags;//Currently only four tags
+    String[] selectedTags;
+    FloatingActionButton showTags;
+    int index;
+    TextView tagsText;
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +44,40 @@ public class createPost extends AppCompatActivity {
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         next = findViewById(R.id.startMap);
         description = findViewById(R.id.editTextTextMultiLine2);
+        showTags = findViewById(R.id.showTags);
+        tagsText = findViewById(R.id.tags);
+        index =0;
+
+        tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Windigo"};
+        selectedTags = new String[tags.length];
+        Arrays.fill(selectedTags, " ");
+        showTags.setOnClickListener(v -> {
+
+            tagsText.setText("Tags: "+ getArrayString(selectedTags));
+            PopupMenu popupMenu = new PopupMenu(createPost.this, v);
+            for (int i = 0; i < tags.length; i++) {
+                popupMenu.getMenu().add(tags[i]);
+            }
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                String tag = item.getTitle().toString();
+
+
+                if (!haveTag(selectedTags,tag)) {
+                    selectedTags[index] = tag;
+                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+                    index++;
+                } else {
+                    removeTag(selectedTags,tag);
+                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+                    index--;
+                }
+                return true;
+            });
+
+            popupMenu.show();
+
+        });
 
 
 
@@ -51,6 +95,42 @@ public class createPost extends AppCompatActivity {
             builder.show();
         });
     }
+
+    String getArrayString(String[] array){
+        String string ="";
+        for (int i = 0; i < tags.length; i++) {
+                if(!array[i].equals(" ")) {
+                    string = string + " " + array[i]+",";
+
+                }
+        }
+    return string;
+    }
+
+    boolean haveTag(String[] array, String string){
+        for (String s : array) {
+            if (s.equals(string)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    void removeTag(String[] array, String value) {
+
+        for (int i = 0; i < array.length; i++) {
+
+            if (array[i] != null && array[i].equals(value)) {
+
+                for (int j = i; j < array.length - 1; j++) {
+
+                    array[j] = array[j + 1];
+                }
+                array[array.length - 1] = " ";
+                break;
+            }
+        }
+    }
+
     private void dispatchTakePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
@@ -108,13 +188,15 @@ public class createPost extends AppCompatActivity {
             next.setText("Done");
             EditText input = new EditText(this);
 
+
             //PostImage is bitmap variable
 
             next.setOnClickListener(v1 -> {
                 //will have method to create a post once the object is ready
                 //Currently a placeholder
+                //selectedTags for string array
 
-                //  Post(PostImage,location,tags,descriptionText)
+                //  Post(PostImage,location,selectedTags,descriptionText)
 
             });
             input.setHint("Location");
