@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.User;
+import com.example.cosc341_project.data_classes.PostListManager;
 
 public class createPost extends AppCompatActivity {
 
@@ -202,7 +203,10 @@ public class createPost extends AppCompatActivity {
                 String Location = String.valueOf(input.getText());
                 //public Post(int userId, String title, String description, String[] tags)
                 //User.getUserId()
-                new SightingPost(1, titleText, descriptionText, tags,PostImage.toString(),Location);
+                int userId = 1;
+                PostListManager plm = PostListManager.getInstance();
+                SightingPost newPost = new SightingPost(userId, titleText, descriptionText, tags,PostImage.toString(),Location);
+                plm.postList.add(newPost);
                 finish();
             });
             input.setHint("Location");

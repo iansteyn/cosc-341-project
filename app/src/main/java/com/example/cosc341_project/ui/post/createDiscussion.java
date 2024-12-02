@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cosc341_project.R;
+import com.example.cosc341_project.data_classes.PostListManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import com.example.cosc341_project.data_classes.Post;
@@ -93,7 +94,10 @@ public class createDiscussion extends AppCompatActivity {
             //User.getUserId()
             int userId = 1;
             if(!(titleText.equals("")||descriptionText.equals(""))){
-            new Post(userId, titleText, descriptionText, tags);
+
+                PostListManager plm = PostListManager.getInstance();
+            Post newPost = new Post(userId, titleText, descriptionText, tags);
+                plm.postList.add(newPost);
             finish();}
         });
 
