@@ -35,12 +35,10 @@ public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
     LinearLayout postsContainer;
-    LinkedList<Post> posts;
-    LinkedList<Post> filteredPosts;
-    private final HashSet<Post> likedPosts = new HashSet<>();
-    private final HashSet<Post> dislikedPosts = new HashSet<>();
-    private int selectedOrderOption = 0;
-    private HashSet<Integer> checkedButtonIDs;
+    LinkedList<Post> posts; // Stores posts loaded from the post list manager.
+    private final HashSet<Integer> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
+    private final HashSet<Integer> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
+    private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
 
     private FragmentFeedBinding binding;
 
@@ -112,6 +110,7 @@ public class FeedFragment extends Fragment {
         orderBySpinner.setAdapter(orderByAdapter);
 
         // Set the option showing as selected to the users most recent selection, defaults to 0.
+        int selectedOrderOption = 0;
         orderBySpinner.setSelection(selectedOrderOption);
 
         // Ensure that if CheckBox was unselected, when the feed reloads it remains unselected.
@@ -145,7 +144,7 @@ public class FeedFragment extends Fragment {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filteredPosts = new LinkedList<>();
+                LinkedList <Post> filteredPosts = new LinkedList<>();
                 LinkedList<String> selectedFilters = new LinkedList<>(); // List to store selected filters.
 
                 // Iterate through each CheckBox to add selected filters to 'selectedFilters'.
@@ -237,29 +236,29 @@ public class FeedFragment extends Fragment {
                     * the program automatically unlikes the post before apply the dislike.
                     * Same goes vice versa.
                     * */
-                    if (likedPosts.contains(post)) {
+                    if (likedPosts.contains(post.getPostId())) {
                         post.removeLike();
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.remove(post);
+                        likedPosts.remove(post.getPostId());
                     }
                     else {
-                        if (dislikedPosts.contains(post)){
+                        if (dislikedPosts.contains(post.getPostId())){
                             post.removeDislike();
                             String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             dislikeButton.setBackgroundColor(color);
-                            dislikedPosts.remove(post);
+                            dislikedPosts.remove(post.getPostId());
                         }
                         post.addLike();
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.add(post);
+                        likedPosts.add(post.getPostId());
                     }
                 }
             });
@@ -268,29 +267,29 @@ public class FeedFragment extends Fragment {
             dislikeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if (dislikedPosts.contains(post)) {
+                    if (dislikedPosts.contains(post.getPostId())) {
                         post.removeDislike();
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.remove(post);
+                        dislikedPosts.remove(post.getPostId());
                     }
                     else {
-                        if (likedPosts.contains(post)){
+                        if (likedPosts.contains(post.getPostId())){
                             post.removeLike();
                             String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                             postLikes.setText(updatedLikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             likeButton.setBackgroundColor(color);
-                            likedPosts.remove(post);
+                            likedPosts.remove(post.getPostId());
                         }
                         post.addDislike();
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatred);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.add(post);
+                        dislikedPosts.add(post.getPostId());
                     }
                 }
             });
