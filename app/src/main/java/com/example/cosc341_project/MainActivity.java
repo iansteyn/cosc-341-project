@@ -1,10 +1,7 @@
 package com.example.cosc341_project;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.cosc341_project.data_classes.PostListManager;
-import com.example.cosc341_project.data_classes.Post;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
