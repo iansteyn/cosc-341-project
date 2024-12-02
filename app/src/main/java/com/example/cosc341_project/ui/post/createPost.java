@@ -34,6 +34,7 @@ public class createPost extends AppCompatActivity {
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
+    EditText title;
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class createPost extends AppCompatActivity {
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         next = findViewById(R.id.startMap);
         description = findViewById(R.id.editTextTextMultiLine2);
+        title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
         index =0;
@@ -90,7 +92,7 @@ public class createPost extends AppCompatActivity {
                     dispatchTakePictureIntent();
                 } else if (which == 1) {
                     dispatchChoosePictureIntent();
-                      }
+                }
             });
             builder.show();
         });
@@ -99,12 +101,12 @@ public class createPost extends AppCompatActivity {
     String getArrayString(String[] array){
         String string ="";
         for (int i = 0; i < tags.length; i++) {
-                if(!array[i].equals(" ")) {
-                    string = string + " " + array[i]+",";
+            if(!array[i].equals(" ")) {
+                string = string + " " + array[i]+",";
 
-                }
+            }
         }
-    return string;
+        return string;
     }
 
     boolean haveTag(String[] array, String string){
@@ -184,6 +186,8 @@ public class createPost extends AppCompatActivity {
             descriptionText = String.valueOf(description.getText());
             System.out.println("LOG");
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            String titleText;
+            titleText = String.valueOf(title.getText());
             Button next = new Button(this);
             next.setText("Done");
             EditText input = new EditText(this);
@@ -209,7 +213,6 @@ public class createPost extends AppCompatActivity {
         });
     }
 
-    }
-
+}
 
 
