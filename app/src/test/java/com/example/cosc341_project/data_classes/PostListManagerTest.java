@@ -29,6 +29,8 @@ public class PostListManagerTest extends TestCase {
         //check that new references created after modification still point to same instance
         PostListManager plm3 = PostListManager.getInstance();
         assertEquals(plm, plm3);
+
+        PostListManager.destroyInstance();
     }
 
     public void testSaveAndReload() {
