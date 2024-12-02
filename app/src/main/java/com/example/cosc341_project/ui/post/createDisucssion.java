@@ -14,8 +14,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cosc341_project.R;
+import com.example.cosc341_project.data_classes.SightingPost;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
+import com.example.cosc341_project.data_classes.Post;
+import com.example.cosc341_project.data_classes.User;
 
 public class createDisucssion extends AppCompatActivity {
     Button done;
@@ -89,8 +92,11 @@ public class createDisucssion extends AppCompatActivity {
             descriptionText = String.valueOf(description.getText());
             String titleText;
             titleText = String.valueOf(title.getText());
-
-            finish();
+            //User.getUserId()
+            int userId = 1;
+            if(!(titleText.equals("")||descriptionText.equals(""))){
+            new Post(userId, titleText, descriptionText, tags);
+            finish();}
         });
 
 

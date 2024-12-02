@@ -20,7 +20,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Objects;
+import com.example.cosc341_project.data_classes.SightingPost;
+import com.example.cosc341_project.data_classes.User;
 
 public class createPost extends AppCompatActivity {
 
@@ -182,6 +183,7 @@ public class createPost extends AppCompatActivity {
         // not work if the user has not entered a photo
 
         next.setOnClickListener(v -> {
+
             String descriptionText;
             descriptionText = String.valueOf(description.getText());
             System.out.println("LOG");
@@ -191,16 +193,16 @@ public class createPost extends AppCompatActivity {
             Button next = new Button(this);
             next.setText("Done");
             EditText input = new EditText(this);
-
-
             //PostImage is bitmap variable
-
+            if(!(titleText.equals("")||descriptionText.equals(""))){
             next.setOnClickListener(v1 -> {
                 //will have method to create a post once the object is ready
                 //Currently a placeholder
                 //selectedTags for string array
-
-                //  Post(PostImage,location,selectedTags,descriptionText)
+                String Location = String.valueOf(input.getText());
+                //public Post(int userId, String title, String description, String[] tags)
+                //User.getUserId()
+                new SightingPost(1, titleText, descriptionText, tags,PostImage.toString(),Location);
                 finish();
             });
             input.setHint("Location");
@@ -209,7 +211,7 @@ public class createPost extends AppCompatActivity {
             layout.addView(input);
             layout.addView(next);
             builder1.setView(layout);
-            builder1.show();
+            builder1.show();}
         });
     }
 
