@@ -14,13 +14,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cosc341_project.R;
-import com.example.cosc341_project.data_classes.SightingPost;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Arrays;
 import com.example.cosc341_project.data_classes.Post;
-import com.example.cosc341_project.data_classes.User;
 
-public class createDisucssion extends AppCompatActivity {
+public class createDiscussion extends AppCompatActivity {
     Button done;
     EditText description;
     String[] tags;//Currently only four tags
@@ -56,7 +54,7 @@ public class createDisucssion extends AppCompatActivity {
         showTags.setOnClickListener(v -> {
 
             tagsText.setText("Tags: "+ getArrayString(selectedTags));
-            PopupMenu popupMenu = new PopupMenu(createDisucssion.this, v);
+            PopupMenu popupMenu = new PopupMenu(createDiscussion.this, v);
             for (int i = 0; i < tags.length; i++) {
                 popupMenu.getMenu().add(tags[i]);
             }

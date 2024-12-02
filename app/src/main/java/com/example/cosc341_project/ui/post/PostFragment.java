@@ -42,7 +42,7 @@ public class PostFragment extends Fragment {
         });
 
         button2.setOnClickListener(view -> {
-            Intent intent = new Intent(requireContext(), createDisucssion.class);
+            Intent intent = new Intent(requireContext(), createDiscussion.class);
             startActivity(intent);
 
         });
