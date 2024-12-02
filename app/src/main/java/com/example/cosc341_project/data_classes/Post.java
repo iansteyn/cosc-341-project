@@ -6,12 +6,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * <h4> Notes </h4>
+ * <h2>
+ *     Post
+ * </h2>
  * <p>
- *     This is a data class for storing information related to posts. It is a supertype of <code>sightingPost</code>
+ *     This is a data class for storing information related to posts. It is a supertype of
+ *     <code>sightingPost</code>
  * </p>
+ * <h3>
+ *     Creating a Post
+ * </h3>
+ * <p>The only constructor available is:</p>
+ * <pre>
+ * {@code
+ *     public Post(int userId, String title, String description, String[] tags)
+ * }
+ * </pre>
+ * <h3>
+ *     Accessing and Modifying Attributes
+ * </h3>
  * <ul>
- *     <li> All attributes are protected --- you cannot access them directly. </li>
+ *     <li>
+ *         All attributes are protected --- you cannot access them directly.
+ *     </li>
  *     <li>
  *         All attributes have getters.
  *         <b>Please do not modify the values or objects returned by the getters.</b>
@@ -20,10 +37,20 @@ import java.util.Arrays;
  *     <li>
  *         Not all attributes have setters.
  *         <ul>
- *             <li> <code>UserId</code>, and <code>timestamp</code> are final (immutable) and initialized at construction. </li>
- *             <li> <code>numDislikes</code>, <code>numLikes</code> and <code>comments</code> are initialized as 0, 0 and empty list. These all have <b><i>add</i></b> and <b><i>remove</i></b> methods. </li>
- *             <li> <code>title</code>, <code>description</code> and <code>tags</code> must be specified at construction, but they can also be modified with setters. </li>
- *
+ *             <li>
+ *                 Both <code>UserId</code>, and <code>timestamp</code> are final (immutable).
+ *                 <code>UserId</code> is specified at construction, while <code>timestamp</code>
+ *                 is automatically set to the current time.
+ *             </li>
+ *             <li>
+ *                 <code>numDislikes</code>, <code>numLikes</code> and <code>comments</code> are
+ *                 initialized as 0, 0 and empty list. These all have <b><i>add</i></b> and
+ *                 <b><i>remove</i></b> methods.
+ *             </li>
+ *             <li>
+ *                 <code>title</code>, <code>description</code> and <code>tags</code> must be
+ *                 specified at construction, but they can also be modified with setters.
+ *             </li>
  *         </ul>
  *     </li>
  * </ul>
