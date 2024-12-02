@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cosc341_project.R;
 import com.example.cosc341_project.databinding.FragmentFeedBinding;
-//import com.example.cosc341_project.data_classes.Post;
+import com.example.cosc341_project.data_classes.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -35,9 +35,10 @@ public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
     LinearLayout postsContainer;
-    LinkedList<Post> posts; // Stores posts loaded from the post list manager.
-    private final HashSet<Integer> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
-    private final HashSet<Integer> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
+    private PostListManager plm;
+    private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
+    private final HashSet<Post> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
+    private final HashSet<Post> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
     private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
 
     private FragmentFeedBinding binding;
@@ -53,7 +54,9 @@ public class FeedFragment extends Fragment {
 
         postsContainer = root.findViewById(R.id.postsContainer);
 
-        posts = feedViewModel.getPosts();
+        plm = feedViewModel.getPostListManager();
+        posts = plm.postList;
+
         checkedButtonIDs = new HashSet<>();
         Log.e("Posts List Acquired?", "true");
 
@@ -65,7 +68,7 @@ public class FeedFragment extends Fragment {
         return root;
     }
 
-    private void addPostsToScrollView(LinkedList<Post> postList, LayoutInflater inflater, boolean reload) {
+    private void addPostsToScrollView(ArrayList<Post> postList, LayoutInflater inflater, boolean reload) {
         Log.e("Adding posts to scroll view?", "true");
         postsContainer.removeAllViews(); // Safety Check: Clear current scroll view.
 
@@ -144,7 +147,7 @@ public class FeedFragment extends Fragment {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LinkedList <Post> filteredPosts = new LinkedList<>();
+                ArrayList <Post> filteredPosts = new ArrayList<>();
                 LinkedList<String> selectedFilters = new LinkedList<>(); // List to store selected filters.
 
                 // Iterate through each CheckBox to add selected filters to 'selectedFilters'.
@@ -167,7 +170,7 @@ public class FeedFragment extends Fragment {
 
                 // Add all posts containing a match with any selected filter to the set of filtered posts.
                 for (Post post: posts){
-                    LinkedList<String> tags = post.getTags();
+                    String [] tags = post.getTags();
                     for (String s: tags){
                         if (selectedFilters.contains(s.trim().toLowerCase())){
                             filteredPosts.add(post);
@@ -182,7 +185,7 @@ public class FeedFragment extends Fragment {
                 if (selectedOrder == 1){
                     filteredPosts = filteredPosts.stream()
                             .sorted(Comparator.comparingInt(Post :: getNumLikes).reversed())
-                            .collect(Collectors.toCollection(LinkedList<Post> :: new));
+                            .collect(Collectors.toCollection(ArrayList<Post> :: new));
                 }
                 addPostsToScrollView(filteredPosts, inflater, true); // Pass true for the reload.
             }
@@ -194,7 +197,7 @@ public class FeedFragment extends Fragment {
             View postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
             TextView postUserName = postView.findViewById(R.id.postUsername);
-            postUserName.setText(post.getUserName());
+            postUserName.setText("placeHolder");
 
             TextView postTitle = postView.findViewById(R.id.postTitle);
             postTitle.setText(post.getTitle());
@@ -204,7 +207,7 @@ public class FeedFragment extends Fragment {
 
             TextView postTags = postView.findViewById(R.id.tags);
             String tags = ""; // Initialize the 'tags' String. This will be what the users sees under 'Tags'.
-            LinkedList<String> tagList = post.getTags();
+            String [] tagList = post.getTags();
             for (String s: tagList){
                 tags += "#"+s +", "; // Probably should use StringBuilder, just not very familiar. Will look into.
             }
@@ -224,6 +227,16 @@ public class FeedFragment extends Fragment {
             Button likeButton = postView.findViewById(R.id.likeButton);
             Button dislikeButton = postView.findViewById(R.id.dislikeButton);
 
+            //
+            if (likedPosts.contains(post)){
+                int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
+                likeButton.setBackgroundColor(color);
+            }
+            if (dislikedPosts.contains(post)){
+                int color = ContextCompat.getColor(getContext(), R.color.flatred);
+                likeButton.setBackgroundColor(color);
+            }
+
             // Set on click listener for 'Like' button.
             likeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -236,29 +249,29 @@ public class FeedFragment extends Fragment {
                     * the program automatically unlikes the post before apply the dislike.
                     * Same goes vice versa.
                     * */
-                    if (likedPosts.contains(post.getPostId())) {
+                    if (likedPosts.contains(post)) {
                         post.removeLike();
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.remove(post.getPostId());
+                        likedPosts.remove(post);
                     }
                     else {
-                        if (dislikedPosts.contains(post.getPostId())){
+                        if (dislikedPosts.contains(post)){
                             post.removeDislike();
                             String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             dislikeButton.setBackgroundColor(color);
-                            dislikedPosts.remove(post.getPostId());
+                            dislikedPosts.remove(post);
                         }
                         post.addLike();
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.add(post.getPostId());
+                        likedPosts.add(post);
                     }
                 }
             });
@@ -267,29 +280,29 @@ public class FeedFragment extends Fragment {
             dislikeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if (dislikedPosts.contains(post.getPostId())) {
+                    if (dislikedPosts.contains(post)) {
                         post.removeDislike();
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.remove(post.getPostId());
+                        dislikedPosts.remove(post);
                     }
                     else {
-                        if (likedPosts.contains(post.getPostId())){
+                        if (likedPosts.contains(post)){
                             post.removeLike();
                             String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                             postLikes.setText(updatedLikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             likeButton.setBackgroundColor(color);
-                            likedPosts.remove(post.getPostId());
+                            likedPosts.remove(post);
                         }
                         post.addDislike();
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatred);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.add(post.getPostId());
+                        dislikedPosts.add(post);
                     }
                 }
             });
@@ -305,96 +318,4 @@ public class FeedFragment extends Fragment {
         binding = null;
     }
 
-}
-
-class Post {
-    // ATTRIBUTES
-    private int postId; // will probably also be final later on
-    private final int userId;
-    private final Timestamp timestamp;
-
-    private String userName;
-    private String title;
-    private String description;
-    private LinkedList<String> tags;
-
-    private int numLikes;
-    private int numDislikes;
-    private LinkedList<Comment> comments;
-
-    // CONSTRUCTORS
-    public Post(int userId) {
-        this.userId = userId; //TODO: maybe check if userId exists on file?
-        timestamp = new Timestamp(System.currentTimeMillis());
-
-        numLikes = 0;
-        numDislikes = 0;
-        comments = new LinkedList<Comment>();
-    }
-    public Post(String userName, String title, String description, int numLikes, int numDislikes, LinkedList<String> tags){
-        this.userName = userName;
-        this.title = title;
-        this.description = description;
-        this.comments = new LinkedList<>();
-        this.numLikes = numLikes;
-        this.numDislikes = numDislikes;
-        this.userId = 0;
-        this.tags = tags;
-        this.timestamp = new Timestamp(System.currentTimeMillis());
-
-    }
-
-    // GETTERS
-    public int getPostId() { return postId; }
-    public int getUserId() { return userId; }
-    public String getUserName() { return userName;}
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public Timestamp getTimestamp() { return timestamp; }
-    public int getNumLikes() { return numLikes; }
-    public int getNumDislikes() { return numDislikes; }
-    public LinkedList<String> getTags() { return tags; }
-    public LinkedList<Comment> getComments() { return comments; }
-
-    // SETTERS
-    /*
-     public void setPostId(int postId) {
-        TEMPORARY until I figure out how to increment the postId better
-        this.postId = postId;
-    } */
-
-    public void setTitle(String title) { this.title = title; }
-    public void setDescription(String description) { this.description = description; }
-    public void setTags(LinkedList<String> tags) { this.tags = tags; }
-
-    public void addLike() { numLikes++; }
-    public void removeLike() { numLikes--; }
-    public void addDislike() { numDislikes++; }
-    public void removeDislike() { numDislikes--; }
-
-    public boolean addComment(Comment newComment) {
-        // Returns true if successful, false otherwise
-        return comments.add(newComment);
-    }
-    public boolean removeComment(int commentId) {
-        // Returns true if successful, false otherwise
-
-        Iterator<Comment> commentsIterator = comments.iterator();
-
-        while (commentsIterator.hasNext()) {
-            if (commentsIterator.next().commentId == commentId) {
-                commentsIterator.remove();
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-class Comment {
-    public int commentId;
-    public int userId;
-    public String text;
-    Timestamp timestamp;
 }
