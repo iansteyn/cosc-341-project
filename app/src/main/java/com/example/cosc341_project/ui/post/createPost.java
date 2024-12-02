@@ -201,7 +201,7 @@ public class createPost extends AppCompatActivity {
                 //selectedTags for string array
 
                 //  Post(PostImage,location,selectedTags,descriptionText)
-
+                finish();
             });
             input.setHint("Location");
             LinearLayout layout = new LinearLayout(this);
