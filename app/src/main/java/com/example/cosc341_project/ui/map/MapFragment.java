@@ -49,5 +49,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Enable zoom controls
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        //Padding to stop the zoom button from being blocked
+        mMap.setPadding(0, 0, 0, 150);
     }
 }
