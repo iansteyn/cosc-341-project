@@ -28,7 +28,6 @@ import com.example.cosc341_project.data_classes.PostListManager;
 
 public class createPost extends AppCompatActivity {
 
-
     ImageButton chooseImage;
     Button next;
     EditText description;
@@ -39,14 +38,17 @@ public class createPost extends AppCompatActivity {
     int index;
     TextView tagsText;
     EditText title;
+
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //get intent and set layout
         boolean sighting = getIntent().getBooleanExtra("sighting", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
-
+        // Find xml elementSs
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         next = findViewById(R.id.startMap);
         description = findViewById(R.id.editTextTextMultiLine2);
@@ -55,13 +57,15 @@ public class createPost extends AppCompatActivity {
         tagsText = findViewById(R.id.tags);
         index =0;
 
-        tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Windigo"};
+        // set tags list
+        tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Wendigo"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
-        if(!sighting){
+        if (!sighting) {
             chooseImage.setVisibility(View.GONE);
             next.setText("Done");
+
             next.setOnClickListener(v -> {
                 String descriptionText;
                 descriptionText = String.valueOf(description.getText());
@@ -77,8 +81,8 @@ public class createPost extends AppCompatActivity {
                     plm.saveToFile();
                     finish();}
             });
-
-        }else{
+        }
+        else {
             next.setOnClickListener(v -> {
 
                 String descriptionText;
@@ -117,7 +121,6 @@ public class createPost extends AppCompatActivity {
 
         }
 
-
         showTags.setOnClickListener(v -> {
 
             tagsText.setText("Tags: "+ getArrayString(selectedTags));
@@ -146,8 +149,6 @@ public class createPost extends AppCompatActivity {
 
         });
 
-
-
         chooseImage.setOnClickListener(v -> {
             String[] options = {"Take Photo", "Choose from Gallery"};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -163,12 +164,13 @@ public class createPost extends AppCompatActivity {
         });
     }
 
+    // HELPER METHODS
+    // --------------
     String getArrayString(String[] array){
         String string ="";
         for (int i = 0; i < tags.length; i++) {
             if(!array[i].equals(" ")) {
                 string = string + " " + array[i]+",";
-
             }
         }
         return string;
@@ -182,14 +184,13 @@ public class createPost extends AppCompatActivity {
         }
         return false;
     }
+
     void removeTag(String[] array, String value) {
 
         for (int i = 0; i < array.length; i++) {
-
             if (array[i] != null && array[i].equals(value)) {
 
                 for (int j = i; j < array.length - 1; j++) {
-
                     array[j] = array[j + 1];
                 }
                 array[array.length - 1] = " ";
