@@ -170,29 +170,32 @@ public final class PostListManager implements Serializable {
     public void addFakePosts() {
         postList.add(new Post(
                 0,
-                "Some post title 0",
-                "Some post description 0.",
-                new String[] {"ogopogo", "sasquatch"}
+                "Do you think Ogogopo is Real?",
+                "Like seriously guys. I know we're all believers here but do you really believe?",
+                new String[] {"Ogopogo"}
         ));
-        postList.add(new Post(
-                1,
-                "Some post title 1",
-                "Some post description.",
-                new String[] {"sasquatch"}
-        ));
-        postList.add(new Post(
+        postList.add(new SightingPost(
                 2,
-                "Some post title 2",
-                "Some post description 2.",
-                new String[] {"ogopogo"}
+                "CAUGHT ON TRAILCAM",
+                "Check this out. Saw bigfoot on my trail cam near my cabin.",
+                new String[] {"Sasquatch"},
+                "img_bigfoot_or_bear",
+                "Near cabin, Kelowna"
         ));
-//        postList.add(new SightingPost(
-//                2,
-//                "sighting post title 1",
-//                "Some post description.",
-//                new String[] {"bigfoot"},
-//                "fakeimage.jpg",
-//                "Fake location"
-//        ));
+        postList.add(new SightingPost(
+                9,
+                "Greetings. Maybe Ogopogo?",
+                "Greetings, fellows I am new to the area and this is my first sighting. Ogopogo, perhaps?",
+                new String[] {"Ogopogo"},
+                "img_lake_monster",
+                "Okanagan Lake South"
+        ));
+        postList.add(new Post(
+                7,
+                "How did you first hear about the Ogopogo?",
+                "Did anyone else have that weird book where his cousin is a dragon? Smh they don't even understand. Anyway how did you first hear about it?",
+                new String[] {"Ogopogo"}
+
+        ));
     }
 }
