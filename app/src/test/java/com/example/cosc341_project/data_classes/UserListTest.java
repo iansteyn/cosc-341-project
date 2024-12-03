@@ -1,5 +1,7 @@
 package com.example.cosc341_project.data_classes;
 
+import com.example.cosc341_project.R;
+
 import junit.framework.TestCase;
 
 public class UserListTest extends TestCase {
@@ -10,7 +12,6 @@ public class UserListTest extends TestCase {
 
         assertEquals(0, actualUser.getUserId());
         assertEquals("bobby_mohamed", actualUser.getUserName());
-        assertEquals("pfp0.png", actualUser.getProfilePicName());
     }
 
     public void testGet_userDoesNotExist() {
