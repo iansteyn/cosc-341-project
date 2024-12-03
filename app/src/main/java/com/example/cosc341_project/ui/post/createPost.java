@@ -23,13 +23,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.util.Arrays;
 import com.example.cosc341_project.data_classes.SightingPost;
-import com.example.cosc341_project.data_classes.User;
 import com.example.cosc341_project.data_classes.PostListManager;
 
 public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
-    Button next;
+    Button nextButton;
     EditText description;
     Bitmap PostImage;
     String[] tags;//Currently only four tags
@@ -50,7 +49,7 @@ public class createPost extends AppCompatActivity {
 
         // Find xml elementSs
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
-        next = findViewById(R.id.startMap);
+        nextButton = findViewById(R.id.startMap);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
@@ -62,15 +61,17 @@ public class createPost extends AppCompatActivity {
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
+        // configure nextButton's OnClick action
+        String descriptionText;
+        descriptionText = String.valueOf(description.getText());
+        String titleText;
+        titleText = String.valueOf(title.getText());
+
         if (!sighting) {
             chooseImage.setVisibility(View.GONE);
-            next.setText("Done");
+            nextButton.setText("Done");
 
-            next.setOnClickListener(v -> {
-                String descriptionText;
-                descriptionText = String.valueOf(description.getText());
-                String titleText;
-                titleText = String.valueOf(title.getText());
+            nextButton.setOnClickListener(v -> {
 
                 int userId = 1;
                 if(!(titleText.equals("")||descriptionText.equals(""))){
@@ -83,14 +84,11 @@ public class createPost extends AppCompatActivity {
             });
         }
         else {
-            next.setOnClickListener(v -> {
+            nextButton.setOnClickListener(v -> {
 
-                String descriptionText;
-                descriptionText = String.valueOf(description.getText());
                 System.out.println("LOG");
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-                String titleText;
-                titleText = String.valueOf(title.getText());
+
                 Button next = new Button(this);
                 next.setText("Done");
                 EditText input = new EditText(this);
