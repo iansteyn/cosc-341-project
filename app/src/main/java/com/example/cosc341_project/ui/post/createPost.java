@@ -72,7 +72,6 @@ public class createPost extends AppCompatActivity {
             nextButton.setText("Done");
 
             nextButton.setOnClickListener(v -> {
-
                 int userId = 1;
                 if(!(titleText.equals("")||descriptionText.equals(""))){
 
@@ -86,12 +85,10 @@ public class createPost extends AppCompatActivity {
         else {
             nextButton.setOnClickListener(v -> {
 
-                System.out.println("LOG");
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-
                 Button next = new Button(this);
                 next.setText("Done");
                 EditText input = new EditText(this);
+
                 //PostImage is bitmap variable
                 if(!(titleText.equals("")||descriptionText.equals(""))){
                     next.setOnClickListener(v1 -> {
