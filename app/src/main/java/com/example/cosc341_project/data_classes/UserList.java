@@ -38,7 +38,7 @@ public class UserList {
     public static final int CURRENT_USER_ID = 10;
 
     private static final User[] users = new User[] {
-        new User(0, "bobby_mohamed", R.drawable.pfp_mohamed),
+        new User(0, "bobby_mohamed", R.drawable.pfp_jeremy),
         new User(1, "yoMamma", R.drawable.pfp_yomamma),
         new User(2, "bigfoot_fanatic", R.drawable.pfp_bigfoot),
         new User(3, "OgopoStop", R.drawable.pfp_stop),
