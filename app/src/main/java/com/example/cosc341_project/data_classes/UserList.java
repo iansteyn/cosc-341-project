@@ -1,5 +1,7 @@
 package com.example.cosc341_project.data_classes;
 
+import com.example.cosc341_project.R;
+
 /**
  * <h2> AHAHAHA HARDCODED DATA BABY </h2>
  * <h3> Ok what is this </h3>
@@ -36,17 +38,17 @@ public class UserList {
     public static final int CURRENT_USER_ID = 10;
 
     private static final User[] users = new User[] {
-        new User(0, "bobby_mohamed", "pfp_mohamed"),
-        new User(1, "yoMamma", "pfp_yomamma"),
-        new User(2, "bigfoot_fanatic", "pfp_bigfoot"),
-        new User(3, "OgopoStop", "pfp_stop"),
-        new User(4, "Mothman2000", "pfp_mothman"),
-        new User(5, "Jeremy", "pfp_jeremy"),
-        new User(6, "girl", "pfp_girl"),
-        new User(7, "boy", "pfp_boy"),
-        new User(8, "Awkwardfina", "pfp_aquafina"),
-        new User(9, "lakedweller69", "pfp_lakewoman"),
-        new User(10, "Bill", "pfp_bill")
+        new User(0, "bobby_mohamed", R.drawable.pfp_mohamed),
+        new User(1, "yoMamma", R.drawable.pfp_yomamma),
+        new User(2, "bigfoot_fanatic", R.drawable.pfp_bigfoot),
+        new User(3, "OgopoStop", R.drawable.pfp_stop),
+        new User(4, "Mothman2000", R.drawable.pfp_mothman),
+        new User(5, "Jeremy", R.drawable.pfp_jeremy),
+        new User(6, "girl", R.drawable.pfp_girl),
+        new User(7, "boy", R.drawable.pfp_boy),
+        new User(8, "Awkwardfina", R.drawable.pfp_aquafina),
+        new User(9, "lakedweller69", R.drawable.pfp_lakewoman),
+        new User(10, "Bill", R.drawable.pfp_bill)
     };
 
     // STATIC METHODS
