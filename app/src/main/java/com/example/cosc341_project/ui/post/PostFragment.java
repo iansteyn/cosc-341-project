@@ -19,7 +19,7 @@ public class PostFragment extends Fragment {
     FragmentPostBinding binding;
     Button button1;
     Button button2;
-
+    Boolean sighting;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,13 +36,17 @@ public class PostFragment extends Fragment {
         button2 = root.findViewById(R.id.button2);
 
 
-        button1.setOnClickListener(view -> {
+        button1.setOnClickListener(view -> {//Create sighting post
+            sighting = true;
             Intent intent = new Intent(requireContext(), createPost.class);
+            intent.putExtra("sighting", sighting);
             startActivity(intent);
         });
 
-        button2.setOnClickListener(view -> {
-            Intent intent = new Intent(requireContext(), createDiscussion.class);
+        button2.setOnClickListener(view -> {//Create discussion post
+            sighting = false;
+            Intent intent = new Intent(requireContext(), createPost.class);
+            intent.putExtra("sighting", sighting);
             startActivity(intent);
 
         });

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.RequiresExtension;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
+import com.example.cosc341_project.data_classes.Post;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -40,6 +42,7 @@ public class createPost extends AppCompatActivity {
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean sighting = getIntent().getBooleanExtra("sighting", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
@@ -55,6 +58,66 @@ public class createPost extends AppCompatActivity {
         tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Windigo"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
+
+        if(!sighting){
+            chooseImage.setVisibility(View.GONE);
+            next.setText("Done");
+            next.setOnClickListener(v -> {
+                String descriptionText;
+                descriptionText = String.valueOf(description.getText());
+                String titleText;
+                titleText = String.valueOf(title.getText());
+
+                int userId = 1;
+                if(!(titleText.equals("")||descriptionText.equals(""))){
+
+                    PostListManager plm = PostListManager.getInstance();
+                    Post newPost = new Post(userId, titleText, descriptionText, tags);
+                    plm.postList.add(newPost);
+                    plm.saveToFile();
+                    finish();}
+            });
+
+        }else{
+            next.setOnClickListener(v -> {
+
+                String descriptionText;
+                descriptionText = String.valueOf(description.getText());
+                System.out.println("LOG");
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+                String titleText;
+                titleText = String.valueOf(title.getText());
+                Button next = new Button(this);
+                next.setText("Done");
+                EditText input = new EditText(this);
+                //PostImage is bitmap variable
+                if(!(titleText.equals("")||descriptionText.equals(""))){
+                    next.setOnClickListener(v1 -> {
+                        //will have method to create a post once the object is ready
+                        //Currently a placeholder
+                        //selectedTags for string array
+                        String Location = String.valueOf(input.getText());
+                        //public Post(int userId, String title, String description, String[] tags)
+                        //User.getUserId()
+                        int userId = 1;
+                        PostListManager plm = PostListManager.getInstance();
+                        SightingPost newPost = new SightingPost(userId, titleText, descriptionText, tags,PostImage.toString(),Location);
+                        plm.postList.add(newPost);
+                        plm.saveToFile();
+                        finish();
+                    });
+                    input.setHint("Location");
+                    LinearLayout layout = new LinearLayout(this);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+                    layout.addView(input);
+                    layout.addView(next);
+                    builder1.setView(layout);
+                    builder1.show();}
+            });
+
+        }
+
+
         showTags.setOnClickListener(v -> {
 
             tagsText.setText("Tags: "+ getArrayString(selectedTags));
@@ -183,40 +246,7 @@ public class createPost extends AppCompatActivity {
         // and will once done create a post, the next button to get to the map will
         // not work if the user has not entered a photo
 
-        next.setOnClickListener(v -> {
 
-            String descriptionText;
-            descriptionText = String.valueOf(description.getText());
-            System.out.println("LOG");
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-            String titleText;
-            titleText = String.valueOf(title.getText());
-            Button next = new Button(this);
-            next.setText("Done");
-            EditText input = new EditText(this);
-            //PostImage is bitmap variable
-            if(!(titleText.equals("")||descriptionText.equals(""))){
-            next.setOnClickListener(v1 -> {
-                //will have method to create a post once the object is ready
-                //Currently a placeholder
-                //selectedTags for string array
-                String Location = String.valueOf(input.getText());
-                //public Post(int userId, String title, String description, String[] tags)
-                //User.getUserId()
-                int userId = 1;
-                PostListManager plm = PostListManager.getInstance();
-                SightingPost newPost = new SightingPost(userId, titleText, descriptionText, tags,PostImage.toString(),Location);
-                plm.postList.add(newPost);
-                finish();
-            });
-            input.setHint("Location");
-            LinearLayout layout = new LinearLayout(this);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.addView(input);
-            layout.addView(next);
-            builder1.setView(layout);
-            builder1.show();}
-        });
     }
 
 }
