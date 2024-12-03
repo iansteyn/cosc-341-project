@@ -6,17 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".ui.post.PostFragment">
 
-    <TextView
-        android:id="@+id/text_post"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="#AE4040"
+        android:backgroundTintMode="src_over"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:context=".MainActivity">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="259dp"
+            android:layout_height="197dp"
+            android:layout_marginTop="244dp"
+            android:background="#A93636"
+            android:backgroundTint="#7A2323"
+            android:backgroundTintMode="src_in"
+            android:text="Post Discussion"
+            app:cornerRadius="0px"
+            app:icon="@android:drawable/stat_notify_chat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="253dp"
+            android:layout_height="197dp"
+            android:layout_marginTop="12dp"
+            android:background="#BB2F2F"
+            android:backgroundTint="#260F0F"
+            android:backgroundTintMode="add"
+            android:drawableTint="#D74242"
+            android:foregroundTint="#FD3838"
+            android:text="Post Sighting"
+            app:icon="@android:drawable/ic_menu_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.481"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
