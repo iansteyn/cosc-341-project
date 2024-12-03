@@ -12,16 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cosc341_Project"
         tools:targetApi="31">
+
+        <!-- Google Maps API key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3pGn-Zg-Zk_ZPHxVqoMJMYYzNVfzpAq0" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 
 </manifest>
