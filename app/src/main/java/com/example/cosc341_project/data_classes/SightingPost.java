@@ -57,8 +57,8 @@ public class SightingPost extends Post {
                 "\ntitle='" + title + '\'' +
                 "\ndescription='" + description + '\'' +
                 "\ntags=" + Arrays.toString(tags) +
-                "\nnumLikes=" + numLikes +
-                "\nnumDislikes=" + numDislikes +
+                "\nnumLikes=" + getNumLikes() +
+                "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
                 "\nimageName='" + imageName + '\'' +
                 "\nlocation='" + location + '\'' +

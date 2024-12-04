@@ -37,13 +37,11 @@ import java.util.zip.Inflater;
 public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
-    private User currentUser = new User(1, "tempUserName", null);
+    private User currentUser = UserList.get(UserList.CURRENT_USER_ID);
     private LinearLayout postsContainer;
     private LinearLayout commentSection;
     private PostListManager plm;
     private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
-    private final HashSet<Post> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
-    private final HashSet<Post> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
     private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
 
     private FragmentFeedBinding binding;
@@ -60,11 +58,11 @@ public class FeedFragment extends Fragment {
         postsContainer = root.findViewById(R.id.postsContainer);
         commentSection = root.findViewById(R.id.commentSection);
 
-        plm = PostListManager.getInstance();
+        plm = PostListManager.getInstance(this.getContext());
+        if (plm.postList.isEmpty()) {
+            plm.addFakePosts();
+        }
         posts = plm.postList;
-
-        plm.addFakePosts(); // testing
-        posts.get(0).addComment(1, "test comment"); // testing
 
         checkedButtonIDs = new HashSet<>();
 
@@ -250,13 +248,13 @@ public class FeedFragment extends Fragment {
             Button dislikeButton = postView.findViewById(R.id.dislikeButton);
 
             //
-            if (likedPosts.contains(post)){
+            if (post.isLikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                 likeButton.setBackgroundColor(color);
             }
-            if (dislikedPosts.contains(post)){
+            if (post.isDislikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatred);
-                likeButton.setBackgroundColor(color);
+                dislikeButton.setBackgroundColor(color);
             }
 
             Button commentButton = postView.findViewById(R.id.commentButton);
@@ -282,29 +280,26 @@ public class FeedFragment extends Fragment {
                     * the program automatically unlikes the post before apply the dislike.
                     * Same goes vice versa.
                     * */
-                    if (likedPosts.contains(post)) {
-                        post.removeLike();
+                    if (post.isLikedBy(currentUser.getUserId())) {
+                        post.removeLike(currentUser.getUserId());
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.remove(post);
                     }
                     else {
-                        if (dislikedPosts.contains(post)){
-                            post.removeDislike();
+                        if (post.isDislikedBy(currentUser.getUserId())){
+                            post.removeDislike(currentUser.getUserId());
                             String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             dislikeButton.setBackgroundColor(color);
-                            dislikedPosts.remove(post);
                         }
-                        post.addLike();
+                        post.addLike(currentUser.getUserId());
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.add(post);
                     }
                 }
             });
@@ -313,71 +308,36 @@ public class FeedFragment extends Fragment {
             dislikeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if (dislikedPosts.contains(post)) {
-                        post.removeDislike();
+                    if (post.isDislikedBy(currentUser.getUserId())) {
+                        post.removeDislike(currentUser.getUserId());
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.remove(post);
                     }
                     else {
-                        if (likedPosts.contains(post)){
-                            post.removeLike();
+                        if (post.isLikedBy(currentUser.getUserId())){
+                            post.removeLike(currentUser.getUserId());
                             String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                             postLikes.setText(updatedLikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             likeButton.setBackgroundColor(color);
-                            likedPosts.remove(post);
                         }
-                        post.addDislike();
+                        post.addDislike(currentUser.getUserId());
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatred);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.add(post);
                     }
                 }
             });
 
-            // Add the post view to the posts container (LinearLayout) in the scroll view.
+            // Add the post view to the posts container (LinearLayout) in the scoll view.
             postsContainer.addView(postView);
         }
     }
 
-    // Method to switch to the view of a comment section.
     public void addCommentAndView(Post post, LayoutInflater inflater) {
-
-        // Set up the posts basic info to display above comment section.
-        ImageView profilePic = commentSection.findViewById(R.id.profilePic);
-        // Logic for setting image.
-
-        TextView title = commentSection.findViewById(R.id.postTitle);
-        title.setText(post.getTitle());
-
-        TextView username = commentSection.findViewById(R.id.postUsername);
-        username.setText("placeHolder");
-
-        TextView timestamp = commentSection.findViewById(R.id.postTimestamp);
-        timestamp.setText(post.getTimestamp().toString());
-
-        TextView description = commentSection.findViewById(R.id.postDescription);
-        description.setText(post.getDescription());
-
-        TextView location = commentSection.findViewById(R.id.postLocation);
-
-        ImageView postImage = commentSection.findViewById(R.id.postImage);
-
-        if (post instanceof SightingPost){
-            location.setText(((SightingPost) post).getLocation());
-            // Add image setting logic.
-        }
-        else {
-            location.setVisibility(View.GONE);
-            postImage.setVisibility(View.GONE);
-        }
-
-        // Set up features that allow a user to add a comment or exit the section.
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
         Button newComment = commentSection.findViewById(R.id.button_post_comment);
         Button closeComments = commentSection.findViewById(R.id.button_comment_close);
@@ -385,37 +345,21 @@ public class FeedFragment extends Fragment {
 
         ArrayList<Comment> comments = post.getComments();
 
-        // Add all comments to the comment section.
-        for (int i = comments.size() - 1; i >= 0; i--){
+        for (Comment comment: comments){
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
             TextView commentUserName = commentView.findViewById(R.id.commenter_username);
             commentUserName.setText("Hello"); // Replace with user logic
 
             TextView commentContent = commentView.findViewById(R.id.comment_content);
-            commentContent.setText(comments.get(i).getText());
+            commentContent.setText(comment.getText());
 
             TextView commentTimeStamp = commentView.findViewById(R.id.comment_timestamp);
-            commentTimeStamp.setText(comments.get(i).getTimestamp().toString());
+            commentTimeStamp.setText(comment.getTimestamp().toString());
 
-            Button deleteCommentButton = commentView.findViewById(R.id.deleteButton);
-            if (currentUser.getUserId() == comments.get(i).getUserId()) {
-                int finalI = i;
-                deleteCommentButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        comments.remove(comments.get(finalI));
-                        commentsContainer.removeView(commentView);
-                    }
-                });
-            }
-            else {
-                deleteCommentButton.setVisibility(View.GONE);
-            }
             commentsContainer.addView(commentView);
         }
 
-        // Adding a new comment logic.
         newComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -434,15 +378,6 @@ public class FeedFragment extends Fragment {
 
                     TextView commentTimeStamp = newCommentView.findViewById(R.id.comment_timestamp);
                     commentTimeStamp.setText(updatedComments.get(updatedComments.size()-1).getTimestamp().toString());
-
-                    Button deleteCommentButton = newCommentView.findViewById(R.id.deleteButton);
-                    deleteCommentButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            comments.remove(updatedComments.get(updatedComments.size()-1));
-                            commentsContainer.removeView(newCommentView);
-                        }
-                    });
 
                     commentsContainer.addView(newCommentView, 0);
                     commentInput.setText("");
@@ -466,7 +401,7 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-       // plm.saveToFile();
+        plm.saveToFile(this.getContext());
         super.onDestroyView();
         binding = null;
     }
