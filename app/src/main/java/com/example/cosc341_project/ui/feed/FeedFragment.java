@@ -42,8 +42,6 @@ public class FeedFragment extends Fragment {
     private LinearLayout commentSection;
     private PostListManager plm;
     private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
-    private final HashSet<Post> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
-    private final HashSet<Post> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
     private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
 
     private FragmentFeedBinding binding;
