@@ -65,8 +65,8 @@ public class Post implements Serializable {
     protected String description;
     protected String[] tags;
 
-    protected int numLikes;
-    protected int numDislikes;
+    protected ArrayList<Integer> likedByUserIds;
+    protected ArrayList<Integer> dislikedByUserIds;
     protected ArrayList<Comment> comments;
 
     // CONSTRUCTORS
@@ -78,8 +78,8 @@ public class Post implements Serializable {
 
         timestamp = new Timestamp(System.currentTimeMillis());
 
-        numLikes = 0;
-        numDislikes = 0;
+        likedByUserIds = new ArrayList<Integer>();
+        dislikedByUserIds = new ArrayList<Integer>();
         comments = new ArrayList<Comment>();
     }
 
@@ -88,8 +88,8 @@ public class Post implements Serializable {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public Timestamp getTimestamp() { return timestamp; }
-    public int getNumLikes() { return numLikes; }
-    public int getNumDislikes() { return numDislikes; }
+    public int getNumLikes() { return likedByUserIds.size(); }
+    public int getNumDislikes() { return dislikedByUserIds.size(); }
     public String[] getTags() { return tags; }
     public ArrayList<Comment> getComments() { return comments; }
 
