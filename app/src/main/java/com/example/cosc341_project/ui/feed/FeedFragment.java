@@ -337,7 +337,7 @@ public class FeedFragment extends Fragment {
                 }
             });
 
-            // Add the post view to the posts container (LinearLayout) in the scoll view.
+            // Add the post view to the posts container (LinearLayout) in the scroll view.
             postsContainer.addView(postView);
         }
     }
@@ -406,7 +406,7 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        plm.saveToFile();
+       // plm.saveToFile();
         super.onDestroyView();
         binding = null;
     }

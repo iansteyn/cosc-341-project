@@ -3,9 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:layout_marginBottom="10dp"
     android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:src="@mipmap/ic_launcher">
+
+        </ImageView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,13 +55,18 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/postUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:text="Poster Username"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+            android:id="@+id/postUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Poster Username"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/postDescription"
@@ -64,6 +88,13 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="150dp" />
+
+    <TextView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="tags" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -120,13 +151,6 @@
         android:layout_height="wrap_content"
         android:text="Comment Section"/>
 
-
-    <TextView
-        android:id="@+id/tags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:text="tags" />
 
     <View
         android:layout_width="match_parent"
