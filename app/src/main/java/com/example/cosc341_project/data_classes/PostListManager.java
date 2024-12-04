@@ -1,6 +1,8 @@
 package com.example.cosc341_project.data_classes;
 
+import android.content.Context;
 import android.util.Log;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +25,9 @@ import java.util.ArrayList;
  *     you cannot construct the <code>PostListManager</code> directly, but you can access it like this:
  *     <pre>
  *     {@code
- *         PostListManager plm = PostListManager.getInstance();
+ *         PostListManager plm = PostListManager.getInstance(context);
+ *         // for activity: context = this
+ *         // for fragment: context = this.getContext()
  *     }
  *     </pre>
  *     If no instance exists, <code>PostListManager</code> will construct one by reading from the save
@@ -56,7 +60,7 @@ import java.util.ArrayList;
  *     </li>
  *     <li>
  *         <b>SAVING CHANGES !!!!!!!!!!!!!!</b> In general, you are allowed to make changes to
- *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile()</code>
+ *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile(context)</code>
  *         before leaving the activity/fragment, or the changes may not be saved.
  *     </li>
  * </ol>
@@ -112,10 +116,10 @@ public final class PostListManager implements Serializable {
     public ArrayList<Post> postList;
 
     // Constructor
-    private PostListManager() {
+    private PostListManager(Context context) {
         // read post list from file
         try {
-            FileInputStream fileIn = new FileInputStream(FILENAME);
+            FileInputStream fileIn = context.openFileInput(FILENAME);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             postList = (ArrayList<Post>) in.readObject();
             in.close();
@@ -136,9 +140,9 @@ public final class PostListManager implements Serializable {
     /**
      * @return the one and only instance of the PostList class
      */
-    public static PostListManager getInstance() {
+    public static PostListManager getInstance(Context context) {
         if(INSTANCE == null) {
-            INSTANCE = new PostListManager();
+            INSTANCE = new PostListManager(context);
         }
         return INSTANCE;
     }
@@ -147,13 +151,15 @@ public final class PostListManager implements Serializable {
      * Call this method before leaving or finishing a fragment/activity to ensure
      * any changes to posts get saved to the file
      */
-    public void saveToFile() {
+    public void saveToFile(Context context) {
+        Log.d("IAN DEBUG", "saveToFile() is called.");
         try {
-            FileOutputStream fileOut = new FileOutputStream(FILENAME);
+            FileOutputStream fileOut = context.openFileOutput(FILENAME, 0);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(postList);
             out.close();
             fileOut.close();
+            Log.d("IAN DEBUG", "saveToFile() *seems* successful.");
         }
         catch (IOException i) {
             i.printStackTrace();
