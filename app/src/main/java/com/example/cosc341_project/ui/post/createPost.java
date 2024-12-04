@@ -1,7 +1,5 @@
 package com.example.cosc341_project.ui.post;
 
-
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,7 +29,7 @@ public class createPost extends AppCompatActivity {
     Button nextButton;
     EditText description;
     Bitmap PostImage;
-    String[] tags;//Currently only four tags
+    String[] tags; // Currently only four tags
     String[] selectedTags;
     FloatingActionButton showTags;
     int index;
@@ -44,12 +42,12 @@ public class createPost extends AppCompatActivity {
 
         // LAYOUT AND VARIABLES SETUP
         // --------------------------
-        //get intent and set layout
+        // get intent and set layout
         boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
-        // Find xml elementSs
+        // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
         description = findViewById(R.id.editTextTextMultiLine2);
@@ -58,14 +56,14 @@ public class createPost extends AppCompatActivity {
         tagsText = findViewById(R.id.tags);
         index = 0;
 
-        //if this is a discussion post, remove image and location options
-        if (! creatingSightingPost) {
+        // if this is a discussion post, remove image and location options
+        if (!creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             // TODO: also set location button to be GONE
         }
 
         // set tags list
-        tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Wendigo"};
+        tags = new String[]{"Ogopogo", "Bigfoot", "Mothman", "Wendigo"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
@@ -75,26 +73,29 @@ public class createPost extends AppCompatActivity {
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
             // get Post arguments
-            int userId = 1; //later, replace this with UserList.CURRENT_USER_ID
+            int userId = 1; // later, replace this with UserList.CURRENT_USER_ID
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
             // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
-                // TODO - show error toast
-            }
-            // otherwise, add and save post, and end activity
-            else {
+                Toast.makeText(this, "Title and description cannot be empty.", Toast.LENGTH_SHORT).show();
+            } else {
+                // otherwise, add and save post, and end activity
                 PostListManager plm = PostListManager.getInstance();
 
                 Post newPost;
-                if (! creatingSightingPost) {
+                if (!creatingSightingPost) {
                     newPost = new Post(userId, titleText, descriptionText, tags);
-                }
-                else {
-                    // TODO (Mehdi)- get location data
-                    String location = "placeholder";
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
+                } else {
+                    // TODO (Mehdi) - get location data (latitude, longitude)
+                    String location = "Placeholder Location";
+                    double latitude = 49.8801;
+                    double longitude = -119.4436;
+
+                    newPost = new SightingPost(userId, titleText, descriptionText, tags,
+                            PostImage != null ? PostImage.toString() : "no_image",
+                            location, latitude, longitude);
                 }
 
                 plm.postList.add(newPost);
@@ -106,22 +107,22 @@ public class createPost extends AppCompatActivity {
         // configure the tags button
         showTags.setOnClickListener(v -> {
 
-            tagsText.setText("Tags: "+ getArrayString(selectedTags));
+            tagsText.setText("Tags: " + getArrayString(selectedTags));
             PopupMenu popupMenu = new PopupMenu(createPost.this, v);
-            for (int i = 0; i < tags.length; i++) {
-                popupMenu.getMenu().add(tags[i]);
+            for (String tag : tags) {
+                popupMenu.getMenu().add(tag);
             }
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 String tag = item.getTitle().toString();
 
-                if (!haveTag(selectedTags,tag)) {
+                if (!haveTag(selectedTags, tag)) {
                     selectedTags[index] = tag;
-                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+                    tagsText.setText("Tags: " + getArrayString(selectedTags));
                     index++;
                 } else {
-                    removeTag(selectedTags,tag);
-                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+                    removeTag(selectedTags, tag);
+                    tagsText.setText("Tags: " + getArrayString(selectedTags));
                     index--;
                 }
                 return true;
@@ -151,17 +152,17 @@ public class createPost extends AppCompatActivity {
 
     // HELPER METHODS
     // --------------
-    String getArrayString(String[] array){
-        String string ="";
-        for (int i = 0; i < tags.length; i++) {
-            if(!array[i].equals(" ")) {
-                string = string + " " + array[i]+",";
+    String getArrayString(String[] array) {
+        StringBuilder string = new StringBuilder();
+        for (String tag : tags) {
+            if (!tag.equals(" ")) {
+                string.append(" ").append(tag).append(",");
             }
         }
-        return string;
+        return string.toString();
     }
 
-    boolean haveTag(String[] array, String string){
+    boolean haveTag(String[] array, String string) {
         for (String s : array) {
             if (s.equals(string)) {
                 return true;
@@ -171,10 +172,8 @@ public class createPost extends AppCompatActivity {
     }
 
     void removeTag(String[] array, String value) {
-
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null && array[i].equals(value)) {
-
                 for (int j = i; j < array.length - 1; j++) {
                     array[j] = array[j + 1];
                 }
@@ -194,7 +193,7 @@ public class createPost extends AppCompatActivity {
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
-    private void dispatchChoosePictureIntent(){
+    private void dispatchChoosePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         try {
             startActivityForResult(camera_intent, 2);
@@ -203,18 +202,18 @@ public class createPost extends AppCompatActivity {
         }
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Match the request 'pic id with requestCode
-        if (requestCode == 1) {
-            // BitMap is data structure of image file which store the image in memory
+        if (requestCode == 1 && data != null) {
+            // Bitmap is data structure of image file which stores the image in memory
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             PostImage = photo;
-            // Set the image in imageview for display
+            // Set the image in ImageView for display
             chooseImage.setImageBitmap(photo);
         }
-        if(requestCode == 2) {
-
+        if (requestCode == 2 && data != null) {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 try {
@@ -228,13 +227,5 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-        //Code for next button, will move to the map, (currently textbox placeholder)
-        // and will once done create a post, the next button to get to the map will
-        // not work if the user has not entered a photo
-
-
     }
-
 }
-
-

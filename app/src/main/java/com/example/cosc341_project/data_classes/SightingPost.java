@@ -7,16 +7,16 @@ import java.util.Arrays;
  *     Extends <code>Post</code>.
  * </p>
  * <p>
- *     Includes attributes <code>imageName</code> and <code>location</code>, which have no
- *     default values and must be set with setters. Also, currently they are both Strings,
- *     this may change in the future; it's just a place-holder data type until we figure out
- *     more details.
+ *     Includes attributes <code>imageName</code>, <code>location</code>, <code>latitude</code>, and <code>longitude</code>, which have no
+ *     default values and must be set with setters. The latitude and longitude fields are used to specify the exact geographical position of the sighting.
  * </p>
  */
 public class SightingPost extends Post {
     // ATTRIBUTES
     private String imageName;
     private String location;
+    private double latitude;
+    private double longitude;
 
     // CONSTRUCTOR
     public SightingPost(
@@ -25,27 +25,49 @@ public class SightingPost extends Post {
             String description,
             String[] tags,
             String imageName,
-            String location
+            String location,
+            double latitude,
+            double longitude
     ) {
         super(userId, title, description, tags);
         this.imageName = imageName;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    //GETTERS
+    // GETTERS
     public String getImageName() {
         return imageName;
     }
+
     public String getLocation() {
         return location;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     // SETTERS
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     // TO STRING
@@ -62,6 +84,8 @@ public class SightingPost extends Post {
                 "\ncomments=" + comments +
                 "\nimageName='" + imageName + '\'' +
                 "\nlocation='" + location + '\'' +
+                "\nlatitude=" + latitude +
+                "\nlongitude=" + longitude +
                 "\n}";
     }
 }
