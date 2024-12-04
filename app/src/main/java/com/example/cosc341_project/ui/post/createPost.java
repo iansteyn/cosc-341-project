@@ -42,6 +42,8 @@ public class createPost extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // LAYOUT AND VARIABLES SETUP
+        // --------------------------
         //get intent and set layout
         boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
@@ -56,7 +58,7 @@ public class createPost extends AppCompatActivity {
         tagsText = findViewById(R.id.tags);
         index = 0;
 
-        // Remove image and location options if this is a discussion post
+        //if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             // TODO: also set location button to be GONE
@@ -67,6 +69,8 @@ public class createPost extends AppCompatActivity {
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
+        // CONFIGURE BUTTONS
+        // -----------------
         // configure nextButton text and action
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
@@ -128,19 +132,21 @@ public class createPost extends AppCompatActivity {
         });
 
         // configure image chooser
-        chooseImage.setOnClickListener(v -> {
-            String[] options = {"Take Photo", "Choose from Gallery"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Select Image");
-            builder.setItems(options, (dialog, which) -> {
-                if (which == 0) {
-                    dispatchTakePictureIntent();
-                } else if (which == 1) {
-                    dispatchChoosePictureIntent();
-                }
+        if (creatingSightingPost) {
+            chooseImage.setOnClickListener(v -> {
+                String[] options = {"Take Photo", "Choose from Gallery"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Select Image");
+                builder.setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        dispatchTakePictureIntent();
+                    } else if (which == 1) {
+                        dispatchChoosePictureIntent();
+                    }
+                });
+                builder.show();
             });
-            builder.show();
-        });
+        }
     }
 
     // HELPER METHODS
