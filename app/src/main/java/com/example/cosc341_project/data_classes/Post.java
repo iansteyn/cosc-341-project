@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * <h2>
@@ -65,8 +66,8 @@ public class Post implements Serializable {
     protected String description;
     protected String[] tags;
 
-    protected ArrayList<Integer> likedBy;
-    protected ArrayList<Integer> dislikedBy;
+    protected LinkedList<Integer> likedBy;
+    protected LinkedList<Integer> dislikedBy;
     protected ArrayList<Comment> comments;
 
     // CONSTRUCTORS
@@ -78,8 +79,8 @@ public class Post implements Serializable {
 
         timestamp = new Timestamp(System.currentTimeMillis());
 
-        likedBy = new ArrayList<Integer>();
-        dislikedBy = new ArrayList<Integer>();
+        likedBy = new LinkedList<Integer>();
+        dislikedBy = new LinkedList<Integer>();
         comments = new ArrayList<Comment>();
     }
 
@@ -99,12 +100,30 @@ public class Post implements Serializable {
     public void setTags(String[] tags) { this.tags = tags; }
 
     public void addLike(int userId) {
-        if (! likedBy.contains(userId))
-        numLikes++;
+        if (! likedBy.contains(userId)) {
+            removeDislike(userId);
+            likedBy.add(userId);
+        }
     }
-    public void removeLike() { numLikes--; }
-    public void addDislike() { numDislikes++; }
-    public void removeDislike() { numDislikes--; }
+
+    public void removeLike(int userId) {
+        if (likedBy.contains(userId)) {
+            likedBy.remove(Integer.valueOf(userId));
+        }
+    }
+
+    public void addDislike(int userId) {
+        if (! dislikedBy.contains(userId)) {
+            removeLike(userId);
+            dislikedBy.add(userId);
+        }
+    }
+
+    public void removeDislike(int userId) {
+        if (dislikedBy.contains(userId)) {
+            dislikedBy.remove(Integer.valueOf(userId));
+        }
+    }
 
     /**
      * Adds a comment to this post
@@ -136,8 +155,8 @@ public class Post implements Serializable {
                 "\ntitle='" + title + '\'' +
                 "\ndescription='" + description + '\'' +
                 "\ntags=" + Arrays.toString(tags) +
-                "\nnumLikes=" + numLikes +
-                "\nnumDislikes=" + numDislikes +
+                "\nnumLikes=" + getNumLikes() +
+                "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
                 "\n}";
     }
