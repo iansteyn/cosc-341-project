@@ -347,6 +347,35 @@ public class FeedFragment extends Fragment {
 
     // Method to switch to the view of a comment section.
     public void addCommentAndView(Post post, LayoutInflater inflater) {
+
+        ImageView profilePic = commentSection.findViewById(R.id.profilePic);
+        // Logic for setting image.
+
+        TextView title = commentSection.findViewById(R.id.postTitle);
+        title.setText(post.getTitle());
+
+        TextView username = commentSection.findViewById(R.id.postUsername);
+        username.setText(post.getUserId());
+
+        TextView timestamp = commentSection.findViewById(R.id.postTimestamp);
+        timestamp.setText(post.getTimestamp().toString());
+
+        TextView description = commentSection.findViewById(R.id.postDescription);
+        description.setText(post.getDescription());
+
+        TextView location = commentSection.findViewById(R.id.postLocation);
+
+        ImageView postImage = commentSection.findViewById(R.id.postImage);
+
+        if (post instanceof SightingPost){
+            location.setText(((SightingPost) post).getLocation());
+            // Add image setting logic.
+        }
+        else {
+            location.setVisibility(View.GONE);
+            postImage.setVisibility(View.GONE);
+        }
+
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
         Button newComment = commentSection.findViewById(R.id.button_post_comment);
         Button closeComments = commentSection.findViewById(R.id.button_comment_close);
