@@ -29,6 +29,7 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
+    Button locationButton;
     EditText description;
     Bitmap PostImage;
     String[] tags;//Currently only four tags
@@ -52,6 +53,7 @@ public class createPost extends AppCompatActivity {
         // Find xml elementSs
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
+        locationButton = findViewById(R.id.Location);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
@@ -61,7 +63,7 @@ public class createPost extends AppCompatActivity {
         //if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
-            // TODO: also set location button to be GONE
+            locationButton.setVisibility(View.GONE);
         }
 
         // set tags list
@@ -79,6 +81,10 @@ public class createPost extends AppCompatActivity {
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
+            //if location is empty, show error message
+            if (titleText.isEmpty() || descriptionText.isEmpty()) {
+                // TODO - show error toast
+            }
             // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
                 // TODO - show error toast
