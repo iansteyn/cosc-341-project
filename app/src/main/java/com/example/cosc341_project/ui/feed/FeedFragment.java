@@ -45,6 +45,7 @@ public class FeedFragment extends Fragment {
     private PostListManager plm;
     private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
     private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
+    private int selectedOrderOption;
 
     private FragmentFeedBinding binding;
 
@@ -122,7 +123,7 @@ public class FeedFragment extends Fragment {
         orderBySpinner.setAdapter(orderByAdapter);
 
         // Set the option showing as selected to the users most recent selection, defaults to 0.
-        int selectedOrderOption = 0;
+
         orderBySpinner.setSelection(selectedOrderOption);
 
         // Ensure that if CheckBox was unselected, when the feed reloads it remains unselected.
@@ -188,9 +189,9 @@ public class FeedFragment extends Fragment {
                     }
                 }
 
-                // Temporary**
                 // Order the list of selected posts by the specified order option.
                 int selectedOrder = orderBySpinner.getSelectedItemPosition();
+                selectedOrderOption = selectedOrder;
                 if (selectedOrder == 1){
                     filteredPosts = filteredPosts.stream()
                             .sorted(Comparator.comparingInt(Post :: getNumLikes).reversed())
@@ -362,15 +363,12 @@ public class FeedFragment extends Fragment {
 
         TextView location = commentSection.findViewById(R.id.postLocation);
 
-        ImageView postImage = commentSection.findViewById(R.id.postImage);
-
         if (post instanceof SightingPost){
             location.setText(((SightingPost) post).getLocation());
             // Add image setting logic.
         }
         else {
             location.setVisibility(View.GONE);
-            postImage.setVisibility(View.GONE);
         }
 
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
