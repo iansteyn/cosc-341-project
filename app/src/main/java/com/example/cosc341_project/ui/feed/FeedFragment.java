@@ -348,6 +348,7 @@ public class FeedFragment extends Fragment {
     // Method to switch to the view of a comment section.
     public void addCommentAndView(Post post, LayoutInflater inflater) {
 
+        // Set up the posts basic info to display above comment section.
         ImageView profilePic = commentSection.findViewById(R.id.profilePic);
         // Logic for setting image.
 
@@ -376,6 +377,7 @@ public class FeedFragment extends Fragment {
             postImage.setVisibility(View.GONE);
         }
 
+        // Set up features that allow a user to add a comment or exit the section.
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
         Button newComment = commentSection.findViewById(R.id.button_post_comment);
         Button closeComments = commentSection.findViewById(R.id.button_comment_close);
@@ -383,6 +385,7 @@ public class FeedFragment extends Fragment {
 
         ArrayList<Comment> comments = post.getComments();
 
+        // Add all comments to the comment section.
         for (int i = comments.size() - 1; i >= 0; i--){
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
@@ -412,6 +415,7 @@ public class FeedFragment extends Fragment {
             commentsContainer.addView(commentView);
         }
 
+        // Adding a new comment logic.
         newComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
