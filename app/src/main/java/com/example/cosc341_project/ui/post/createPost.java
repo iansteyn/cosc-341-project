@@ -108,7 +108,7 @@ public class createPost extends AppCompatActivity {
                     newPost = new Post(userId, titleText, descriptionText, tags);
                 }
                 else {
-                    location = "test";
+
                     newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
                 }
 
