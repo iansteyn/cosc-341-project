@@ -86,7 +86,7 @@ public class createPost extends AppCompatActivity {
             }
             // otherwise, add and save post, and end activity
             else {
-                PostListManager plm = PostListManager.getInstance();
+                PostListManager plm = PostListManager.getInstance(this);
 
                 Post newPost;
                 if (! creatingSightingPost) {
@@ -100,7 +100,7 @@ public class createPost extends AppCompatActivity {
 
                 plm.postList.add(newPost);
                 Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
-                plm.saveToFile();
+                plm.saveToFile(this);
                 finish();
             }
         });
