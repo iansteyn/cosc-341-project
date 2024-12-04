@@ -225,6 +225,9 @@ public class FeedFragment extends Fragment {
             TextView postDescription = postView.findViewById(R.id.postDescription);
             postDescription.setText(post.getDescription());
 
+            TextView timestamp = postView.findViewById(R.id.postTimestamp);
+            timestamp.setText(post.getTimestamp().toString().substring(0, 10));
+
             TextView postTags = postView.findViewById(R.id.tags);
             String tags = ""; // Initialize the 'tags' String. This will be what the users sees under 'Tags'.
             String [] tagList = post.getTags();
@@ -338,6 +341,36 @@ public class FeedFragment extends Fragment {
     }
 
     public void addCommentAndView(Post post, LayoutInflater inflater) {
+
+        // Set up the posts basic info to display above comment section.
+        ImageView profilePic = commentSection.findViewById(R.id.profilePic);
+        // Logic for setting image.
+
+        TextView title = commentSection.findViewById(R.id.postTitle);
+        title.setText(post.getTitle());
+
+        TextView username = commentSection.findViewById(R.id.postUsername);
+        username.setText("placeHolder");
+
+        TextView timestamp = commentSection.findViewById(R.id.postTimestamp);
+        timestamp.setText(post.getTimestamp().toString());
+
+        TextView description = commentSection.findViewById(R.id.postDescription);
+        description.setText(post.getDescription());
+
+        TextView location = commentSection.findViewById(R.id.postLocation);
+
+        ImageView postImage = commentSection.findViewById(R.id.postImage);
+
+        if (post instanceof SightingPost){
+            location.setText(((SightingPost) post).getLocation());
+            // Add image setting logic.
+        }
+        else {
+            location.setVisibility(View.GONE);
+            postImage.setVisibility(View.GONE);
+        }
+
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
         Button newComment = commentSection.findViewById(R.id.button_post_comment);
         Button closeComments = commentSection.findViewById(R.id.button_comment_close);
@@ -355,7 +388,7 @@ public class FeedFragment extends Fragment {
             commentContent.setText(comment.getText());
 
             TextView commentTimeStamp = commentView.findViewById(R.id.comment_timestamp);
-            commentTimeStamp.setText(comment.getTimestamp().toString());
+            commentTimeStamp.setText(comment.getTimestamp().toString().substring(0,10));
 
             commentsContainer.addView(commentView);
         }
