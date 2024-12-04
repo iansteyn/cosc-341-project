@@ -1,5 +1,7 @@
 package com.example.cosc341_project.ui.feed;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -217,7 +219,7 @@ public class FeedFragment extends Fragment {
                 postView = inflater.inflate(R.layout.discussion_post_item, postsContainer, false);
             }
             TextView postUserName = postView.findViewById(R.id.postUsername);
-            postUserName.setText("placeHolder");
+            postUserName.setText(UserList.get(post.getUserId()).getUserName());
 
             TextView postTitle = postView.findViewById(R.id.postTitle);
             postTitle.setText(post.getTitle());
@@ -350,7 +352,7 @@ public class FeedFragment extends Fragment {
         title.setText(post.getTitle());
 
         TextView username = commentSection.findViewById(R.id.postUsername);
-        username.setText("placeHolder");
+        username.setText(UserList.get(post.getUserId()).getUserName());
 
         TextView timestamp = commentSection.findViewById(R.id.postTimestamp);
         timestamp.setText(post.getTimestamp().toString());
@@ -378,17 +380,49 @@ public class FeedFragment extends Fragment {
 
         ArrayList<Comment> comments = post.getComments();
 
-        for (Comment comment: comments){
+        // Add all comments to the comment section.
+        for (int i = comments.size() - 1; i >= 0; i--){
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
             TextView commentUserName = commentView.findViewById(R.id.commenter_username);
-            commentUserName.setText("Hello"); // Replace with user logic
+            commentUserName.setText(currentUser.getUserName());
 
             TextView commentContent = commentView.findViewById(R.id.comment_content);
-            commentContent.setText(comment.getText());
+            commentContent.setText(comments.get(i).getText());
 
             TextView commentTimeStamp = commentView.findViewById(R.id.comment_timestamp);
-            commentTimeStamp.setText(comment.getTimestamp().toString().substring(0,10));
+            commentTimeStamp.setText(comments.get(i).getTimestamp().toString().substring(0,10));
+
+            Button deleteCommentButton = commentView.findViewById(R.id.deleteButton);
+            if (currentUser.getUserId() == comments.get(i).getUserId()) {
+                int finalI = i;
+                deleteCommentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Create and display an AlertDialog for confirmation
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle("Delete Comment")
+                                .setMessage("Are you sure you want to delete this comment?")
+                                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        comments.remove(comments.get(finalI));
+                                        commentsContainer.removeView(commentView);
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+                });
+            }
+            else {
+                deleteCommentButton.setVisibility(View.GONE);
+            }
 
             commentsContainer.addView(commentView);
         }
@@ -399,18 +433,43 @@ public class FeedFragment extends Fragment {
                 String newComment = commentInput.getText().toString();
                 ArrayList<Comment> updatedComments = post.getComments();
                 if (!newComment.isEmpty()){
-                    post.addComment(1, newComment); // 1 as temp or userId.
+                    post.addComment(currentUser.getUserId(), newComment); // 1 as temp or userId.
 
                     View newCommentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
                     TextView commentUserName = newCommentView.findViewById(R.id.commenter_username);
-                    commentUserName.setText(currentUser.getUserName()); // Replace with user logic
+                    commentUserName.setText(currentUser.getUserName());
 
                     TextView commentContent = newCommentView.findViewById(R.id.comment_content);
                     commentContent.setText(updatedComments.get(updatedComments.size() - 1).getText());
 
                     TextView commentTimeStamp = newCommentView.findViewById(R.id.comment_timestamp);
-                    commentTimeStamp.setText(updatedComments.get(updatedComments.size()-1).getTimestamp().toString());
+                    commentTimeStamp.setText(updatedComments.get(updatedComments.size()-1).getTimestamp().toString().substring(0,10));
+
+                    Button deleteCommentButton = newCommentView.findViewById(R.id.deleteButton);
+                    deleteCommentButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Create and display an AlertDialog for confirmation
+                            new AlertDialog.Builder(view.getContext())
+                                    .setTitle("Delete Comment")
+                                    .setMessage("Are you sure you want to delete this comment?")
+                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            comments.remove(newComment);
+                                            commentsContainer.removeView(newCommentView);
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
 
                     commentsContainer.addView(newCommentView, 0);
                     commentInput.setText("");
