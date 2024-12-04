@@ -37,7 +37,7 @@ import java.util.zip.Inflater;
 public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
-    private User currentUser = new User(123, "tempUserName", null);
+    private User currentUser = new User(1, "tempUserName", null);
     private LinearLayout postsContainer;
     private LinearLayout commentSection;
     private PostListManager plm;
@@ -62,6 +62,9 @@ public class FeedFragment extends Fragment {
 
         plm = PostListManager.getInstance();
         posts = plm.postList;
+
+        plm.addFakePosts(); // testing
+        posts.get(0).addComment(1, "test comment"); // testing
 
         checkedButtonIDs = new HashSet<>();
 
@@ -364,15 +367,19 @@ public class FeedFragment extends Fragment {
             commentTimeStamp.setText(comments.get(i).getTimestamp().toString());
 
             Button deleteCommentButton = commentView.findViewById(R.id.deleteButton);
-            int finalI = i;
-            deleteCommentButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    comments.remove(comments.get(finalI));
-                    commentsContainer.removeView(commentView);
-                }
-            });
-
+            if (currentUser.getUserId() == comments.get(i).getUserId()) {
+                int finalI = i;
+                deleteCommentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        comments.remove(comments.get(finalI));
+                        commentsContainer.removeView(commentView);
+                    }
+                });
+            }
+            else {
+                deleteCommentButton.setVisibility(View.GONE);
+            }
             commentsContainer.addView(commentView);
         }
 
