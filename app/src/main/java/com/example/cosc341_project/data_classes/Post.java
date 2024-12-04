@@ -34,6 +34,11 @@ import java.util.LinkedList;
  *         All attributes have getters.
  *         <b>Please do not modify the values or objects returned by the getters.</b>
  *         Use the setter or other modification method built into the <code>Post</code> class.
+ *         <ul><li>
+ *             There are also two special getters called <code>getNumLikes</code> and
+ *             <code>getNumDislikes</code> which calculate the number of users who have liked or
+ *             disliked this post.
+ *        </li></ul>
  *     </li>
  *     <li>
  *         Not all attributes have setters.
