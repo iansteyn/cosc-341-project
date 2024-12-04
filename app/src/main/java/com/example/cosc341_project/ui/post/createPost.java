@@ -34,6 +34,7 @@ public class createPost extends AppCompatActivity {
     Bitmap PostImage;
     String[] tags;//Currently only four tags
     String[] selectedTags;
+    String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
@@ -59,6 +60,7 @@ public class createPost extends AppCompatActivity {
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
         index = 0;
+        location = "";
 
         //if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
@@ -73,6 +75,13 @@ public class createPost extends AppCompatActivity {
 
         // CONFIGURE BUTTONS
         // -----------------
+
+        locationButton.setOnClickListener(v -> {
+            // TODO (Mehdi)- get location data
+            location = "placeholder";
+        });
+
+
         // configure nextButton text and action
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
@@ -82,12 +91,12 @@ public class createPost extends AppCompatActivity {
             String descriptionText = description.getText().toString();
 
             //if location is empty, show error message
-            if (titleText.isEmpty() || descriptionText.isEmpty()) {
-                // TODO - show error toast
-            }
+            if (location.isEmpty()&&creatingSightingPost) {
+                Toast("Please enter a Location");
+            }else{
             // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
-                // TODO - show error toast
+                Toast("Please enter both a description and title");
             }
             // otherwise, add and save post, and end activity
             else {
@@ -98,15 +107,14 @@ public class createPost extends AppCompatActivity {
                     newPost = new Post(userId, titleText, descriptionText, tags);
                 }
                 else {
-                    // TODO (Mehdi)- get location data
-                    String location = "placeholder";
+                    location = "test";
                     newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
                 }
 
                 plm.postList.add(newPost);
                 plm.saveToFile();
                 finish();
-            }
+            }}
         });
 
         // configure the tags button
@@ -234,13 +242,16 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-        //Code for next button, will move to the map, (currently textbox placeholder)
-        // and will once done create a post, the next button to get to the map will
-        // not work if the user has not entered a photo
 
 
     }
+    //Method for toasts
+    void Toast(String a){
 
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this /* MyActivity */, a, duration);
+        toast.show();
+    }
 }
 
 
