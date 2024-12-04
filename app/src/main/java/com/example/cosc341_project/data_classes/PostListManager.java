@@ -25,7 +25,9 @@ import java.util.ArrayList;
  *     you cannot construct the <code>PostListManager</code> directly, but you can access it like this:
  *     <pre>
  *     {@code
- *         PostListManager plm = PostListManager.getInstance();
+ *         PostListManager plm = PostListManager.getInstance(context);
+ *         // for activity: context = this
+ *         // for fragment: context = this.getContext()
  *     }
  *     </pre>
  *     If no instance exists, <code>PostListManager</code> will construct one by reading from the save
@@ -58,7 +60,7 @@ import java.util.ArrayList;
  *     </li>
  *     <li>
  *         <b>SAVING CHANGES !!!!!!!!!!!!!!</b> In general, you are allowed to make changes to
- *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile()</code>
+ *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile(context)</code>
  *         before leaving the activity/fragment, or the changes may not be saved.
  *     </li>
  * </ol>
