@@ -43,7 +43,7 @@ public class createPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         //get intent and set layout
-        boolean sighting = getIntent().getBooleanExtra("sighting", false);
+        boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
@@ -57,7 +57,7 @@ public class createPost extends AppCompatActivity {
         index = 0;
 
         // Remove image and location options if this is a discussion post
-        if (! sighting) {
+        if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             // TODO: also set location button to be GONE
         }
@@ -75,16 +75,16 @@ public class createPost extends AppCompatActivity {
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
-            // show error message if data is invalid
+            // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
                 // TODO - show error toast
             }
-            // otherwise, add and save post
+            // otherwise, add and save post, and end activity
             else {
                 PostListManager plm = PostListManager.getInstance();
 
                 Post newPost;
-                if (! sighting) {
+                if (! creatingSightingPost) {
                     newPost = new Post(userId, titleText, descriptionText, tags);
                 }
                 else {
@@ -95,10 +95,11 @@ public class createPost extends AppCompatActivity {
 
                 plm.postList.add(newPost);
                 plm.saveToFile();
-                finish();}
+                finish();
+            }
         });
 
-        // configure the tags
+        // configure the tags button
         showTags.setOnClickListener(v -> {
 
             tagsText.setText("Tags: "+ getArrayString(selectedTags));
@@ -109,7 +110,6 @@ public class createPost extends AppCompatActivity {
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 String tag = item.getTitle().toString();
-
 
                 if (!haveTag(selectedTags,tag)) {
                     selectedTags[index] = tag;
