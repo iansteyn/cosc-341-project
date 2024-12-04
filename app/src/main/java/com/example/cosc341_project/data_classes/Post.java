@@ -65,8 +65,8 @@ public class Post implements Serializable {
     protected String description;
     protected String[] tags;
 
-    protected ArrayList<Integer> likedByUserIds;
-    protected ArrayList<Integer> dislikedByUserIds;
+    protected ArrayList<Integer> likedBy;
+    protected ArrayList<Integer> dislikedBy;
     protected ArrayList<Comment> comments;
 
     // CONSTRUCTORS
@@ -78,8 +78,8 @@ public class Post implements Serializable {
 
         timestamp = new Timestamp(System.currentTimeMillis());
 
-        likedByUserIds = new ArrayList<Integer>();
-        dislikedByUserIds = new ArrayList<Integer>();
+        likedBy = new ArrayList<Integer>();
+        dislikedBy = new ArrayList<Integer>();
         comments = new ArrayList<Comment>();
     }
 
@@ -88,8 +88,8 @@ public class Post implements Serializable {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public Timestamp getTimestamp() { return timestamp; }
-    public int getNumLikes() { return likedByUserIds.size(); }
-    public int getNumDislikes() { return dislikedByUserIds.size(); }
+    public int getNumLikes() { return likedBy.size(); }
+    public int getNumDislikes() { return dislikedBy.size(); }
     public String[] getTags() { return tags; }
     public ArrayList<Comment> getComments() { return comments; }
 
@@ -98,7 +98,10 @@ public class Post implements Serializable {
     public void setDescription(String description) { this.description = description; }
     public void setTags(String[] tags) { this.tags = tags; }
 
-    public void addLike() { numLikes++; }
+    public void addLike(int userId) {
+        if (! likedBy.contains(userId))
+        numLikes++;
+    }
     public void removeLike() { numLikes--; }
     public void addDislike() { numDislikes++; }
     public void removeDislike() { numDislikes--; }
