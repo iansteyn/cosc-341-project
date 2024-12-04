@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="flatgreen">#4CAF50</color>
     <color name="flatred">#F44336</color>
+    <color name="ogopogo_dark_green">#006400</color>
 </resources>
