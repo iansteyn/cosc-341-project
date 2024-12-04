@@ -44,9 +44,11 @@ import java.util.LinkedList;
  *                 is automatically set to the current time.
  *             </li>
  *             <li>
- *                 <code>numDislikes</code>, <code>numLikes</code> and <code>comments</code> are
- *                 initialized as 0, 0 and empty list. These all have <b><i>add</i></b> and
- *                 <b><i>remove</i></b> methods.
+ *                 <code>likedBy</code>, <code>dislikedBy</code> and <code>comments</code> are
+ *                 initialized as empty lists of their respective types. These all have
+ *                 <b><i>add</i></b> and <b><i>remove</i></b> methods, most of which require an
+ *                 integer <code>userId</code> to be passed to them. See <code>// SETTERS </code>
+ *                 below.
  *             </li>
  *             <li>
  *                 <code>title</code>, <code>description</code> and <code>tags</code> must be
