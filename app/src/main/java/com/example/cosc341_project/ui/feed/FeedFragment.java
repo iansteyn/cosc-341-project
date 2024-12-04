@@ -37,13 +37,11 @@ import java.util.zip.Inflater;
 public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
-    private User currentUser = new User(123, "tempUserName", null);
+    private User currentUser = UserList.get(UserList.CURRENT_USER_ID);
     private LinearLayout postsContainer;
     private LinearLayout commentSection;
     private PostListManager plm;
     private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
-    private final HashSet<Post> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
-    private final HashSet<Post> dislikedPosts = new HashSet<>(); // Stores posts that the user has already disliked.
     private HashSet<Integer> checkedButtonIDs; // Stores the IDs of buttons checked in the filter view. Set as a class variable so upon reloading, previously selected options remain selected.
 
     private FragmentFeedBinding binding;
@@ -250,13 +248,13 @@ public class FeedFragment extends Fragment {
             Button dislikeButton = postView.findViewById(R.id.dislikeButton);
 
             //
-            if (likedPosts.contains(post)){
+            if (post.isLikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                 likeButton.setBackgroundColor(color);
             }
-            if (dislikedPosts.contains(post)){
+            if (post.isDislikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatred);
-                likeButton.setBackgroundColor(color);
+                dislikeButton.setBackgroundColor(color);
             }
 
             Button commentButton = postView.findViewById(R.id.commentButton);
@@ -282,29 +280,26 @@ public class FeedFragment extends Fragment {
                     * the program automatically unlikes the post before apply the dislike.
                     * Same goes vice versa.
                     * */
-                    if (likedPosts.contains(post)) {
-                        post.removeLike();
+                    if (post.isLikedBy(currentUser.getUserId())) {
+                        post.removeLike(currentUser.getUserId());
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.remove(post);
                     }
                     else {
-                        if (dislikedPosts.contains(post)){
-                            post.removeDislike();
+                        if (post.isDislikedBy(currentUser.getUserId())){
+                            post.removeDislike(currentUser.getUserId());
                             String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             dislikeButton.setBackgroundColor(color);
-                            dislikedPosts.remove(post);
                         }
-                        post.addLike();
+                        post.addLike(currentUser.getUserId());
                         String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                         likeButton.setBackgroundColor(color);
-                        likedPosts.add(post);
                     }
                 }
             });
@@ -313,29 +308,26 @@ public class FeedFragment extends Fragment {
             dislikeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if (dislikedPosts.contains(post)) {
-                        post.removeDislike();
+                    if (post.isDislikedBy(currentUser.getUserId())) {
+                        post.removeDislike(currentUser.getUserId());
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.remove(post);
                     }
                     else {
-                        if (likedPosts.contains(post)){
-                            post.removeLike();
+                        if (post.isLikedBy(currentUser.getUserId())){
+                            post.removeLike(currentUser.getUserId());
                             String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
                             postLikes.setText(updatedLikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             likeButton.setBackgroundColor(color);
-                            likedPosts.remove(post);
                         }
-                        post.addDislike();
+                        post.addDislike(currentUser.getUserId());
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatred);
                         dislikeButton.setBackgroundColor(color);
-                        dislikedPosts.add(post);
                     }
                 }
             });
