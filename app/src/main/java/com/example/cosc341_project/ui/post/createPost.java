@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -65,7 +66,7 @@ public class createPost extends AppCompatActivity {
         }
 
         // set tags list
-        tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Wendigo"};
+        tags = new String[]{"ogopogo", "sasquatch"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
@@ -98,6 +99,7 @@ public class createPost extends AppCompatActivity {
                 }
 
                 plm.postList.add(newPost);
+                Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
                 plm.saveToFile();
                 finish();
             }
