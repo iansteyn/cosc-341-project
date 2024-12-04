@@ -28,10 +28,6 @@ public class FeedViewModel extends ViewModel {
 
     }
 
-    public PostListManager getPostListManager() {
-        return plm;
-    }
-
     public LiveData<String> getText() {
         return mText;
     }
