@@ -1,6 +1,8 @@
 package com.example.cosc341_project.data_classes;
 
+import android.content.Context;
 import android.util.Log;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +25,9 @@ import java.util.ArrayList;
  *     you cannot construct the <code>PostListManager</code> directly, but you can access it like this:
  *     <pre>
  *     {@code
- *         PostListManager plm = PostListManager.getInstance();
+ *         PostListManager plm = PostListManager.getInstance(context);
+ *         // for activity: context = this
+ *         // for fragment: context = this.getContext()
  *     }
  *     </pre>
  *     If no instance exists, <code>PostListManager</code> will construct one by reading from the save
@@ -56,7 +60,7 @@ import java.util.ArrayList;
  *     </li>
  *     <li>
  *         <b>SAVING CHANGES !!!!!!!!!!!!!!</b> In general, you are allowed to make changes to
- *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile()</code>
+ *         <code>postList</code>. However, make sure that you call <code>plm.saveToFile(context)</code>
  *         before leaving the activity/fragment, or the changes may not be saved.
  *     </li>
  * </ol>
@@ -112,10 +116,10 @@ public final class PostListManager implements Serializable {
     public ArrayList<Post> postList;
 
     // Constructor
-    private PostListManager() {
+    private PostListManager(Context context) {
         // read post list from file
         try {
-            FileInputStream fileIn = new FileInputStream(FILENAME);
+            FileInputStream fileIn = context.openFileInput(FILENAME);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             postList = (ArrayList<Post>) in.readObject();
             in.close();
@@ -136,9 +140,9 @@ public final class PostListManager implements Serializable {
     /**
      * @return the one and only instance of the PostList class
      */
-    public static PostListManager getInstance() {
+    public static PostListManager getInstance(Context context) {
         if(INSTANCE == null) {
-            INSTANCE = new PostListManager();
+            INSTANCE = new PostListManager(context);
         }
         return INSTANCE;
     }
@@ -147,13 +151,15 @@ public final class PostListManager implements Serializable {
      * Call this method before leaving or finishing a fragment/activity to ensure
      * any changes to posts get saved to the file
      */
-    public void saveToFile() {
+    public void saveToFile(Context context) {
+        Log.d("IAN DEBUG", "saveToFile() is called.");
         try {
-            FileOutputStream fileOut = new FileOutputStream(FILENAME);
+            FileOutputStream fileOut = context.openFileOutput(FILENAME, 0);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(postList);
             out.close();
             fileOut.close();
+            Log.d("IAN DEBUG", "saveToFile() *seems* successful.");
         }
         catch (IOException i) {
             i.printStackTrace();
@@ -170,29 +176,32 @@ public final class PostListManager implements Serializable {
     public void addFakePosts() {
         postList.add(new Post(
                 0,
-                "Some post title 0",
-                "Some post description 0.",
-                new String[] {"ogopogo", "sasquatch"}
+                "Do you think Ogogopo is Real?",
+                "Like seriously guys. I know we're all believers here but do you really believe?",
+                new String[] {"Ogopogo"}
         ));
-        postList.add(new Post(
-                1,
-                "Some post title 1",
-                "Some post description.",
-                new String[] {"sasquatch"}
-        ));
-        postList.add(new Post(
+        postList.add(new SightingPost(
                 2,
-                "Some post title 2",
-                "Some post description 2.",
-                new String[] {"ogopogo"}
+                "CAUGHT ON TRAILCAM",
+                "Check this out. Saw bigfoot on my trail cam near my cabin.",
+                new String[] {"Sasquatch"},
+                "img_bigfoot_or_bear",
+                "Near cabin, Kelowna"
         ));
-//        postList.add(new SightingPost(
-//                2,
-//                "sighting post title 1",
-//                "Some post description.",
-//                new String[] {"bigfoot"},
-//                "fakeimage.jpg",
-//                "Fake location"
-//        ));
+        postList.add(new SightingPost(
+                9,
+                "Greetings. Maybe Ogopogo?",
+                "Greetings, fellows I am new to the area and this is my first sighting. Ogopogo, perhaps?",
+                new String[] {"Ogopogo"},
+                "img_lake_monster",
+                "Okanagan Lake South"
+        ));
+        postList.add(new Post(
+                7,
+                "How did you first hear about the Ogopogo?",
+                "Did anyone else have that weird book where his cousin is a dragon? Smh they don't even understand. Anyway how did you first hear about it?",
+                new String[] {"Ogopogo"}
+
+        ));
     }
 }

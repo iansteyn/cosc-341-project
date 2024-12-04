@@ -60,7 +60,10 @@ public class FeedFragment extends Fragment {
         postsContainer = root.findViewById(R.id.postsContainer);
         commentSection = root.findViewById(R.id.commentSection);
 
-        plm = PostListManager.getInstance();
+        plm = PostListManager.getInstance(this.getContext());
+        if (plm.postList.isEmpty()) {
+            plm.addFakePosts();
+        }
         posts = plm.postList;
 
         checkedButtonIDs = new HashSet<>();
@@ -406,7 +409,7 @@ public class FeedFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        plm.saveToFile();
+        plm.saveToFile(this.getContext());
         super.onDestroyView();
         binding = null;
     }
