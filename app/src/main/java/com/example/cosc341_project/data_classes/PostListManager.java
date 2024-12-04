@@ -1,6 +1,8 @@
 package com.example.cosc341_project.data_classes;
 
+import android.content.Context;
 import android.util.Log;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -112,10 +114,10 @@ public final class PostListManager implements Serializable {
     public ArrayList<Post> postList;
 
     // Constructor
-    private PostListManager() {
+    private PostListManager(Context context) {
         // read post list from file
         try {
-            FileInputStream fileIn = new FileInputStream(FILENAME);
+            FileInputStream fileIn = context.openFileInput(FILENAME);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             postList = (ArrayList<Post>) in.readObject();
             in.close();
@@ -136,9 +138,9 @@ public final class PostListManager implements Serializable {
     /**
      * @return the one and only instance of the PostList class
      */
-    public static PostListManager getInstance() {
+    public static PostListManager getInstance(Context context) {
         if(INSTANCE == null) {
-            INSTANCE = new PostListManager();
+            INSTANCE = new PostListManager(context);
         }
         return INSTANCE;
     }
@@ -147,13 +149,15 @@ public final class PostListManager implements Serializable {
      * Call this method before leaving or finishing a fragment/activity to ensure
      * any changes to posts get saved to the file
      */
-    public void saveToFile() {
+    public void saveToFile(Context context) {
+        Log.d("IAN DEBUG", "saveToFile() is called.");
         try {
-            FileOutputStream fileOut = new FileOutputStream(FILENAME);
+            FileOutputStream fileOut = context.openFileOutput(FILENAME, 0);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(postList);
             out.close();
             fileOut.close();
+            Log.d("IAN DEBUG", "saveToFile() *seems* successful.");
         }
         catch (IOException i) {
             i.printStackTrace();
