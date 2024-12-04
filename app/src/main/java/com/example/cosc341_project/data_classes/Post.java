@@ -31,14 +31,21 @@ import java.util.LinkedList;
  *         All attributes are protected --- you cannot access them directly.
  *     </li>
  *     <li>
- *         All attributes have getters.
+ *         Most attributes have getters.
  *         <b>Please do not modify the values or objects returned by the getters.</b>
  *         Use the setter or other modification method built into the <code>Post</code> class.
- *         <ul><li>
- *             There are also two special getters called <code>getNumLikes</code> and
- *             <code>getNumDislikes</code> which calculate the number of users who have liked or
- *             disliked this post.
- *        </li></ul>
+ *     </li>
+ *     <li>
+ *         There are some special methods for likes and dislikes:
+ *         <ul>
+ *             <li>
+ *                 <code>getNumLikes</code> and <code>getNumDislikes</code> - self explanatory
+ *             </li>
+ *             <li>
+ *                 <code>isLikedBy(userId)</code> and <code>isDislikedBy(userId)</code>
+ *                 return a boolean value
+ *             </li>
+ *         </ul>
  *     </li>
  *     <li>
  *         Not all attributes have setters.
@@ -100,6 +107,14 @@ public class Post implements Serializable {
     public int getNumDislikes() { return dislikedBy.size(); }
     public String[] getTags() { return tags; }
     public ArrayList<Comment> getComments() { return comments; }
+
+    public boolean isLikedBy(int userId) {
+        return likedBy.contains(userId);
+    }
+
+    public boolean isDislikedBy(int userId) {
+        return dislikedBy.contains(userId);
+    }
 
     // SETTERS
     public void setTitle(String title) { this.title = title; }
