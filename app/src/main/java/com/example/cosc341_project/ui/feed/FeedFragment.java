@@ -355,7 +355,7 @@ public class FeedFragment extends Fragment {
         title.setText(post.getTitle());
 
         TextView username = commentSection.findViewById(R.id.postUsername);
-        username.setText(post.getUserId());
+        username.setText("placeHolder");
 
         TextView timestamp = commentSection.findViewById(R.id.postTimestamp);
         timestamp.setText(post.getTimestamp().toString());
