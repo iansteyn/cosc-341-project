@@ -342,6 +342,7 @@ public class FeedFragment extends Fragment {
         }
     }
 
+    // Method to switch to the view of a comment section.
     public void addCommentAndView(Post post, LayoutInflater inflater) {
         EditText commentInput = commentSection.findViewById(R.id.comment_input);
         Button newComment = commentSection.findViewById(R.id.button_post_comment);
@@ -350,17 +351,27 @@ public class FeedFragment extends Fragment {
 
         ArrayList<Comment> comments = post.getComments();
 
-        for (Comment comment: comments){
+        for (int i = comments.size() - 1; i >= 0; i--){
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
             TextView commentUserName = commentView.findViewById(R.id.commenter_username);
             commentUserName.setText("Hello"); // Replace with user logic
 
             TextView commentContent = commentView.findViewById(R.id.comment_content);
-            commentContent.setText(comment.getText());
+            commentContent.setText(comments.get(i).getText());
 
             TextView commentTimeStamp = commentView.findViewById(R.id.comment_timestamp);
-            commentTimeStamp.setText(comment.getTimestamp().toString());
+            commentTimeStamp.setText(comments.get(i).getTimestamp().toString());
+
+            Button deleteCommentButton = commentView.findViewById(R.id.deleteButton);
+            int finalI = i;
+            deleteCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    comments.remove(comments.get(finalI));
+                    commentsContainer.removeView(commentView);
+                }
+            });
 
             commentsContainer.addView(commentView);
         }
@@ -383,6 +394,15 @@ public class FeedFragment extends Fragment {
 
                     TextView commentTimeStamp = newCommentView.findViewById(R.id.comment_timestamp);
                     commentTimeStamp.setText(updatedComments.get(updatedComments.size()-1).getTimestamp().toString());
+
+                    Button deleteCommentButton = newCommentView.findViewById(R.id.deleteButton);
+                    deleteCommentButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            comments.remove(updatedComments.get(updatedComments.size()-1));
+                            commentsContainer.removeView(newCommentView);
+                        }
+                    });
 
                     commentsContainer.addView(newCommentView, 0);
                     commentInput.setText("");
