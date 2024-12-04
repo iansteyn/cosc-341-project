@@ -20,6 +20,11 @@ public class FeedViewModel extends ViewModel {
         plm = PostListManager.getInstance();
 
         plm.addFakePosts();
+        String [] sightingPostTags = {"sasquatch", "sighting"};
+
+        Post tempPost = plm.postList.get(0);
+        tempPost.addComment(123, "This is an example comment");
+        plm.postList.add(new SightingPost(123, "Sighting post", "Example description", sightingPostTags, "nullimage", "Kelowna, BC"));
 
     }
 

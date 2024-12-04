@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,11 +32,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.zip.Inflater;
 
 public class FeedFragment extends Fragment {
 
     FeedViewModel feedViewModel;
-    LinearLayout postsContainer;
+    private User currentUser = new User(123, "tempUserName", null);
+    private LinearLayout postsContainer;
+    private LinearLayout commentSection;
     private PostListManager plm;
     private ArrayList<Post> posts; // Stores posts loaded from the post list manager.
     private final HashSet<Post> likedPosts = new HashSet<>(); // Stores posts that the user has already liked.
@@ -53,14 +58,15 @@ public class FeedFragment extends Fragment {
         View root = binding.getRoot();
 
         postsContainer = root.findViewById(R.id.postsContainer);
+        commentSection = root.findViewById(R.id.commentSection);
 
         plm = feedViewModel.getPostListManager();
         posts = plm.postList;
 
         checkedButtonIDs = new HashSet<>();
-        Log.e("Posts List Acquired?", "true");
 
         postsContainer = binding.postsContainer;
+        commentSection = binding.commentSection;
 
         addPostsToScrollView(posts, inflater, false);
         // final TextView textView = binding.textFeed;
@@ -69,7 +75,7 @@ public class FeedFragment extends Fragment {
     }
 
     private void addPostsToScrollView(ArrayList<Post> postList, LayoutInflater inflater, boolean reload) {
-        Log.e("Adding posts to scroll view?", "true");
+
         postsContainer.removeAllViews(); // Safety Check: Clear current scroll view.
 
         // Initialize filter view.
@@ -194,8 +200,21 @@ public class FeedFragment extends Fragment {
         // Set all posts in the scroll view.
         for (Post post : postList) {
 
-            View postView = inflater.inflate(R.layout.post_item, postsContainer, false);
+            View postView;
+            if (post instanceof SightingPost ) {
+                SightingPost sightingTempPost = (SightingPost)post; // Used to access location and image getters in sighting post.
+                postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
+                ImageView image = postView.findViewById(R.id.imageView);
+                image.setImageResource(R.mipmap.ic_launcher); // Placeholder logic for images.
+
+                TextView location = postView.findViewById(R.id.postLocation);
+                location.setText(sightingTempPost.getLocation());
+
+            }
+            else {
+                postView = inflater.inflate(R.layout.discussion_post_item, postsContainer, false);
+            }
             TextView postUserName = postView.findViewById(R.id.postUsername);
             postUserName.setText("placeHolder");
 
@@ -236,6 +255,17 @@ public class FeedFragment extends Fragment {
                 int color = ContextCompat.getColor(getContext(), R.color.flatred);
                 likeButton.setBackgroundColor(color);
             }
+
+            Button commentButton = postView.findViewById(R.id.commentButton);
+            commentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    postsContainer.setVisibility(View.GONE);
+                    commentSection.setVisibility(View.VISIBLE);
+                    Log.e("Comment Visibility", "Visbile");
+                    addCommentAndView(post, inflater);
+                }
+            });
 
             // Set on click listener for 'Like' button.
             likeButton.setOnClickListener(new View.OnClickListener(){
@@ -310,6 +340,68 @@ public class FeedFragment extends Fragment {
             // Add the post view to the posts container (LinearLayout) in the scoll view.
             postsContainer.addView(postView);
         }
+    }
+
+    public void addCommentAndView(Post post, LayoutInflater inflater) {
+        EditText commentInput = commentSection.findViewById(R.id.comment_input);
+        Button newComment = commentSection.findViewById(R.id.button_post_comment);
+        Button closeComments = commentSection.findViewById(R.id.button_comment_close);
+        LinearLayout commentsContainer = commentSection.findViewById(R.id.comments_container);
+
+        ArrayList<Comment> comments = post.getComments();
+
+        for (Comment comment: comments){
+            View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
+
+            TextView commentUserName = commentView.findViewById(R.id.commenter_username);
+            commentUserName.setText("Hello"); // Replace with user logic
+
+            TextView commentContent = commentView.findViewById(R.id.comment_content);
+            commentContent.setText(comment.getText());
+
+            TextView commentTimeStamp = commentView.findViewById(R.id.comment_timestamp);
+            commentTimeStamp.setText(comment.getTimestamp().toString());
+
+            commentsContainer.addView(commentView);
+        }
+
+        newComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String newComment = commentInput.getText().toString();
+                ArrayList<Comment> updatedComments = post.getComments();
+                if (!newComment.isEmpty()){
+                    post.addComment(1, newComment); // 1 as temp or userId.
+
+                    View newCommentView = inflater.inflate(R.layout.comment_item, commentSection, false);
+
+                    TextView commentUserName = newCommentView.findViewById(R.id.commenter_username);
+                    commentUserName.setText(currentUser.getUserName()); // Replace with user logic
+
+                    TextView commentContent = newCommentView.findViewById(R.id.comment_content);
+                    commentContent.setText(updatedComments.get(updatedComments.size() - 1).getText());
+
+                    TextView commentTimeStamp = newCommentView.findViewById(R.id.comment_timestamp);
+                    commentTimeStamp.setText(updatedComments.get(updatedComments.size()-1).getTimestamp().toString());
+
+                    commentsContainer.addView(newCommentView, 0);
+                    commentInput.setText("");
+                }
+                else{
+                    Toast.makeText(getContext(), "No comment entered. Please try again.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        closeComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                commentsContainer.removeAllViews();
+                commentSection.setVisibility(View.GONE);
+                postsContainer.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
     @Override

@@ -34,26 +34,17 @@
         android:paddingBottom="8dp"/>
 
     <TextView
-        android:id="@+id/tags"
+        android:id="@+id/postLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="tags"
+        android:text="Post Location Here"
+        android:textSize="14sp"
         android:paddingBottom="8dp"/>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@mipmap/ic_launcher"/>
-
-    <TextView
-        android:id="@+id/postTimestamp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Timestamp"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
-        android:paddingBottom="8dp"/>
+        android:layout_height="150dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -105,9 +96,27 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/commentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Comment Section"/>
+
+
+    <TextView
+        android:id="@+id/postTimestamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="Timestamp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:text="tags" />
 
     <View
         android:layout_width="match_parent"
