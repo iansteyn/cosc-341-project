@@ -54,68 +54,51 @@ public class createPost extends AppCompatActivity {
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
-        index =0;
+        index = 0;
+
+        // Remove image and location options if this is a discussion post
+        if (! sighting) {
+            chooseImage.setVisibility(View.GONE);
+            // TODO: also set location button to be GONE
+        }
 
         // set tags list
         tags = new String[]{"Ogopogo", "Bigfoot","Mothman","Wendigo"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
-        // configure nextButton's OnClick action
-        String descriptionText;
-        descriptionText = String.valueOf(description.getText());
-        String titleText;
-        titleText = String.valueOf(title.getText());
+        // configure nextButton text and action
+        nextButton.setText("Done");
+        nextButton.setOnClickListener(v -> {
+            // get Post arguments
+            int userId = 1; //later, replace this with UserList.CURRENT_USER_ID
+            String titleText = title.getText().toString();
+            String descriptionText = description.getText().toString();
 
-        if (!sighting) {
-            chooseImage.setVisibility(View.GONE);
-            nextButton.setText("Done");
+            // show error message if data is invalid
+            if (titleText.isEmpty() || descriptionText.isEmpty()) {
+                // TODO - show error toast
+            }
+            // otherwise, add and save post
+            else {
+                PostListManager plm = PostListManager.getInstance();
 
-            nextButton.setOnClickListener(v -> {
-                int userId = 1;
-                if(!(titleText.equals("")||descriptionText.equals(""))){
+                Post newPost;
+                if (! sighting) {
+                    newPost = new Post(userId, titleText, descriptionText, tags);
+                }
+                else {
+                    // TODO (Mehdi)- get location data
+                    String location = "placeholder";
+                    newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
+                }
 
-                    PostListManager plm = PostListManager.getInstance();
-                    Post newPost = new Post(userId, titleText, descriptionText, tags);
-                    plm.postList.add(newPost);
-                    plm.saveToFile();
-                    finish();}
-            });
-        }
-        else {
-            nextButton.setOnClickListener(v -> {
+                plm.postList.add(newPost);
+                plm.saveToFile();
+                finish();}
+        });
 
-                Button next = new Button(this);
-                next.setText("Done");
-                EditText input = new EditText(this);
-
-                //PostImage is bitmap variable
-                if(!(titleText.equals("")||descriptionText.equals(""))){
-                    next.setOnClickListener(v1 -> {
-                        //will have method to create a post once the object is ready
-                        //Currently a placeholder
-                        //selectedTags for string array
-                        String Location = String.valueOf(input.getText());
-                        //public Post(int userId, String title, String description, String[] tags)
-                        //User.getUserId()
-                        int userId = 1;
-                        PostListManager plm = PostListManager.getInstance();
-                        SightingPost newPost = new SightingPost(userId, titleText, descriptionText, tags,PostImage.toString(),Location);
-                        plm.postList.add(newPost);
-                        plm.saveToFile();
-                        finish();
-                    });
-                    input.setHint("Location");
-                    LinearLayout layout = new LinearLayout(this);
-                    layout.setOrientation(LinearLayout.VERTICAL);
-                    layout.addView(input);
-                    layout.addView(next);
-                    builder1.setView(layout);
-                    builder1.show();}
-            });
-
-        }
-
+        // configure the tags
         showTags.setOnClickListener(v -> {
 
             tagsText.setText("Tags: "+ getArrayString(selectedTags));
@@ -144,6 +127,7 @@ public class createPost extends AppCompatActivity {
 
         });
 
+        // configure image chooser
         chooseImage.setOnClickListener(v -> {
             String[] options = {"Take Photo", "Choose from Gallery"};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
