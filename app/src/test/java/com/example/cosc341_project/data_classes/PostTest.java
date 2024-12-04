@@ -49,4 +49,46 @@ public class PostTest extends TestCase {
         assertEquals(2, post.getComments().size());
         assertEquals(10, post.getComments().get(1).getUserId());
     }
+
+    public void testAddLikeRemoveDislike() {
+        Post post = new Post(
+                3,
+                "Title",
+                "Description",
+                new String[] {"tag1", "tag2"}
+        );
+        assertEquals(0, post.getNumLikes());
+        post.addLike(4);
+        assertEquals(1, post.getNumLikes());
+        post.addLike(4);
+        assertEquals(1, post.getNumLikes());
+        post.addLike(3);
+        assertEquals(2, post.getNumLikes());
+
+        //test full capabilities of addLike and indirectly test removeDislike
+        post.addDislike(5);
+        post.addLike(5);
+        assertEquals(0, post.getNumDislikes());
+    }
+
+    public void testAddDislikeRemoveLike() {
+        Post post = new Post(
+                3,
+                "Title",
+                "Description",
+                new String[] {"tag1", "tag2"}
+        );
+        assertEquals(0, post.getNumDislikes());
+        post.addDislike(4);
+        assertEquals(1, post.getNumDislikes());
+        post.addDislike(4);
+        assertEquals(1, post.getNumDislikes());
+        post.addDislike(3);
+        assertEquals(2, post.getNumDislikes());
+
+        //test full capabilities of addDislike and indirectly test removeLike
+        post.addLike(5);
+        post.addDislike(5);
+        assertEquals(0, post.getNumLikes());
+    }
 }
