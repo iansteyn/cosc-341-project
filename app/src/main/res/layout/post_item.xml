@@ -7,23 +7,42 @@
     android:layout_marginBottom="10dp"
     android:background="?android:attr/selectableItemBackground">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/postTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Post Title"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/postTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Timestamp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/postUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
         android:text="Poster Username"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/postTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Post Title"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/postDescription"
@@ -101,15 +120,6 @@
         android:layout_height="wrap_content"
         android:text="Comment Section"/>
 
-
-    <TextView
-        android:id="@+id/postTimestamp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:text="Timestamp"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tags"
