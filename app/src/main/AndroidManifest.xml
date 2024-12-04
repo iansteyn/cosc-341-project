@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> <!-- Old Permissions for Backward Compatibility -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" /> <!-- Declare Camera Feature -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +34,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC3pGn-Zg-Zk_ZPHxVqoMJMYYzNVfzpAq0" />
 
+        <activity
+            android:name=".ui.post.createDiscussion"
+            android:exported="false" />
+        <activity
+            android:name=".ui.post.createPost"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
