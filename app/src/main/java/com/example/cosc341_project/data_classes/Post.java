@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * <h2>
@@ -30,9 +31,21 @@ import java.util.Arrays;
  *         All attributes are protected --- you cannot access them directly.
  *     </li>
  *     <li>
- *         All attributes have getters.
+ *         Most attributes have getters.
  *         <b>Please do not modify the values or objects returned by the getters.</b>
  *         Use the setter or other modification method built into the <code>Post</code> class.
+ *     </li>
+ *     <li>
+ *         There are some special methods for likes and dislikes:
+ *         <ul>
+ *             <li>
+ *                 <code>getNumLikes</code> and <code>getNumDislikes</code> - self explanatory
+ *             </li>
+ *             <li>
+ *                 <code>isLikedBy(userId)</code> and <code>isDislikedBy(userId)</code>
+ *                 return a boolean value
+ *             </li>
+ *         </ul>
  *     </li>
  *     <li>
  *         Not all attributes have setters.
@@ -43,9 +56,11 @@ import java.util.Arrays;
  *                 is automatically set to the current time.
  *             </li>
  *             <li>
- *                 <code>numDislikes</code>, <code>numLikes</code> and <code>comments</code> are
- *                 initialized as 0, 0 and empty list. These all have <b><i>add</i></b> and
- *                 <b><i>remove</i></b> methods.
+ *                 <code>likedBy</code>, <code>dislikedBy</code> and <code>comments</code> are
+ *                 initialized as empty lists of their respective types. These all have
+ *                 <b><i>add</i></b> and <b><i>remove</i></b> methods, most of which require an
+ *                 integer <code>userId</code> to be passed to them. See <code>// SETTERS </code>
+ *                 below.
  *             </li>
  *             <li>
  *                 <code>title</code>, <code>description</code> and <code>tags</code> must be
@@ -65,8 +80,8 @@ public class Post implements Serializable {
     protected String description;
     protected String[] tags;
 
-    protected int numLikes;
-    protected int numDislikes;
+    protected LinkedList<Integer> likedBy;
+    protected LinkedList<Integer> dislikedBy;
     protected ArrayList<Comment> comments;
 
     // CONSTRUCTORS
@@ -78,8 +93,8 @@ public class Post implements Serializable {
 
         timestamp = new Timestamp(System.currentTimeMillis());
 
-        numLikes = 0;
-        numDislikes = 0;
+        likedBy = new LinkedList<Integer>();
+        dislikedBy = new LinkedList<Integer>();
         comments = new ArrayList<Comment>();
     }
 
@@ -88,20 +103,49 @@ public class Post implements Serializable {
     public String getTitle() { return title; }
     public String getDescription() { return description; }
     public Timestamp getTimestamp() { return timestamp; }
-    public int getNumLikes() { return numLikes; }
-    public int getNumDislikes() { return numDislikes; }
+    public int getNumLikes() { return likedBy.size(); }
+    public int getNumDislikes() { return dislikedBy.size(); }
     public String[] getTags() { return tags; }
     public ArrayList<Comment> getComments() { return comments; }
+
+    public boolean isLikedBy(int userId) {
+        return likedBy.contains(userId);
+    }
+
+    public boolean isDislikedBy(int userId) {
+        return dislikedBy.contains(userId);
+    }
 
     // SETTERS
     public void setTitle(String title) { this.title = title; }
     public void setDescription(String description) { this.description = description; }
     public void setTags(String[] tags) { this.tags = tags; }
 
-    public void addLike() { numLikes++; }
-    public void removeLike() { numLikes--; }
-    public void addDislike() { numDislikes++; }
-    public void removeDislike() { numDislikes--; }
+    public void addLike(int userId) {
+        if (! likedBy.contains(userId)) {
+            removeDislike(userId);
+            likedBy.add(userId);
+        }
+    }
+
+    public void removeLike(int userId) {
+        if (likedBy.contains(userId)) {
+            likedBy.remove(Integer.valueOf(userId));
+        }
+    }
+
+    public void addDislike(int userId) {
+        if (! dislikedBy.contains(userId)) {
+            removeLike(userId);
+            dislikedBy.add(userId);
+        }
+    }
+
+    public void removeDislike(int userId) {
+        if (dislikedBy.contains(userId)) {
+            dislikedBy.remove(Integer.valueOf(userId));
+        }
+    }
 
     /**
      * Adds a comment to this post
@@ -133,8 +177,8 @@ public class Post implements Serializable {
                 "\ntitle='" + title + '\'' +
                 "\ndescription='" + description + '\'' +
                 "\ntags=" + Arrays.toString(tags) +
-                "\nnumLikes=" + numLikes +
-                "\nnumDislikes=" + numDislikes +
+                "\nnumLikes=" + getNumLikes() +
+                "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
                 "\n}";
     }
