@@ -277,8 +277,11 @@ public class FeedFragment extends Fragment {
             postDislikes.setText(dislikesStmt);
 
             // Initialization of buttons for liking / disliking.
+            int broadColor = ContextCompat.getColor(getContext(), R.color.purple_600);
             Button likeButton = postView.findViewById(R.id.likeButton);
+            likeButton.setBackgroundColor(broadColor);
             Button dislikeButton = postView.findViewById(R.id.dislikeButton);
+            dislikeButton.setBackgroundColor(broadColor);
 
             if (postList.get(i).isLikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
@@ -316,7 +319,7 @@ public class FeedFragment extends Fragment {
                         postList.get(finalI).removeLike(currentUser.getUserId());
                         String updatedLikesStmt = "Likes: " + String.valueOf(postList.get(finalI).getNumLikes());
                         postLikes.setText(updatedLikesStmt);
-                        int color = ContextCompat.getColor(getContext(), R.color.purple_500);
+                        int color = ContextCompat.getColor(getContext(), R.color.purple_600);
                         likeButton.setBackgroundColor(color);
                     }
                     else {
@@ -324,7 +327,7 @@ public class FeedFragment extends Fragment {
                             postList.get(finalI).removeDislike(currentUser.getUserId());
                             String updatedDislikesStmt = "Dislikes: " + String.valueOf(postList.get(finalI).getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
-                            int color = ContextCompat.getColor(getContext(), R.color.purple_500);
+                            int color = ContextCompat.getColor(getContext(), R.color.purple_600);
                             dislikeButton.setBackgroundColor(color);
                         }
                         postList.get(finalI).addLike(currentUser.getUserId());
@@ -344,7 +347,7 @@ public class FeedFragment extends Fragment {
                         postList.get(finalI).removeDislike(currentUser.getUserId());
                         String updatedDislikesStmt = "Dislikes: " + String.valueOf(postList.get(finalI).getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
-                        int color = ContextCompat.getColor(getContext(), R.color.purple_500);
+                        int color = ContextCompat.getColor(getContext(), R.color.purple_600);
                         dislikeButton.setBackgroundColor(color);
                     }
                     else {
@@ -352,7 +355,7 @@ public class FeedFragment extends Fragment {
                             postList.get(finalI).removeLike(currentUser.getUserId());
                             String updatedLikesStmt = "Likes: " + String.valueOf(postList.get(finalI).getNumLikes());
                             postLikes.setText(updatedLikesStmt);
-                            int color = ContextCompat.getColor(getContext(), R.color.purple_500);
+                            int color = ContextCompat.getColor(getContext(), R.color.purple_600);
                             likeButton.setBackgroundColor(color);
                         }
                         postList.get(finalI).addDislike(currentUser.getUserId());
