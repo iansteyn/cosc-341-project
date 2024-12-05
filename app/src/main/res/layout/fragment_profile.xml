@@ -17,6 +17,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Add your other elements here -->
+
+    <!-- Replace "@id/testProfile" with the lower most element you add so the scroll view
+    remains below all other profile info (username, profile pic, etc.) -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
