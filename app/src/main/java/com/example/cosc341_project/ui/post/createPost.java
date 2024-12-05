@@ -33,6 +33,9 @@ public class createPost extends AppCompatActivity {
     Button nextButton;
     EditText description;
     Bitmap PostImage;
+
+    int imageId;
+
     String[] tags;//Currently only four tags
     String[] selectedTags;
     FloatingActionButton showTags;
@@ -150,9 +153,6 @@ public class createPost extends AppCompatActivity {
                 builder.show();
             });
         }
-
-        //TODO: remove, just testing this rn
-        displayPopupWindow();
     }
 
     // HELPER METHODS
@@ -207,14 +207,27 @@ public class createPost extends AppCompatActivity {
 //        } catch (ActivityNotFoundException e) {
 //            e.printStackTrace();
 //        }
+
+
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        //from docs, maybe not needed?
-        FrameLayout fl = findViewById(android.R.id.custom);
         builder.setTitle("Select image from gallery");
-        builder.setView(R.layout.image_gallery);
 
-        builder.show();
+        View imageGalleryView = View.inflate(this, R.layout.image_gallery,null);
+
+        builder.setView(imageGalleryView);
+        AlertDialog galleryDialog = builder.create();
+
+        ImageView alienImageView = imageGalleryView.findViewById(R.id.alienImageView);
+        alienImageView.setOnClickListener(v -> {
+            imageId = R.drawable.img_alien;
+            chooseImage.setImageResource(imageId);
+            galleryDialog.dismiss();
+        });
+
+        galleryDialog.show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
