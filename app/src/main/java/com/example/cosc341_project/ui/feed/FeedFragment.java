@@ -210,7 +210,7 @@ public class FeedFragment extends Fragment {
                 postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
                 ImageView image = postView.findViewById(R.id.imageView);
-                image.setImageResource(R.mipmap.ic_launcher); // Placeholder logic for images.
+                image.setImageResource(sightingTempPost.getImageId());
 
                 TextView location = postView.findViewById(R.id.postLocation);
                 location.setText(sightingTempPost.getLocation());
@@ -405,7 +405,8 @@ public class FeedFragment extends Fragment {
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
             TextView commentUserName = commentView.findViewById(R.id.commenter_username);
-            commentUserName.setText(currentUser.getUserName());
+            commentUserName.setText(
+                    UserList.get(comments.get(i).getUserId()).getUserName());
 
             TextView commentContent = commentView.findViewById(R.id.comment_content);
             commentContent.setText(comments.get(i).getText());

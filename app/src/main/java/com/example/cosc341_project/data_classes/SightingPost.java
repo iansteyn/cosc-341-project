@@ -3,19 +3,34 @@ package com.example.cosc341_project.data_classes;
 import java.util.Arrays;
 
 /**
+ * <h1>
+ *     SightingPost
+ * </h1>
  * <p>
  *     Extends <code>Post</code>.
  * </p>
  * <p>
- *     Includes attributes <code>imageName</code> and <code>location</code>, which have no
- *     default values and must be set with setters. Also, currently they are both Strings,
- *     this may change in the future; it's just a place-holder data type until we figure out
- *     more details.
+ *     Includes attributes <code>imageId</code> and <code>location</code>, which must be specified
+ *     on construction, but can also be modified with setters.
+ * </p>
+ * <h4>
+ *     Example of accessing a post's image for display
+ * </h4>
+ * <pre>
+ * {@code
+ *     // Assuming you already defined:
+ *     // - an ImageView called myImageView
+ *     // - a Post called post
+ *     myImageView.setImageResource(post.getImageId());
+ * }
+ * </pre>
+ * <p>
+ *     Note: profile pictures are always square.
  * </p>
  */
 public class SightingPost extends Post {
     // ATTRIBUTES
-    private String imageName;
+    private int imageId;
     private String location;
 
     // CONSTRUCTOR
@@ -24,25 +39,25 @@ public class SightingPost extends Post {
             String title,
             String description,
             String[] tags,
-            String imageName,
+            int imageId,
             String location
     ) {
         super(userId, title, description, tags);
-        this.imageName = imageName;
+        this.imageId = imageId;
         this.location = location;
     }
 
     //GETTERS
-    public String getImageName() {
-        return imageName;
+    public int getImageId() {
+        return imageId;
     }
     public String getLocation() {
         return location;
     }
 
     // SETTERS
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
     public void setLocation(String location) {
         this.location = location;
@@ -60,7 +75,7 @@ public class SightingPost extends Post {
                 "\nnumLikes=" + getNumLikes() +
                 "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
-                "\nimageName='" + imageName + '\'' +
+                "\nimageName=" + imageId +
                 "\nlocation='" + location + '\'' +
                 "\n}";
     }
