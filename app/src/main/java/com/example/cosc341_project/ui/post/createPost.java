@@ -53,12 +53,12 @@ public class createPost extends AppCompatActivity {
 
         // LAYOUT AND VARIABLES SETUP
         // --------------------------
-        //get intent and set layout
+        // get intent and set layout
         boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
-        // Find xml elementSs
+        // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
         locationButton = findViewById(R.id.Location);
@@ -69,7 +69,7 @@ public class createPost extends AppCompatActivity {
         index = 0;
         location = "";
 
-        //if this is a discussion post, remove image and location options
+        // if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             locationButton.setVisibility(View.GONE);
@@ -114,8 +114,19 @@ public class createPost extends AppCompatActivity {
                 }
                 else {
                     // TODO (Mehdi)- get location data
-                    String location = "placeholder";
-                    newPost = new SightingPost(UserList.CURRENT_USER_ID, titleText, descriptionText, tags, imageId, location);
+                    String location = "Placeholder Location";
+                    double latitude = 49.8801;
+                    double longitude = -119.4436;
+                    newPost = new SightingPost(
+                            UserList.CURRENT_USER_ID,
+                            titleText,
+                            descriptionText,
+                            tags,
+                            imageId,
+                            location,
+                            latitude,
+                            longitude
+                    );
                 }
 
                 plm.postList.add(newPost);
@@ -287,8 +298,6 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-
-
     }
     //Method for toasts
     void Toast(String a){

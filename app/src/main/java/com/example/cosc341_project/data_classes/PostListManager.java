@@ -182,7 +182,9 @@ public final class PostListManager implements Serializable {
                 "The mythic giant salamander has been spotted! Well, at least I think this is a baby giant salamander.",
                 new String[] {"Ogopogo"},
                 R.drawable.img_big_salamander_baby,
-                "Penticton Beach"
+                "Okanagan Lake, Kelowna, BC",
+                49.8801,
+                -119.4954
         );
         newPost1.addComment(4, "Looks more like a baby medium salamander to me.");
         newPost1.addComment(6, "Yes! I knew it! Well done @Jeremy");
@@ -202,7 +204,9 @@ public final class PostListManager implements Serializable {
                 "Check this out. Saw bigfoot on my trail cam near my cabin.",
                 new String[] {"Sasquatch"},
                 R.drawable.img_bigfoot_or_bear,
-                "Near cabin, Kelowna"
+                "Bear Creek Provincial Park, West Kelowna, BC",
+                49.9152,
+                -119.5126
         ));
         postList.add(new SightingPost(
                 9,
@@ -210,7 +214,9 @@ public final class PostListManager implements Serializable {
                 "Greetings, fellows I am new to the area and this is my first sighting. Ogopogo, perhaps?",
                 new String[] {"Ogopogo"},
                 R.drawable.img_lake_monster,
-                "Okanagan Lake South"
+                "Mission Creek, Kelowna, BC",
+                49.8625,
+                -119.4550
         ));
 
         Post newPost2 = new Post(

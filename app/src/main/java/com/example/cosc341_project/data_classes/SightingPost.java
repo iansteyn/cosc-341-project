@@ -12,6 +12,7 @@ import java.util.Arrays;
  * <p>
  *     Includes attributes <code>imageId</code> and <code>location</code>, which must be specified
  *     on construction, but can also be modified with setters.
+ *     The latitude and longitude fields are used to specify the exact geographical position of the sighting.
  * </p>
  * <h4>
  *     Example of accessing a post's image for display
@@ -32,6 +33,8 @@ public class SightingPost extends Post {
     // ATTRIBUTES
     private int imageId;
     private String location;
+    private double latitude;
+    private double longitude;
 
     // CONSTRUCTOR
     public SightingPost(
@@ -40,27 +43,49 @@ public class SightingPost extends Post {
             String description,
             String[] tags,
             int imageId,
-            String location
+            String location,
+            double latitude,
+            double longitude
     ) {
         super(userId, title, description, tags);
         this.imageId = imageId;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     //GETTERS
     public int getImageId() {
         return imageId;
     }
+
     public String getLocation() {
         return location;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     // SETTERS
     public void setImageId(int imageId) {
         this.imageId = imageId;
     }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     // TO STRING
@@ -77,6 +102,8 @@ public class SightingPost extends Post {
                 "\ncomments=" + comments +
                 "\nimageName=" + imageId +
                 "\nlocation='" + location + '\'' +
+                "\nlatitude=" + latitude +
+                "\nlongitude=" + longitude +
                 "\n}";
     }
 }
