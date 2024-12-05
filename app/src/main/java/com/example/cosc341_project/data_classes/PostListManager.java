@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.cosc341_project.R;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -185,7 +187,7 @@ public final class PostListManager implements Serializable {
                 "CAUGHT ON TRAILCAM",
                 "Check this out. Saw bigfoot on my trail cam near my cabin.",
                 new String[] {"Sasquatch"},
-                "img_bigfoot_or_bear",
+                R.drawable.img_bigfoot_or_bear,
                 "Near cabin, Kelowna"
         ));
         postList.add(new SightingPost(
@@ -193,7 +195,7 @@ public final class PostListManager implements Serializable {
                 "Greetings. Maybe Ogopogo?",
                 "Greetings, fellows I am new to the area and this is my first sighting. Ogopogo, perhaps?",
                 new String[] {"Ogopogo"},
-                "img_lake_monster",
+                R.drawable.img_lake_monster,
                 "Okanagan Lake South"
         ));
         postList.add(new Post(

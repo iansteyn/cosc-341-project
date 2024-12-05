@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class SightingPost extends Post {
     // ATTRIBUTES
-    private String imageName;
+    private int imageId;
     private String location;
 
     // CONSTRUCTOR
@@ -24,25 +24,25 @@ public class SightingPost extends Post {
             String title,
             String description,
             String[] tags,
-            String imageName,
+            int imageId,
             String location
     ) {
         super(userId, title, description, tags);
-        this.imageName = imageName;
+        this.imageId = imageId;
         this.location = location;
     }
 
     //GETTERS
-    public String getImageName() {
-        return imageName;
+    public int getImageId() {
+        return imageId;
     }
     public String getLocation() {
         return location;
     }
 
     // SETTERS
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
     public void setLocation(String location) {
         this.location = location;
@@ -60,7 +60,7 @@ public class SightingPost extends Post {
                 "\nnumLikes=" + getNumLikes() +
                 "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
-                "\nimageName='" + imageName + '\'' +
+                "\nimageName=" + imageId +
                 "\nlocation='" + location + '\'' +
                 "\n}";
     }

@@ -95,7 +95,7 @@ public class createPost extends AppCompatActivity {
                 else {
                     // TODO (Mehdi)- get location data
                     String location = "placeholder";
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
+                    newPost = new SightingPost(userId, titleText, descriptionText, tags, 0, location);
                 }
 
                 plm.postList.add(newPost);
