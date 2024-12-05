@@ -20,12 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
 import com.example.cosc341_project.data_classes.Post;
+import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.EventListener;
-
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
 
@@ -33,6 +32,7 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
+    Button locationButton;
     EditText description;
     Bitmap PostImage;
 
@@ -41,6 +41,7 @@ public class createPost extends AppCompatActivity {
 
     String[] tags;//Currently only four tags
     String[] selectedTags;
+    String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
@@ -60,16 +61,18 @@ public class createPost extends AppCompatActivity {
         // Find xml elementSs
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
+        locationButton = findViewById(R.id.Location);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
         index = 0;
+        location = "";
 
         //if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
-            // TODO: also set location button to be GONE
+            locationButton.setVisibility(View.GONE);
         }
 
         // set tags list
@@ -79,17 +82,27 @@ public class createPost extends AppCompatActivity {
 
         // CONFIGURE BUTTONS
         // -----------------
+
+        locationButton.setOnClickListener(v -> {
+            // TODO (Mehdi)- get location data
+            location = "placeholder";
+        });
+
+
         // configure nextButton text and action
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
             // get Post arguments
-            int userId = 1; //later, replace this with UserList.CURRENT_USER_ID
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
+            //if location is empty, show error message
+            if (location.isEmpty()&&creatingSightingPost) {
+                Toast("Please enter a Location");
+            }else{
             // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
-                // TODO - show error toast
+                Toast("Please enter both a description and title");
             }
             // otherwise, add and save post, and end activity
             else {
@@ -97,19 +110,19 @@ public class createPost extends AppCompatActivity {
 
                 Post newPost;
                 if (! creatingSightingPost) {
-                    newPost = new Post(userId, titleText, descriptionText, tags);
+                    newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
                 }
                 else {
                     // TODO (Mehdi)- get location data
                     String location = "placeholder";
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags, imageId, location);
+                    newPost = new SightingPost(UserList.CURRENT_USER_ID, titleText, descriptionText, tags, imageId, location);
                 }
 
                 plm.postList.add(newPost);
                 Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
                 plm.saveToFile(this);
                 finish();
-            }
+            }}
         });
 
         // configure the tags button
@@ -274,8 +287,16 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-    }
 
+
+    }
+    //Method for toasts
+    void Toast(String a){
+
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this /* MyActivity */, a, duration);
+        toast.show();
+    }
 }
 
 
