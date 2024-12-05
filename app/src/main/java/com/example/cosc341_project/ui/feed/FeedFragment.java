@@ -225,6 +225,28 @@ public class FeedFragment extends Fragment {
             TextView postTitle = postView.findViewById(R.id.postTitle);
             postTitle.setText(post.getTitle());
 
+            postTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Report Post:")
+                            .setMessage("Are you sure you want to report this post:\n"+post.getTitle()+"\nBy: "+UserList.get(post.getUserId()).getUserName())
+                            .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getContext(), "Report submitted. We will look into this matter shortly.", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            });
+
             TextView postDescription = postView.findViewById(R.id.postDescription);
             postDescription.setText(post.getDescription());
 
