@@ -19,8 +19,10 @@
         <item>All</item>
         <item>Ogopogo</item>
         <item>Sasquatch</item>
-        <item>Mothman</item>
-        <item>Wendigo</item>
-        <item>Bigfoot</item>
+    </string-array>
+
+    <string-array name="orderByOptions">
+        <item>Most Recent</item>
+        <item>Most Liked</item>
     </string-array>
 </resources>

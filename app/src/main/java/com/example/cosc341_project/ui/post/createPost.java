@@ -1,5 +1,7 @@
 package com.example.cosc341_project.ui.post;
 
+
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,7 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.RequiresExtension;
@@ -16,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
 import com.example.cosc341_project.data_classes.Post;
+import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -27,10 +32,16 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
+    Button locationButton;
     EditText description;
     Bitmap PostImage;
-    String[] tags; // Currently only four tags
+
+    int imageId;
+    AlertDialog galleryDialog;
+
+    String[] tags;//Currently only four tags
     String[] selectedTags;
+    String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
@@ -50,79 +61,100 @@ public class createPost extends AppCompatActivity {
         // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
+        locationButton = findViewById(R.id.Location);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
         index = 0;
+        location = "";
 
         // if this is a discussion post, remove image and location options
-        if (!creatingSightingPost) {
+        if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
-            // TODO: also set location button to be GONE
+            locationButton.setVisibility(View.GONE);
         }
 
         // set tags list
-        tags = new String[]{"Ogopogo", "Bigfoot", "Mothman", "Wendigo"};
+        tags = new String[]{"ogopogo", "sasquatch"};
         selectedTags = new String[tags.length];
         Arrays.fill(selectedTags, " ");
 
         // CONFIGURE BUTTONS
         // -----------------
+
+        locationButton.setOnClickListener(v -> {
+            // TODO (Mehdi)- get location data
+            location = "placeholder";
+        });
+
+
         // configure nextButton text and action
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
             // get Post arguments
-            int userId = 1; // later, replace this with UserList.CURRENT_USER_ID
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
+            //if location is empty, show error message
+            if (location.isEmpty()&&creatingSightingPost) {
+                Toast("Please enter a Location");
+            }else{
             // if fields are empty, show error message
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
-                Toast.makeText(this, "Title and description cannot be empty.", Toast.LENGTH_SHORT).show();
-            } else {
-                // otherwise, add and save post, and end activity
-                PostListManager plm = PostListManager.getInstance();
+                Toast("Please enter both a description and title");
+            }
+            // otherwise, add and save post, and end activity
+            else {
+                PostListManager plm = PostListManager.getInstance(this);
 
                 Post newPost;
-                if (!creatingSightingPost) {
-                    newPost = new Post(userId, titleText, descriptionText, tags);
-                } else {
-                    // TODO (Mehdi) - get location data (latitude, longitude)
+                if (! creatingSightingPost) {
+                    newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
+                }
+                else {
+                    // TODO (Mehdi)- get location data
                     String location = "Placeholder Location";
                     double latitude = 49.8801;
                     double longitude = -119.4436;
-
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags,
-                            PostImage != null ? PostImage.toString() : "no_image",
-                            location, latitude, longitude);
+                    newPost = new SightingPost(
+                            UserList.CURRENT_USER_ID,
+                            titleText,
+                            descriptionText,
+                            tags,
+                            imageId,
+                            location,
+                            latitude,
+                            longitude
+                    );
                 }
 
                 plm.postList.add(newPost);
-                plm.saveToFile();
+                Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
+                plm.saveToFile(this);
                 finish();
-            }
+            }}
         });
 
         // configure the tags button
         showTags.setOnClickListener(v -> {
 
-            tagsText.setText("Tags: " + getArrayString(selectedTags));
+            tagsText.setText("Tags: "+ getArrayString(selectedTags));
             PopupMenu popupMenu = new PopupMenu(createPost.this, v);
-            for (String tag : tags) {
-                popupMenu.getMenu().add(tag);
+            for (int i = 0; i < tags.length; i++) {
+                popupMenu.getMenu().add(tags[i]);
             }
 
             popupMenu.setOnMenuItemClickListener(item -> {
                 String tag = item.getTitle().toString();
 
-                if (!haveTag(selectedTags, tag)) {
+                if (!haveTag(selectedTags,tag)) {
                     selectedTags[index] = tag;
-                    tagsText.setText("Tags: " + getArrayString(selectedTags));
+                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
                     index++;
                 } else {
-                    removeTag(selectedTags, tag);
-                    tagsText.setText("Tags: " + getArrayString(selectedTags));
+                    removeTag(selectedTags,tag);
+                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
                     index--;
                 }
                 return true;
@@ -150,19 +182,19 @@ public class createPost extends AppCompatActivity {
         }
     }
 
-    // HELPER METHODS
+    // TAG HELPER METHODS
     // --------------
-    String getArrayString(String[] array) {
-        StringBuilder string = new StringBuilder();
-        for (String tag : tags) {
-            if (!tag.equals(" ")) {
-                string.append(" ").append(tag).append(",");
+    String getArrayString(String[] array){
+        String string ="";
+        for (int i = 0; i < tags.length; i++) {
+            if(!array[i].equals(" ")) {
+                string = string + " " + array[i]+",";
             }
         }
-        return string.toString();
+        return string;
     }
 
-    boolean haveTag(String[] array, String string) {
+    boolean haveTag(String[] array, String string){
         for (String s : array) {
             if (s.equals(string)) {
                 return true;
@@ -172,8 +204,10 @@ public class createPost extends AppCompatActivity {
     }
 
     void removeTag(String[] array, String value) {
+
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null && array[i].equals(value)) {
+
                 for (int j = i; j < array.length - 1; j++) {
                     array[j] = array[j + 1];
                 }
@@ -183,6 +217,8 @@ public class createPost extends AppCompatActivity {
         }
     }
 
+    // IMAGE CHOOSING METHODS
+    // ----------------------
     private void dispatchTakePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
@@ -194,26 +230,61 @@ public class createPost extends AppCompatActivity {
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     private void dispatchChoosePictureIntent() {
-        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
-        try {
-            startActivityForResult(camera_intent, 2);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select image from gallery");
+
+        View imageGalleryView = View.inflate(this, R.layout.image_gallery,null);
+        builder.setView(imageGalleryView);
+
+        galleryDialog = builder.create();
+
+        /* Set onclick listeners for each image view in the gallery
+         * This is shitty, shitty code. But it works.
+         */
+        imageGalleryView
+                .findViewById(R.id.alienImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_alien);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoGreenImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_green);});
+        imageGalleryView
+                .findViewById(R.id.bigfootBlurryImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_bigfoot_blurry);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoHumpsImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_humps);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoSturgeonImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_sturgeon);});
+        imageGalleryView
+                .findViewById(R.id.shuswaggiImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_shuswaggi);});
+
+        galleryDialog.show();
     }
 
-    @Override
+    //helper method for above
+    private void imageGalleryAction(int resId) {
+        imageId = resId;
+        chooseImage.setImageResource(imageId);
+        galleryDialog.dismiss();
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Match the request 'pic id with requestCode
-        if (requestCode == 1 && data != null) {
-            // Bitmap is data structure of image file which stores the image in memory
+        if (requestCode == 1) {
+            // BitMap is data structure of image file which store the image in memory
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             PostImage = photo;
-            // Set the image in ImageView for display
+            // Set the image in imageview for display
             chooseImage.setImageBitmap(photo);
+            imageId = R.drawable.img_from_camera; // There is only one
         }
-        if (requestCode == 2 && data != null) {
+        if(requestCode == 2) {
+
+            // I don't think any of the below code is needed anymore but Ima leave it here -- Ian
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 try {
@@ -228,4 +299,13 @@ public class createPost extends AppCompatActivity {
             }
         }
     }
+    //Method for toasts
+    void Toast(String a){
+
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this /* MyActivity */, a, duration);
+        toast.show();
+    }
 }
+
+

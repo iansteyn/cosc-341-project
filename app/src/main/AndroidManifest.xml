@@ -39,9 +39,6 @@
             android:value="AIzaSyC3pGn-Zg-Zk_ZPHxVqoMJMYYzNVfzpAq0" />
 
         <activity
-            android:name=".ui.post.createDiscussion"
-            android:exported="false" />
-        <activity
             android:name=".ui.post.createPost"
             android:exported="false" />
         <activity

@@ -3,17 +3,35 @@ package com.example.cosc341_project.data_classes;
 import java.util.Arrays;
 
 /**
+ * <h1>
+ *     SightingPost
+ * </h1>
  * <p>
  *     Extends <code>Post</code>.
  * </p>
  * <p>
- *     Includes attributes <code>imageName</code>, <code>location</code>, <code>latitude</code>, and <code>longitude</code>, which have no
- *     default values and must be set with setters. The latitude and longitude fields are used to specify the exact geographical position of the sighting.
+ *     Includes attributes <code>imageId</code> and <code>location</code>, which must be specified
+ *     on construction, but can also be modified with setters.
+ *     The latitude and longitude fields are used to specify the exact geographical position of the sighting.
+ * </p>
+ * <h4>
+ *     Example of accessing a post's image for display
+ * </h4>
+ * <pre>
+ * {@code
+ *     // Assuming you already defined:
+ *     // - an ImageView called myImageView
+ *     // - a Post called post
+ *     myImageView.setImageResource(post.getImageId());
+ * }
+ * </pre>
+ * <p>
+ *     Note: profile pictures are always square.
  * </p>
  */
 public class SightingPost extends Post {
     // ATTRIBUTES
-    private String imageName;
+    private int imageId;
     private String location;
     private double latitude;
     private double longitude;
@@ -24,21 +42,21 @@ public class SightingPost extends Post {
             String title,
             String description,
             String[] tags,
-            String imageName,
+            int imageId,
             String location,
             double latitude,
             double longitude
     ) {
         super(userId, title, description, tags);
-        this.imageName = imageName;
+        this.imageId = imageId;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    // GETTERS
-    public String getImageName() {
-        return imageName;
+    //GETTERS
+    public int getImageId() {
+        return imageId;
     }
 
     public String getLocation() {
@@ -54,8 +72,8 @@ public class SightingPost extends Post {
     }
 
     // SETTERS
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 
     public void setLocation(String location) {
@@ -79,10 +97,10 @@ public class SightingPost extends Post {
                 "\ntitle='" + title + '\'' +
                 "\ndescription='" + description + '\'' +
                 "\ntags=" + Arrays.toString(tags) +
-                "\nnumLikes=" + numLikes +
-                "\nnumDislikes=" + numDislikes +
+                "\nnumLikes=" + getNumLikes() +
+                "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
-                "\nimageName='" + imageName + '\'' +
+                "\nimageName=" + imageId +
                 "\nlocation='" + location + '\'' +
                 "\nlatitude=" + latitude +
                 "\nlongitude=" + longitude +

@@ -45,6 +45,20 @@
         app:layout_constraintHorizontal_bias="0.894"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageButton
+        android:id="@+id/SelectImage"
+        android:layout_width="0dp"
+        android:layout_height="178dp"
+        android:layout_marginStart="73dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="73dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText"
+        tools:src="@drawable/camera" />
+
     <EditText
         android:id="@+id/editTextTextMultiLine2"
         android:layout_width="333dp"
@@ -61,32 +75,29 @@
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="@+id/startMap"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/SelectImage"
         app:layout_constraintVertical_bias="0.0" />
-
-    <ImageButton
-        android:id="@+id/SelectImage"
-        android:layout_width="0dp"
-        android:layout_height="178dp"
-        android:layout_marginStart="73dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="73dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        tools:src="@drawable/camera" />
 
     <TextView
         android:id="@+id/tags"
         android:layout_width="283dp"
         android:layout_height="73dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="494dp"
+        android:layout_marginTop="548dp"
         android:text="Tags:"
         android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Location"
+        android:layout_width="199dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="66dp"
+        android:text="Add Location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

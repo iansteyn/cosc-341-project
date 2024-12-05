@@ -1,8 +1,12 @@
 package com.example.cosc341_project.ui.feed;
 
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.LinkedList;
+
+import com.example.cosc341_project.data_classes.*;
 
 public class FeedViewModel extends ViewModel {
 
