@@ -10,9 +10,26 @@
         android:id="@+id/textProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/textProfile"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/userPostsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
