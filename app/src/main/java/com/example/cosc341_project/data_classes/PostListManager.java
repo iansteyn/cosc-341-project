@@ -184,7 +184,7 @@ public final class PostListManager implements Serializable {
                 2,
                 "CAUGHT ON TRAILCAM",
                 "Check this out. Saw bigfoot on my trail cam near my cabin.",
-                new String[] {"Sasquatch"},
+                new String[] {""},
                 "img_bigfoot_or_bear",
                 "Near cabin, Kelowna"
         ));

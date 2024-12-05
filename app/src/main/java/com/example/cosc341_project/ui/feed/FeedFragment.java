@@ -179,16 +179,20 @@ public class FeedFragment extends Fragment {
                 }
 
                 // Add all posts containing a match with any selected filter to the set of filtered posts.
-                for (Post post: posts){
-                    String [] tags = post.getTags();
-                    for (String s: tags){
-                        if (selectedFilters.contains(s.trim().toLowerCase())){
-                            filteredPosts.add(post);
-                            break;
+                if (checkedButtonIDs.size() != 4) {
+                    for (Post post : posts) {
+                        String[] tags = post.getTags();
+                        for (String s : tags) {
+                            if (selectedFilters.contains(s.trim().toLowerCase())) {
+                                filteredPosts.add(post);
+                                break;
+                            }
                         }
                     }
                 }
-
+                else {
+                    filteredPosts = posts;
+                }
                 // Order the list of selected posts by the specified order option.
                 int selectedOrder = orderBySpinner.getSelectedItemPosition();
                 selectedOrderOption = selectedOrder;
