@@ -202,11 +202,11 @@ public class FeedFragment extends Fragment {
         });
 
         // Set all posts in the scroll view.
-        for (Post post : postList) {
+        for (int i = postList.size() - 1; i >= 0; i--) {
 
             View postView;
-            if (post instanceof SightingPost ) {
-                SightingPost sightingTempPost = (SightingPost)post; // Used to access location and image getters in sighting post.
+            if (postList.get(i) instanceof SightingPost ) {
+                SightingPost sightingTempPost = (SightingPost)postList.get(i); // Used to access location and image getters in sighting post.
                 postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
                 ImageView image = postView.findViewById(R.id.imageView);
@@ -220,17 +220,18 @@ public class FeedFragment extends Fragment {
                 postView = inflater.inflate(R.layout.discussion_post_item, postsContainer, false);
             }
             TextView postUserName = postView.findViewById(R.id.postUsername);
-            postUserName.setText(UserList.get(post.getUserId()).getUserName());
+            postUserName.setText(UserList.get(postList.get(i).getUserId()).getUserName());
 
             TextView postTitle = postView.findViewById(R.id.postTitle);
-            postTitle.setText(post.getTitle());
+            postTitle.setText(postList.get(i).getTitle());
 
+            int finalI = i;
             postTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(view.getContext())
                             .setTitle("Report Post:")
-                            .setMessage("Are you sure you want to report this post:\n"+post.getTitle()+"\nBy: "+UserList.get(post.getUserId()).getUserName())
+                            .setMessage("Are you sure you want to report this post:\n"+postList.get(finalI).getTitle()+"\nBy: "+UserList.get(postList.get(finalI).getUserId()).getUserName())
                             .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -248,39 +249,38 @@ public class FeedFragment extends Fragment {
             });
 
             TextView postDescription = postView.findViewById(R.id.postDescription);
-            postDescription.setText(post.getDescription());
+            postDescription.setText(postList.get(i).getDescription());
 
             TextView timestamp = postView.findViewById(R.id.postTimestamp);
-            timestamp.setText(post.getTimestamp().toString().substring(0, 10));
+            timestamp.setText(postList.get(i).getTimestamp().toString().substring(0, 10));
 
             TextView postTags = postView.findViewById(R.id.tags);
             String tags = ""; // Initialize the 'tags' String. This will be what the users sees under 'Tags'.
-            String [] tagList = post.getTags();
+            String [] tagList = postList.get(i).getTags();
             for (String s: tagList){
-                tags += "#"+s +", "; // Probably should use StringBuilder, just not very familiar. Will look into.
+                tags += "#"+s +", ";
             }
 
             tags = tags.substring(0, tags.length()-2); // Format correct, again would probably be avoided using StringBuilder.
             postTags.setText(tags);
 
             TextView postLikes = postView.findViewById(R.id.postLikes);
-            String likesStmt = "Likes: "+String.valueOf(post.getNumLikes());
+            String likesStmt = "Likes: "+String.valueOf(postList.get(i).getNumLikes());
             postLikes.setText(likesStmt);
 
             TextView postDislikes = postView.findViewById(R.id.postDislikes);
-            String dislikesStmt = "Dislikes: "+String.valueOf(post.getNumDislikes());
+            String dislikesStmt = "Dislikes: "+String.valueOf(postList.get(i).getNumDislikes());
             postDislikes.setText(dislikesStmt);
 
             // Initialization of buttons for liking / disliking.
             Button likeButton = postView.findViewById(R.id.likeButton);
             Button dislikeButton = postView.findViewById(R.id.dislikeButton);
 
-            //
-            if (post.isLikedBy(currentUser.getUserId())){
+            if (postList.get(i).isLikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                 likeButton.setBackgroundColor(color);
             }
-            if (post.isDislikedBy(currentUser.getUserId())){
+            if (postList.get(i).isDislikedBy(currentUser.getUserId())){
                 int color = ContextCompat.getColor(getContext(), R.color.flatred);
                 dislikeButton.setBackgroundColor(color);
             }
@@ -292,7 +292,7 @@ public class FeedFragment extends Fragment {
                     postsContainer.setVisibility(View.GONE);
                     commentSection.setVisibility(View.VISIBLE);
                     Log.e("Comment Visibility", "Visbile");
-                    addCommentAndView(post, inflater);
+                    addCommentAndView(postList.get(finalI), inflater);
                 }
             });
 
@@ -308,23 +308,23 @@ public class FeedFragment extends Fragment {
                     * the program automatically unlikes the post before apply the dislike.
                     * Same goes vice versa.
                     * */
-                    if (post.isLikedBy(currentUser.getUserId())) {
-                        post.removeLike(currentUser.getUserId());
-                        String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
+                    if (postList.get(finalI).isLikedBy(currentUser.getUserId())) {
+                        postList.get(finalI).removeLike(currentUser.getUserId());
+                        String updatedLikesStmt = "Likes: " + String.valueOf(postList.get(finalI).getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         likeButton.setBackgroundColor(color);
                     }
                     else {
-                        if (post.isDislikedBy(currentUser.getUserId())){
-                            post.removeDislike(currentUser.getUserId());
-                            String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
+                        if (postList.get(finalI).isDislikedBy(currentUser.getUserId())){
+                            postList.get(finalI).removeDislike(currentUser.getUserId());
+                            String updatedDislikesStmt = "Dislikes: " + String.valueOf(postList.get(finalI).getNumDislikes());
                             postDislikes.setText(updatedDislikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             dislikeButton.setBackgroundColor(color);
                         }
-                        post.addLike(currentUser.getUserId());
-                        String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
+                        postList.get(finalI).addLike(currentUser.getUserId());
+                        String updatedLikesStmt = "Likes: " + String.valueOf(postList.get(finalI).getNumLikes());
                         postLikes.setText(updatedLikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatgreen);
                         likeButton.setBackgroundColor(color);
@@ -336,23 +336,23 @@ public class FeedFragment extends Fragment {
             dislikeButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
-                    if (post.isDislikedBy(currentUser.getUserId())) {
-                        post.removeDislike(currentUser.getUserId());
-                        String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
+                    if (postList.get(finalI).isDislikedBy(currentUser.getUserId())) {
+                        postList.get(finalI).removeDislike(currentUser.getUserId());
+                        String updatedDislikesStmt = "Dislikes: " + String.valueOf(postList.get(finalI).getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                         dislikeButton.setBackgroundColor(color);
                     }
                     else {
-                        if (post.isLikedBy(currentUser.getUserId())){
-                            post.removeLike(currentUser.getUserId());
-                            String updatedLikesStmt = "Likes: " + String.valueOf(post.getNumLikes());
+                        if (postList.get(finalI).isLikedBy(currentUser.getUserId())){
+                            postList.get(finalI).removeLike(currentUser.getUserId());
+                            String updatedLikesStmt = "Likes: " + String.valueOf(postList.get(finalI).getNumLikes());
                             postLikes.setText(updatedLikesStmt);
                             int color = ContextCompat.getColor(getContext(), R.color.purple_500);
                             likeButton.setBackgroundColor(color);
                         }
-                        post.addDislike(currentUser.getUserId());
-                        String updatedDislikesStmt = "Dislikes: " + String.valueOf(post.getNumDislikes());
+                        postList.get(finalI).addDislike(currentUser.getUserId());
+                        String updatedDislikesStmt = "Dislikes: " + String.valueOf(postList.get(finalI).getNumDislikes());
                         postDislikes.setText(updatedDislikesStmt);
                         int color = ContextCompat.getColor(getContext(), R.color.flatred);
                         dislikeButton.setBackgroundColor(color);
