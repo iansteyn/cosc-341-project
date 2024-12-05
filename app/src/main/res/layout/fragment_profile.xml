@@ -7,16 +7,28 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <TextView
-        android:id="@+id/textProfile"
+        android:id="@+id/textProfileUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imageViewProfilePic"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageViewProfilePic"
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ImageView>
     <!-- Add your other elements here -->
 
     <!-- Replace "@id/testProfile" with the lower most element you add so the scroll view
@@ -24,8 +36,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textProfile"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textProfileUsername">
 
         <LinearLayout
             android:id="@+id/userPostsContainer"
@@ -36,4 +48,36 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewBio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:text="My name is Bill and I am an avid Ogopogo hunter. It is my dream to one day see it in person."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imageViewProfilePic"
+        app:layout_constraintTop_toBottomOf="@+id/textProfileUsername" />
+
+    <TextView
+        android:id="@+id/textViewMemberSince"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Memeber since: December 5, 2024."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePic" />
+
+    <TextView
+        android:id="@+id/textViewNumOfPosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMemberSince" />
 </androidx.constraintlayout.widget.ConstraintLayout>
