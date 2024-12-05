@@ -45,6 +45,8 @@ public class ProfileFragment extends Fragment {
             plm.addFakePosts();
         }
         posts = plm.postList;
+        String [] tags = {"Sasquatch"};
+        posts.add(new Post(10, "Is bigfoot a sasquatch?", "Is bigfoot a sasquatch of is a sasquatch a bigfoot?", tags)); // testing
 
         final TextView textView = binding.textProfile;
         profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
