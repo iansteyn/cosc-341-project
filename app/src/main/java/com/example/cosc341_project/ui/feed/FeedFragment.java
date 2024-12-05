@@ -194,7 +194,7 @@ public class FeedFragment extends Fragment {
                 selectedOrderOption = selectedOrder;
                 if (selectedOrder == 1){
                     filteredPosts = filteredPosts.stream()
-                            .sorted(Comparator.comparingInt(Post :: getNumLikes).reversed())
+                            .sorted(Comparator.comparingInt(Post :: getNumLikes))
                             .collect(Collectors.toCollection(ArrayList<Post> :: new));
                 }
                 addPostsToScrollView(filteredPosts, inflater, true); // Pass true for the reload.
