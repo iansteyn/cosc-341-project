@@ -24,6 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.EventListener;
+
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
 
@@ -35,6 +37,7 @@ public class createPost extends AppCompatActivity {
     Bitmap PostImage;
 
     int imageId;
+    AlertDialog galleryDialog;
 
     String[] tags;//Currently only four tags
     String[] selectedTags;
@@ -155,7 +158,7 @@ public class createPost extends AppCompatActivity {
         }
     }
 
-    // HELPER METHODS
+    // TAG HELPER METHODS
     // --------------
     String getArrayString(String[] array){
         String string ="";
@@ -190,6 +193,8 @@ public class createPost extends AppCompatActivity {
         }
     }
 
+    // IMAGE CHOOSING METHODS
+    // ----------------------
     private void dispatchTakePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
@@ -200,34 +205,46 @@ public class createPost extends AppCompatActivity {
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
-    private void dispatchChoosePictureIntent(){
-//        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
-//        try {
-//            startActivityForResult(camera_intent, 2);
-//        } catch (ActivityNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-
-
+    private void dispatchChoosePictureIntent() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setTitle("Select image from gallery");
 
         View imageGalleryView = View.inflate(this, R.layout.image_gallery,null);
-
         builder.setView(imageGalleryView);
-        AlertDialog galleryDialog = builder.create();
 
-        ImageView alienImageView = imageGalleryView.findViewById(R.id.alienImageView);
-        alienImageView.setOnClickListener(v -> {
-            imageId = R.drawable.img_alien;
-            chooseImage.setImageResource(imageId);
-            galleryDialog.dismiss();
-        });
+        galleryDialog = builder.create();
+
+        /* Set onclick listeners for each image view in the gallery
+         * This is shitty, shitty code. But it works.
+         */
+        imageGalleryView
+                .findViewById(R.id.alienImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_alien);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoGreenImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_green);});
+        imageGalleryView
+                .findViewById(R.id.bigfootBlurryImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_bigfoot_blurry);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoHumpsImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_humps);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoSturgeonImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_sturgeon);});
+        imageGalleryView
+                .findViewById(R.id.shuswaggiImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_shuswaggi);});
 
         galleryDialog.show();
+    }
+
+    //helper method for above
+    private void imageGalleryAction(int resId) {
+        imageId = resId;
+        chooseImage.setImageResource(imageId);
+        galleryDialog.dismiss();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -256,11 +273,6 @@ public class createPost extends AppCompatActivity {
             }
         }
     }
-
-//    public void displayPopupWindow() {
-//        View imgGallery = View.inflate(this, R.layout.image_gallery,null);
-//        PopupWindow popupWindow = new PopupWindow(imgGallery);
-//    }
 
 }
 
