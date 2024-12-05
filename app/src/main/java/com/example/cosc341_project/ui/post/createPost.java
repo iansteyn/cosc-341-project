@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.RequiresExtension;
@@ -149,6 +150,9 @@ public class createPost extends AppCompatActivity {
                 builder.show();
             });
         }
+
+        //TODO: remove, just testing this rn
+        displayPopupWindow();
     }
 
     // HELPER METHODS
@@ -197,12 +201,20 @@ public class createPost extends AppCompatActivity {
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     private void dispatchChoosePictureIntent(){
-        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
-        try {
-            startActivityForResult(camera_intent, 2);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+//        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+//        try {
+//            startActivityForResult(camera_intent, 2);
+//        } catch (ActivityNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //from docs, maybe not needed?
+        FrameLayout fl = findViewById(android.R.id.custom);
+        builder.setTitle("Select image from gallery");
+        builder.setView(R.layout.image_gallery);
+
+        builder.show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,10 +244,10 @@ public class createPost extends AppCompatActivity {
         }
     }
 
-    public void displayPopupWindow(View view) {
-        View imgGallery = View.inflate(this, R.layout.image_gallery,null);
-        PopupWindow popupWindow = new PopupWindow(imgGallery);
-    }
+//    public void displayPopupWindow() {
+//        View imgGallery = View.inflate(this, R.layout.image_gallery,null);
+//        PopupWindow popupWindow = new PopupWindow(imgGallery);
+//    }
 
 }
 
