@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
 import com.example.cosc341_project.data_classes.Post;
+import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -76,7 +77,6 @@ public class createPost extends AppCompatActivity {
         nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
             // get Post arguments
-            int userId = 1; //later, replace this with UserList.CURRENT_USER_ID
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
@@ -90,12 +90,12 @@ public class createPost extends AppCompatActivity {
 
                 Post newPost;
                 if (! creatingSightingPost) {
-                    newPost = new Post(userId, titleText, descriptionText, tags);
+                    newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
                 }
                 else {
                     // TODO (Mehdi)- get location data
                     String location = "placeholder";
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags, PostImage.toString(), location);
+                    newPost = new SightingPost(UserList.CURRENT_USER_ID, titleText, descriptionText, tags, PostImage.toString(), location);
                 }
 
                 plm.postList.add(newPost);
