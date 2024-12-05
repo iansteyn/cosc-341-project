@@ -223,6 +223,10 @@ public class FeedFragment extends Fragment {
             else {
                 postView = inflater.inflate(R.layout.discussion_post_item, postsContainer, false);
             }
+
+            ImageView profilePic = postView.findViewById(R.id.imageViewProfilePic);
+            profilePic.setImageResource(UserList.get(posts.get(i).getUserId()).getProfilePicId());
+
             TextView postUserName = postView.findViewById(R.id.postUsername);
             postUserName.setText(UserList.get(postList.get(i).getUserId()).getUserName());
 
