@@ -176,6 +176,20 @@ public final class PostListManager implements Serializable {
     }
 
     public void addFakePosts() {
+        Post newPost1 = new SightingPost(
+                5,
+                "Baby Giant Salamander",
+                "The mythic giant salamander has been spotted! Well, at least I think this is a baby giant salamander.",
+                new String[] {"Ogopogo"},
+                R.drawable.img_big_salamander_baby,
+                "Penticton Beach"
+        );
+        newPost1.addComment(4, "Looks more like a baby medium salamander to me.");
+        newPost1.addComment(6, "Yes! I knew it! Well done @Jeremy");
+        newPost1.addComment(9, "Does it dwell in the lakes, as I do?");
+        newPost1.addDislike(1);
+        postList.add(newPost1);
+
         postList.add(new Post(
                 0,
                 "Do you think Ogogopo is Real?",
@@ -198,12 +212,21 @@ public final class PostListManager implements Serializable {
                 R.drawable.img_lake_monster,
                 "Okanagan Lake South"
         ));
-        postList.add(new Post(
+
+        Post newPost2 = new Post(
                 7,
                 "How did you first hear about the Ogopogo?",
                 "Did anyone else have that weird book where his cousin is a dragon? Smh they don't even understand. Anyway how did you first hear about it?",
                 new String[] {"Ogopogo"}
-
-        ));
+        );
+        newPost2.addComment(8, "I first heard about it when I moved here in 2008. It's on so many logos.");
+        newPost2.addComment(1, "@Awkwardfina more like ogoLOgo am i right?");
+        newPost2.addComment(9, "I dwelt in this lake for millennia before he ever came along.");
+        newPost2.addComment(7, "@Awkwardfina that's true, I hadn't thought of how common it is on Kelowna branding!");
+        newPost2.addLike(8);
+        newPost2.addLike(1);
+        newPost2.addLike(9);
+        newPost2.addLike(7);
+        postList.add(newPost2);
     }
 }
