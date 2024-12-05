@@ -127,8 +127,7 @@ public final class PostListManager implements Serializable {
             Log.d("IAN", "postList.ser not found, initializing empty ArrayList.");
             postList = new ArrayList<Post>();
             instantiatedFromFile = false;
-        }
-        catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -137,7 +136,7 @@ public final class PostListManager implements Serializable {
      * @return the one and only instance of the PostList class
      */
     public static PostListManager getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             INSTANCE = new PostListManager();
         }
         return INSTANCE;
@@ -154,8 +153,7 @@ public final class PostListManager implements Serializable {
             out.writeObject(postList);
             out.close();
             fileOut.close();
-        }
-        catch (IOException i) {
+        } catch (IOException i) {
             i.printStackTrace();
         }
     }
@@ -167,32 +165,63 @@ public final class PostListManager implements Serializable {
         INSTANCE = null;
     }
 
+    /**
+     * Add fake posts for testing purposes
+     */
     public void addFakePosts() {
-        postList.add(new Post(
+        postList.add(new SightingPost(
                 0,
-                "Some post title 0",
-                "Some post description 0.",
-                new String[] {"ogopogo", "sasquatch"}
+                "Unbelievable! Just Saw Ogopogo at Okanagan Lake!",
+                "You won't believe what I just saw! A massive creature with humps moving in the water near Okanagan Beach—it's Ogopogo! I'm still in shock!",
+                new String[]{"ogopogo"},
+                "ogopogo_sighting.jpg",
+                "Okanagan Lake, Kelowna, BC",
+                49.8801,
+                -119.4954
         ));
-        postList.add(new Post(
+
+        postList.add(new SightingPost(
                 1,
-                "Some post title 1",
-                "Some post description.",
-                new String[] {"sasquatch"}
+                "No Way! Sasquatch Spotted Near Mission Creek!",
+                "I can't believe my eyes! I was hiking near Mission Creek, and this huge, hairy figure dashed across the trail. It was so fast—I swear it was Sasquatch!",
+                new String[]{"sasquatch"},
+                "sasquatch_sighting.jpg",
+                "Mission Creek, Kelowna, BC",
+                49.8625,
+                -119.4550
         ));
-        postList.add(new Post(
+
+        postList.add(new SightingPost(
                 2,
-                "Some post title 2",
-                "Some post description 2.",
-                new String[] {"ogopogo"}
+                "Terrifying Encounter at Myra Canyon—Wendigo?!",
+                "This was absolutely terrifying! It was late evening at Myra Canyon when I saw a ghostly figure lurking in the shadows. It looked like something straight out of a nightmare—could it have been a Wendigo?!",
+                new String[]{"wendigo"},
+                "wendigo_sighting.jpg",
+                "Myra Canyon, Kelowna, BC",
+                49.7574,
+                -119.2720
         ));
-//        postList.add(new SightingPost(
-//                2,
-//                "sighting post title 1",
-//                "Some post description.",
-//                new String[] {"bigfoot"},
-//                "fakeimage.jpg",
-//                "Fake location"
-//        ));
+
+        postList.add(new SightingPost(
+                3,
+                "I Saw Bigfoot at Bear Creek Park—Still Shaking!",
+                "I can't believe it! I just saw something massive and furry moving in the woods at Bear Creek Park. It wasn't a bear—it was Bigfoot! My heart is still pounding!",
+                new String[]{"bigfoot"},
+                "bigfoot_sighting.jpg",
+                "Bear Creek Provincial Park, West Kelowna, BC",
+                49.9152,
+                -119.5126
+        ));
+
+        postList.add(new SightingPost(
+                4,
+                "Red-Eyed Winged Creature at Knox Mountain—Mothman?!",
+                "I'm freaking out! Near the top of Knox Mountain, I saw a giant winged creature with glowing red eyes. It was watching me! Could this have been the Mothman?! I'm still trying to process what happened.",
+                new String[]{"mothman"},
+                "mothman_sighting.jpg",
+                "Knox Mountain, Kelowna, BC",
+                49.9041,
+                -119.4936
+        ));
     }
 }

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +28,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private FragmentMapBinding binding;
     private GoogleMap mMap;
     private PostListManager postListManager;
+    private List<Marker> markerList = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,10 +63,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Initialize PostListManager instance
         postListManager = PostListManager.getInstance();
+        postListManager.addFakePosts(); // Add fake posts
 
         // Set up the download button
         Button downloadButton = binding.downloadMapButton;
         downloadButton.setOnClickListener(v -> downloadVisibleMapArea());
+
+        // Set up the filter button
+        Button filterButton = binding.filterButton;
+        filterButton.setOnClickListener(v -> showFilterDialog());
 
         return root;
     }
@@ -101,8 +113,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addPostMarkers() {
+        if (mMap == null) return;  // Ensure mMap is initialized
+
+        markerList.clear();  // Clear the marker list
+
         for (Post post : postListManager.postList) {
-            // Assuming each Post has latitude and longitude properties (modify accordingly)
             if (post instanceof SightingPost) {
                 SightingPost sightingPost = (SightingPost) post;
                 LatLng postLocation = new LatLng(sightingPost.getLatitude(), sightingPost.getLongitude());
@@ -111,6 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         .position(postLocation)
                         .title(sightingPost.getTitle()));
                 marker.setTag(sightingPost);
+                markerList.add(marker);
             }
         }
     }
@@ -142,6 +158,75 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .setView(popupView)
                 .setCancelable(true)
                 .show();
+    }
+
+    private void showFilterDialog() {
+        // Create an AlertDialog for filtering options
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Filter Markers");
+
+        // Inflate the filter layout
+        View filterView = getLayoutInflater().inflate(R.layout.filter_dialog, null);
+        builder.setView(filterView);
+
+        // Set up date filter spinner
+        Spinner dateSpinner = filterView.findViewById(R.id.date_filter_spinner);
+        ArrayAdapter<CharSequence> dateAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.date_filter_options, android.R.layout.simple_spinner_item);
+        dateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dateSpinner.setAdapter(dateAdapter);
+
+        // Set up creature filter spinner
+        Spinner creatureSpinner = filterView.findViewById(R.id.creature_filter_spinner);
+        ArrayAdapter<CharSequence> creatureAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.creature_filter_options, android.R.layout.simple_spinner_item);
+        creatureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        creatureSpinner.setAdapter(creatureAdapter);
+
+        // Set up filter button actions
+        builder.setPositiveButton("Apply", (dialog, which) -> {
+            String selectedDateFilter = dateSpinner.getSelectedItem().toString();
+            String selectedCreatureFilter = creatureSpinner.getSelectedItem().toString();
+            applyFilters(selectedDateFilter, selectedCreatureFilter);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        // Show the filter dialog
+        builder.create().show();
+    }
+
+    private void applyFilters(String dateFilter, String creatureFilter) {
+        // Clear current markers
+        mMap.clear();
+        markerList.clear();
+
+        for (Post post : postListManager.postList) {
+            if (post instanceof SightingPost) {
+                SightingPost sightingPost = (SightingPost) post;
+
+                // Apply date filter (this is a placeholder, implement the actual date logic)
+                boolean dateMatches = true;
+                if (dateFilter.equals("Today")) {
+                    // Check if the post's timestamp is from today
+                    dateMatches = /* implement date matching logic here */ true;
+                }
+                // Add other date filters as needed
+
+                // Apply creature filter
+                boolean creatureMatches = creatureFilter.equals("All") ||
+                        Arrays.asList(sightingPost.getTags()).contains(creatureFilter.toLowerCase());
+
+                // If both filters match, add the marker
+                if (dateMatches && creatureMatches) {
+                    LatLng postLocation = new LatLng(sightingPost.getLatitude(), sightingPost.getLongitude());
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(postLocation)
+                            .title(sightingPost.getTitle()));
+                    marker.setTag(sightingPost);
+                    markerList.add(marker);
+                }
+            }
+        }
     }
 
     private void downloadVisibleMapArea() {
