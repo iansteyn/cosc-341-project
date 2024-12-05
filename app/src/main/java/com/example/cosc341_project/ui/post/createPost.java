@@ -230,11 +230,11 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-        //Code for next button, will move to the map, (currently textbox placeholder)
-        // and will once done create a post, the next button to get to the map will
-        // not work if the user has not entered a photo
+    }
 
-
+    public void displayPopupWindow(View view) {
+        View imgGallery = View.inflate(this, R.layout.image_gallery,null);
+        PopupWindow popupWindow = new PopupWindow(imgGallery);
     }
 
 }
