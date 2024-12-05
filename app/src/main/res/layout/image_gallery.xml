@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/alienImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="20dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/ogopogoGreenImageView"
+        app:layout_constraintTop_toTopOf="@+id/ogopogoGreenImageView"
+        app:srcCompat="@drawable/img_alien" />
+
+    <ImageView
+        android:id="@+id/ogopogoGreenImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/img_ogopogo_green"
+        tools:layout_editor_absoluteY="54dp" />
+
+    <ImageView
+        android:id="@+id/ogopogoSturgeonImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ogopogoGreenImageView"
+        app:layout_constraintStart_toStartOf="@+id/ogopogoGreenImageView"
+        app:layout_constraintTop_toBottomOf="@+id/ogopogoGreenImageView"
+        app:srcCompat="@drawable/img_ogopogo_sturgeon" />
+
+    <ImageView
+        android:id="@+id/shuswaggiImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@+id/bigfootBlurryImageView"
+        app:layout_constraintTop_toTopOf="@+id/ogopogoSturgeonImageView"
+        app:srcCompat="@drawable/img_shuswaggi" />
+
+    <ImageView
+        android:id="@+id/ogopogoHumpsImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="@+id/alienImageView"
+        app:layout_constraintTop_toTopOf="@+id/ogopogoSturgeonImageView"
+        app:srcCompat="@drawable/img_ogopogo_humps" />
+
+    <ImageView
+        android:id="@+id/bigfootBlurryImageView"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:adjustViewBounds="false"
+        android:clickable="true"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/ogopogoGreenImageView"
+        app:layout_constraintTop_toTopOf="@+id/ogopogoGreenImageView"
+        app:srcCompat="@drawable/img_bigfoot_blurry" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Select an image from your camera roll"
+        app:layout_constraintBottom_toTopOf="@+id/ogopogoGreenImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
