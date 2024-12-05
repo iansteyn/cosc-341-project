@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -145,6 +146,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         TextView dateTextView = popupView.findViewById(R.id.popup_date);
         dateTextView.setText("Date: " + post.getTimestamp().toString());
+
+        ImageView imageView = popupView.findViewById(R.id.popup_image);
+        imageView.setImageResource(((SightingPost) post).getImageId());
 
         Button detailsButton = popupView.findViewById(R.id.popup_details_button);
         detailsButton.setOnClickListener(v -> {
