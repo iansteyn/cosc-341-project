@@ -207,7 +207,7 @@ public class FeedFragment extends Fragment {
                 postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
                 ImageView image = postView.findViewById(R.id.imageView);
-                image.setImageResource(R.mipmap.ic_launcher); // Placeholder logic for images.
+                image.setImageResource(sightingTempPost.getImageId());
 
                 TextView location = postView.findViewById(R.id.postLocation);
                 location.setText(sightingTempPost.getLocation());
