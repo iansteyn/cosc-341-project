@@ -102,7 +102,7 @@ public class createPost extends AppCompatActivity {
                 else {
                     // TODO (Mehdi)- get location data
                     String location = "placeholder";
-                    newPost = new SightingPost(userId, titleText, descriptionText, tags, 0, location);
+                    newPost = new SightingPost(userId, titleText, descriptionText, tags, imageId, location);
                 }
 
                 plm.postList.add(newPost);
@@ -256,9 +256,11 @@ public class createPost extends AppCompatActivity {
             PostImage = photo;
             // Set the image in imageview for display
             chooseImage.setImageBitmap(photo);
+            imageId = R.drawable.img_from_camera; // There is only one
         }
         if(requestCode == 2) {
 
+            // I don't think any of the below code is needed anymore but Ima leave it here -- Ian
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 try {
