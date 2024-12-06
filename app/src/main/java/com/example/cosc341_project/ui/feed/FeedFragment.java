@@ -178,8 +178,10 @@ public class FeedFragment extends Fragment {
                     return;
                 }
 
-                // Add all posts containing a match with any selected filter to the set of filtered posts.
+                // Filtering
                 if (checkedButtonIDs.size() != 4) {
+
+                    //Filtering level 1: add posts based on tag (ogopogo or sasquatch)
                     for (Post post : posts) {
                         String[] tags = post.getTags();
                         for (String s : tags) {
@@ -187,18 +189,25 @@ public class FeedFragment extends Fragment {
                                 filteredPosts.add(post);
                                 break;
                             }
-                            else if (selectedFilters.contains("sighting") && post instanceof SightingPost){
-                                filteredPosts.add(post);
-                            }
-                            else if (selectedFilters.contains("discussion") && !(post instanceof SightingPost)){
-                                filteredPosts.add(post);
-                            }
                         }
+                    }
+
+                    // Filtering level 2: remove posts based on type (sighting or discussion)
+                    for (Post fpost : filteredPosts) {
+                        boolean isSightingPost = fpost instanceof SightingPost;
+
+                        if ((isSightingPost && ! selectedFilters.contains("sighting"))
+                            || (! isSightingPost && ! selectedFilters.contains("discussion")))
+                        {
+                            filteredPosts.remove(fpost);
+                            break;
+                        }s
                     }
                 }
                 else {
                     filteredPosts = posts;
                 }
+
                 // Order the list of selected posts by the specified order option.
                 int selectedOrder = orderBySpinner.getSelectedItemPosition();
                 selectedOrderOption = selectedOrder;
