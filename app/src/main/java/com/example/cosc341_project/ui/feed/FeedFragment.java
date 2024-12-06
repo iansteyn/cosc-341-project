@@ -180,7 +180,6 @@ public class FeedFragment extends Fragment {
 
                 // Filtering
                 if (checkedButtonIDs.size() != 4) {
-
                     //Filtering level 1: add posts based on tag (ogopogo or sasquatch)
                     for (Post post : posts) {
                         String[] tags = post.getTags();
@@ -193,15 +192,14 @@ public class FeedFragment extends Fragment {
                     }
 
                     // Filtering level 2: remove posts based on type (sighting or discussion)
-                    for (Post fpost : filteredPosts) {
-                        boolean isSightingPost = fpost instanceof SightingPost;
+                    for (int i = 0; i < filteredPosts.size(); i++) {
+                        boolean isSightingPost = filteredPosts.get(i) instanceof SightingPost;
 
                         if ((isSightingPost && ! selectedFilters.contains("sighting"))
                             || (! isSightingPost && ! selectedFilters.contains("discussion")))
                         {
-                            filteredPosts.remove(fpost);
-                            break;
-                        }s
+                            filteredPosts.remove(i);
+                        }
                     }
                 }
                 else {
