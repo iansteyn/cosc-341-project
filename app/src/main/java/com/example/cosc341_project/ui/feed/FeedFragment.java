@@ -187,6 +187,12 @@ public class FeedFragment extends Fragment {
                                 filteredPosts.add(post);
                                 break;
                             }
+                            else if (selectedFilters.contains("sighting") && post instanceof SightingPost){
+                                filteredPosts.add(post);
+                            }
+                            else if (selectedFilters.contains("discussion") && !(post instanceof SightingPost)){
+                                filteredPosts.add(post);
+                            }
                         }
                     }
                 }
