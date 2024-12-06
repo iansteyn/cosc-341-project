@@ -238,7 +238,7 @@ public class FeedFragment extends Fragment {
             }
 
             ImageView profilePic = postView.findViewById(R.id.imageViewProfilePic);
-            profilePic.setImageResource(UserList.get(posts.get(i).getUserId()).getProfilePicId());
+            profilePic.setImageResource(UserList.get(postList.get(i).getUserId()).getProfilePicId());
 
             TextView postUserName = postView.findViewById(R.id.postUsername);
             postUserName.setText(UserList.get(postList.get(i).getUserId()).getUserName());
