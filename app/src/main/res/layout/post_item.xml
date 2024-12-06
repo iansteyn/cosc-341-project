@@ -13,9 +13,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/imageViewProfilePic"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
             android:src="@mipmap/ic_launcher">
 
         </ImageView>
@@ -33,11 +35,11 @@
 
         <TextView
             android:id="@+id/postTitle"
-            android:layout_width="0dp"
+            android:layout_width="4dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:paddingBottom="8dp"
             android:text="Post Title"
-            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -115,13 +117,13 @@
         android:paddingEnd="8dp"
         android:gravity="start" />
 
-    <Button
-        android:id="@+id/likeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Like"
-        android:layout_weight="1.5"
-        android:layout_marginEnd="8dp" />
+        <Button
+            android:id="@+id/likeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1.5"
+            android:text="Like" />
 
     <TextView
         android:id="@+id/postDislikes"

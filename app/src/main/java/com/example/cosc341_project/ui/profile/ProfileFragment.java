@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class ProfileFragment extends Fragment {
     private LinearLayout postsContainer;
     private PostListManager plm;
     private ArrayList<Post> posts;
+    private  ArrayList <Post> userPost;
 
     private FragmentProfileBinding binding;
 
@@ -45,38 +47,51 @@ public class ProfileFragment extends Fragment {
             plm.addFakePosts();
         }
         posts = plm.postList;
-        String [] tags = {"Sasquatch"};
-        //posts.add(new Post(10, "Is bigfoot a sasquatch?", "Is bigfoot a sasquatch of is a sasquatch a bigfoot?", tags)); // testing
 
-        final TextView textView = binding.textProfile;
-        profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+       userPost = new ArrayList<>();
 
-        addUserPostsToProfile(inflater, posts);
+        for (Post post: posts){
+            if (post.getUserId() == currentUser.getUserId()){
+                userPost.add(post);
+            }
+        }
+
+        final ImageView profilePic = binding.imageViewProfilePic;
+        profilePic.setImageResource(currentUser.getProfilePicId());
+
+        final TextView textView = binding.textProfileUsername;
+        textView.setText(currentUser.getUserName());
+       // profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        final TextView profileNumPosts = binding.textViewNumOfPosts;
+        profileNumPosts.setText("You have made "+userPost.size()+" posts:");
+
+        addUserPostsToProfile(inflater, userPost);
 
         return root;
     }
 
     private void addUserPostsToProfile(LayoutInflater inflater, ArrayList<Post> posts){
 
-        for (int i = posts.size() -1; i>= 0; i--){
-            if (posts.get(i).getUserId() == currentUser.getUserId()){
+        for (Post post: posts){
+            if (post.getUserId() == currentUser.getUserId()){
 
                 View userPostView = inflater.inflate(R.layout.profile_post_item, postsContainer, false);
 
                 TextView title = userPostView.findViewById(R.id.postTitle);
-                title.setText(posts.get(i).getTitle());
+                title.setText(post.getTitle());
 
                 TextView description = userPostView.findViewById(R.id.postDescription);
-                description.setText(posts.get(i).getDescription());
+                description.setText(post.getDescription());
 
                 TextView timestamp = userPostView.findViewById(R.id.postTimestamp);
-                timestamp.setText(posts.get(i).getTimestamp().toString().substring(0,10));
+                timestamp.setText(post.getTimestamp().toString().substring(0,10));
 
                 TextView location = userPostView.findViewById(R.id.postLocation);
                 TextView type = userPostView.findViewById(R.id.postType);
 
-                if (posts.get(i) instanceof SightingPost) {
-                    SightingPost tempPost = (SightingPost)posts.get(i);
+                if (post instanceof SightingPost) {
+                    SightingPost tempPost = (SightingPost)post;
                     location.setText(tempPost.getLocation());
                     type.setText("Sighting");
                 }
