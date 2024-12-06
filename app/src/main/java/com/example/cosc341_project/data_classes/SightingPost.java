@@ -3,20 +3,38 @@ package com.example.cosc341_project.data_classes;
 import java.util.Arrays;
 
 /**
+ * <h1>
+ *     SightingPost
+ * </h1>
  * <p>
  *     Extends <code>Post</code>.
  * </p>
  * <p>
- *     Includes attributes <code>imageName</code> and <code>location</code>, which have no
- *     default values and must be set with setters. Also, currently they are both Strings,
- *     this may change in the future; it's just a place-holder data type until we figure out
- *     more details.
+ *     Includes attributes <code>imageId</code> and <code>location</code>, which must be specified
+ *     on construction, but can also be modified with setters.
+ *     The latitude and longitude fields are used to specify the exact geographical position of the sighting.
+ * </p>
+ * <h4>
+ *     Example of accessing a post's image for display
+ * </h4>
+ * <pre>
+ * {@code
+ *     // Assuming you already defined:
+ *     // - an ImageView called myImageView
+ *     // - a Post called post
+ *     myImageView.setImageResource(post.getImageId());
+ * }
+ * </pre>
+ * <p>
+ *     Note: profile pictures are always square.
  * </p>
  */
 public class SightingPost extends Post {
     // ATTRIBUTES
-    private String imageName;
+    private int imageId;
     private String location;
+    private double latitude;
+    private double longitude;
 
     // CONSTRUCTOR
     public SightingPost(
@@ -24,28 +42,50 @@ public class SightingPost extends Post {
             String title,
             String description,
             String[] tags,
-            String imageName,
-            String location
+            int imageId,
+            String location,
+            double latitude,
+            double longitude
     ) {
         super(userId, title, description, tags);
-        this.imageName = imageName;
+        this.imageId = imageId;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     //GETTERS
-    public String getImageName() {
-        return imageName;
+    public int getImageId() {
+        return imageId;
     }
+
     public String getLocation() {
         return location;
     }
 
-    // SETTERS
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public double getLatitude() {
+        return latitude;
     }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    // SETTERS
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
+
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     // TO STRING
@@ -60,8 +100,10 @@ public class SightingPost extends Post {
                 "\nnumLikes=" + getNumLikes() +
                 "\nnumDislikes=" + getNumDislikes() +
                 "\ncomments=" + comments +
-                "\nimageName='" + imageName + '\'' +
+                "\nimageName=" + imageId +
                 "\nlocation='" + location + '\'' +
+                "\nlatitude=" + latitude +
+                "\nlongitude=" + longitude +
                 "\n}";
     }
 }

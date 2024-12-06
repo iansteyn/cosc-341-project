@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.example.cosc341_project.R;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -174,6 +176,22 @@ public final class PostListManager implements Serializable {
     }
 
     public void addFakePosts() {
+        Post newPost1 = new SightingPost(
+                5,
+                "Baby Giant Salamander",
+                "The mythic giant salamander has been spotted! Well, at least I think this is a baby giant salamander.",
+                new String[] {"Ogopogo"},
+                R.drawable.img_big_salamander_baby,
+                "Okanagan Lake, Kelowna, BC",
+                49.8801,
+                -119.4954
+        );
+        newPost1.addComment(4, "Looks more like a baby medium salamander to me.");
+        newPost1.addComment(6, "Yes! I knew it! Well done @Jeremy");
+        newPost1.addComment(9, "Does it dwell in the lakes, as I do?");
+        newPost1.addDislike(1);
+        postList.add(newPost1);
+
         postList.add(new Post(
                 0,
                 "Do you think Ogogopo is Real?",
@@ -184,24 +202,37 @@ public final class PostListManager implements Serializable {
                 2,
                 "CAUGHT ON TRAILCAM",
                 "Check this out. Saw bigfoot on my trail cam near my cabin.",
-                new String[] {""},
-                "img_bigfoot_or_bear",
-                "Near cabin, Kelowna"
+                new String[] {"Sasquatch"},
+                R.drawable.img_bigfoot_or_bear,
+                "Bear Creek Provincial Park, West Kelowna, BC",
+                49.9152,
+                -119.5126
         ));
         postList.add(new SightingPost(
                 9,
                 "Greetings. Maybe Ogopogo?",
                 "Greetings, fellows I am new to the area and this is my first sighting. Ogopogo, perhaps?",
                 new String[] {"Ogopogo"},
-                "img_lake_monster",
-                "Okanagan Lake South"
+                R.drawable.img_lake_monster,
+                "Mission Creek, Kelowna, BC",
+                49.8625,
+                -119.4550
         ));
-        postList.add(new Post(
+
+        Post newPost2 = new Post(
                 7,
                 "How did you first hear about the Ogopogo?",
                 "Did anyone else have that weird book where his cousin is a dragon? Smh they don't even understand. Anyway how did you first hear about it?",
                 new String[] {"Ogopogo"}
-
-        ));
+        );
+        newPost2.addComment(8, "I first heard about it when I moved here in 2008. It's on so many logos.");
+        newPost2.addComment(1, "@Awkwardfina more like ogoLOgo am i right?");
+        newPost2.addComment(9, "I dwelt in this lake for millennia before he ever came along.");
+        newPost2.addComment(7, "@Awkwardfina that's true, I hadn't thought of how common it is on Kelowna branding!");
+        newPost2.addLike(8);
+        newPost2.addLike(1);
+        newPost2.addLike(9);
+        newPost2.addLike(7);
+        postList.add(newPost2);
     }
 }

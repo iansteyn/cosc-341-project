@@ -3,9 +3,9 @@ package com.example.cosc341_project.data_classes;
 import java.io.Serializable;
 
 /**
- * <h3>
+ * <h1>
  *     User
- * </h3>
+ * </h1>
  * <p>
  *     Currently, <code>User</code> objects are read-only after initialization.
  *     You should never have to initialize a user yourself, as the user list is statically created
@@ -19,9 +19,12 @@ import java.io.Serializable;
  *     // Assuming you already defined:
  *     // - an ImageView called myImageView
  *     // - a User called user
- *     myImageView.setDrawable(user.getProfilePicId());
+ *     myImageView.setImageResource(user.getProfilePicId());
  * }
  * </pre>
+ * <p>
+ *     Note: Not all images will be the same aspect ratio. Please account for this.
+ * </p>
  *
  *
  */

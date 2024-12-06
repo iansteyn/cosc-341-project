@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.RequiresExtension;
@@ -34,6 +35,10 @@ public class createPost extends AppCompatActivity {
     Button locationButton;
     EditText description;
     Bitmap PostImage;
+
+    int imageId;
+    AlertDialog galleryDialog;
+
     String[] tags;//Currently only four tags
     String[] selectedTags;
     String location;
@@ -48,12 +53,12 @@ public class createPost extends AppCompatActivity {
 
         // LAYOUT AND VARIABLES SETUP
         // --------------------------
-        //get intent and set layout
+        // get intent and set layout
         boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createpost);
 
-        // Find xml elementSs
+        // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
         locationButton = findViewById(R.id.Location);
@@ -64,7 +69,7 @@ public class createPost extends AppCompatActivity {
         index = 0;
         location = "";
 
-        //if this is a discussion post, remove image and location options
+        // if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             locationButton.setVisibility(View.GONE);
@@ -109,8 +114,19 @@ public class createPost extends AppCompatActivity {
                 }
                 else {
                     // TODO (Mehdi)- get location data
-                    String location = "placeholder";
-                    newPost = new SightingPost(UserList.CURRENT_USER_ID, titleText, descriptionText, tags, PostImage.toString(), location);
+                    String location = "Placeholder Location";
+                    double latitude = 49.8801;
+                    double longitude = -119.4436;
+                    newPost = new SightingPost(
+                            UserList.CURRENT_USER_ID,
+                            titleText,
+                            descriptionText,
+                            tags,
+                            imageId,
+                            location,
+                            latitude,
+                            longitude
+                    );
                 }
 
                 plm.postList.add(newPost);
@@ -166,7 +182,7 @@ public class createPost extends AppCompatActivity {
         }
     }
 
-    // HELPER METHODS
+    // TAG HELPER METHODS
     // --------------
     String getArrayString(String[] array){
         String string ="";
@@ -201,6 +217,8 @@ public class createPost extends AppCompatActivity {
         }
     }
 
+    // IMAGE CHOOSING METHODS
+    // ----------------------
     private void dispatchTakePictureIntent() {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
@@ -211,13 +229,46 @@ public class createPost extends AppCompatActivity {
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
-    private void dispatchChoosePictureIntent(){
-        Intent camera_intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
-        try {
-            startActivityForResult(camera_intent, 2);
-        } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+    private void dispatchChoosePictureIntent() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select image from gallery");
+
+        View imageGalleryView = View.inflate(this, R.layout.image_gallery,null);
+        builder.setView(imageGalleryView);
+
+        galleryDialog = builder.create();
+
+        /* Set onclick listeners for each image view in the gallery
+         * This is shitty, shitty code. But it works.
+         */
+        imageGalleryView
+                .findViewById(R.id.alienImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_alien);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoGreenImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_green);});
+        imageGalleryView
+                .findViewById(R.id.bigfootBlurryImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_bigfoot_blurry);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoHumpsImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_humps);});
+        imageGalleryView
+                .findViewById(R.id.ogopogoSturgeonImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_ogopogo_sturgeon);});
+        imageGalleryView
+                .findViewById(R.id.shuswaggiImageView)
+                .setOnClickListener(v -> {imageGalleryAction(R.drawable.img_shuswaggi);});
+
+        galleryDialog.show();
+    }
+
+    //helper method for above
+    private void imageGalleryAction(int resId) {
+        imageId = resId;
+        chooseImage.setImageResource(imageId);
+        galleryDialog.dismiss();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -229,9 +280,11 @@ public class createPost extends AppCompatActivity {
             PostImage = photo;
             // Set the image in imageview for display
             chooseImage.setImageBitmap(photo);
+            imageId = R.drawable.img_from_camera; // There is only one
         }
         if(requestCode == 2) {
 
+            // I don't think any of the below code is needed anymore but Ima leave it here -- Ian
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 try {
@@ -245,8 +298,6 @@ public class createPost extends AppCompatActivity {
                 }
             }
         }
-
-
     }
     //Method for toasts
     void Toast(String a){

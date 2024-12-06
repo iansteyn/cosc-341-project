@@ -214,7 +214,7 @@ public class FeedFragment extends Fragment {
                 postView = inflater.inflate(R.layout.post_item, postsContainer, false);
 
                 ImageView image = postView.findViewById(R.id.imageView);
-                image.setImageResource(R.mipmap.ic_launcher); // Placeholder logic for images.
+                image.setImageResource(sightingTempPost.getImageId());
 
                 TextView location = postView.findViewById(R.id.postLocation);
                 location.setText(sightingTempPost.getLocation());
@@ -380,7 +380,7 @@ public class FeedFragment extends Fragment {
 
         // Set up the posts basic info to display above comment section.
         ImageView profilePic = commentSection.findViewById(R.id.profilePic);
-        // Logic for setting image.
+        profilePic.setImageResource(UserList.get(post.getUserId()).getProfilePicId());
 
         TextView title = commentSection.findViewById(R.id.postTitle);
         title.setText(post.getTitle());
@@ -415,8 +415,12 @@ public class FeedFragment extends Fragment {
         for (int i = comments.size() - 1; i >= 0; i--){
             View commentView = inflater.inflate(R.layout.comment_item, commentSection, false);
 
+            ImageView profilePicOnComment = commentView.findViewById(R.id.imageViewPic);
+            profilePicOnComment.setImageResource(UserList.get(comments.get(i).getUserId()).getProfilePicId());
+
             TextView commentUserName = commentView.findViewById(R.id.commenter_username);
-            commentUserName.setText(currentUser.getUserName());
+            commentUserName.setText(
+                    UserList.get(comments.get(i).getUserId()).getUserName());
 
             TextView commentContent = commentView.findViewById(R.id.comment_content);
             commentContent.setText(comments.get(i).getText());
@@ -467,6 +471,10 @@ public class FeedFragment extends Fragment {
                     post.addComment(currentUser.getUserId(), newComment); // 1 as temp or userId.
 
                     View newCommentView = inflater.inflate(R.layout.comment_item, commentSection, false);
+
+                    ImageView profilePicOnComment = newCommentView.findViewById(R.id.imageViewPic);
+                    profilePicOnComment.setImageResource(currentUser.getProfilePicId());
+
 
                     TextView commentUserName = newCommentView.findViewById(R.id.commenter_username);
                     commentUserName.setText(currentUser.getUserName());
