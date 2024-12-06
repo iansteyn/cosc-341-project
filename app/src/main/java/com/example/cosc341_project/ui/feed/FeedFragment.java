@@ -133,7 +133,7 @@ public class FeedFragment extends Fragment {
                 CheckBox tempBox = filterView.findViewById(id);
                 tempBox.setChecked(true);
             }
-            applyFilters(filterBoxIDs, filterView, orderBySpinner, inflater);
+            //applyFilters(filterBoxIDs, filterView, orderBySpinner, inflater);
         }
 
         // On click listener for 'Select All' button.
@@ -376,13 +376,16 @@ public class FeedFragment extends Fragment {
             }
 
             // Filtering level 2: remove posts based on type (sighting or discussion)
-            for (int i = 0; i < filteredPosts.size(); i++) {
-                boolean isSightingPost = filteredPosts.get(i) instanceof SightingPost;
+            Iterator<Post> iterator = filteredPosts.iterator();
+
+            while (iterator.hasNext()) {
+                Post post = iterator.next();
+                boolean isSightingPost = post instanceof SightingPost;
 
                 if ((isSightingPost && ! selectedFilters.contains("sighting"))
                     || (! isSightingPost && ! selectedFilters.contains("discussion")))
                 {
-                    filteredPosts.remove(i);
+                    iterator.remove();
                 }
             }
         }
