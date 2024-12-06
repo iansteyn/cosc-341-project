@@ -133,6 +133,7 @@ public class FeedFragment extends Fragment {
                 CheckBox tempBox = filterView.findViewById(id);
                 tempBox.setChecked(true);
             }
+            applyFilters(filterBoxIDs, filterView, orderBySpinner, inflater);
         }
 
         // On click listener for 'Select All' button.
@@ -157,64 +158,7 @@ public class FeedFragment extends Fragment {
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList <Post> filteredPosts = new ArrayList<>();
-                LinkedList<String> selectedFilters = new LinkedList<>(); // List to store selected filters.
-
-                // Iterate through each CheckBox to add selected filters to 'selectedFilters'.
-                for (Integer id: filterBoxIDs){
-                    CheckBox tempBox = filterView.findViewById(id);
-                    if (tempBox.isChecked()){
-                        selectedFilters.add(tempBox.getText().toString().trim().toLowerCase()); // All comparisons between selected filters and tags done after trimming and decapitalization.
-                        checkedButtonIDs.add(tempBox.getId());
-                    }
-                    else {
-                        checkedButtonIDs.remove(tempBox.getId()); // Remove unselected filters from the set of ones.
-                    }
-                }
-
-                // Stop user from apply a set of 0 filters.
-                if (checkedButtonIDs.isEmpty()){
-                    Toast.makeText(getContext(), "Must selected at least 1 filter.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                // Filtering
-                if (checkedButtonIDs.size() != 4) {
-                    //Filtering level 1: add posts based on tag (ogopogo or sasquatch)
-                    for (Post post : posts) {
-                        String[] tags = post.getTags();
-                        for (String s : tags) {
-                            if (selectedFilters.contains(s.trim().toLowerCase())) {
-                                filteredPosts.add(post);
-                                break;
-                            }
-                        }
-                    }
-
-                    // Filtering level 2: remove posts based on type (sighting or discussion)
-                    for (int i = 0; i < filteredPosts.size(); i++) {
-                        boolean isSightingPost = filteredPosts.get(i) instanceof SightingPost;
-
-                        if ((isSightingPost && ! selectedFilters.contains("sighting"))
-                            || (! isSightingPost && ! selectedFilters.contains("discussion")))
-                        {
-                            filteredPosts.remove(i);
-                        }
-                    }
-                }
-                else {
-                    filteredPosts = posts;
-                }
-
-                // Order the list of selected posts by the specified order option.
-                int selectedOrder = orderBySpinner.getSelectedItemPosition();
-                selectedOrderOption = selectedOrder;
-                if (selectedOrder == 1){
-                    filteredPosts = filteredPosts.stream()
-                            .sorted(Comparator.comparingInt(Post :: getNumLikes))
-                            .collect(Collectors.toCollection(ArrayList<Post> :: new));
-                }
-                addPostsToScrollView(filteredPosts, inflater, true); // Pass true for the reload.
+                applyFilters(filterBoxIDs, filterView, orderBySpinner, inflater);
             }
         });
 
@@ -387,6 +331,74 @@ public class FeedFragment extends Fragment {
             // Add the post view to the posts container (LinearLayout) in the scoll view.
             postsContainer.addView(postView);
         }
+
+    }
+
+    //This method is so stupid but it will make things work
+    private void applyFilters(
+            ArrayList<Integer> filterBoxIDs,
+            View filterView,
+            Spinner orderBySpinner,
+            LayoutInflater inflater)
+    {
+        ArrayList <Post> filteredPosts = new ArrayList<>();
+        LinkedList<String> selectedFilters = new LinkedList<>(); // List to store selected filters.
+
+        // Iterate through each CheckBox to add selected filters to 'selectedFilters'.
+        for (Integer id: filterBoxIDs){
+            CheckBox tempBox = filterView.findViewById(id);
+            if (tempBox.isChecked()){
+                selectedFilters.add(tempBox.getText().toString().trim().toLowerCase()); // All comparisons between selected filters and tags done after trimming and decapitalization.
+                checkedButtonIDs.add(tempBox.getId());
+            }
+            else {
+                checkedButtonIDs.remove(tempBox.getId()); // Remove unselected filters from the set of ones.
+            }
+        }
+
+        // Stop user from apply a set of 0 filters.
+        if (checkedButtonIDs.isEmpty()){
+            Toast.makeText(getContext(), "Must selected at least 1 filter.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Filtering
+        if (checkedButtonIDs.size() != 4) {
+            //Filtering level 1: add posts based on tag (ogopogo or sasquatch)
+            for (Post post : posts) {
+                String[] tags = post.getTags();
+                for (String s : tags) {
+                    if (selectedFilters.contains(s.trim().toLowerCase())) {
+                        filteredPosts.add(post);
+                        break;
+                    }
+                }
+            }
+
+            // Filtering level 2: remove posts based on type (sighting or discussion)
+            for (int i = 0; i < filteredPosts.size(); i++) {
+                boolean isSightingPost = filteredPosts.get(i) instanceof SightingPost;
+
+                if ((isSightingPost && ! selectedFilters.contains("sighting"))
+                    || (! isSightingPost && ! selectedFilters.contains("discussion")))
+                {
+                    filteredPosts.remove(i);
+                }
+            }
+        }
+        else {
+            filteredPosts = posts;
+        }
+
+        // Order the list of selected posts by the specified order option.
+        int selectedOrder = orderBySpinner.getSelectedItemPosition();
+        selectedOrderOption = selectedOrder;
+        if (selectedOrder == 1){
+            filteredPosts = filteredPosts.stream()
+                    .sorted(Comparator.comparingInt(Post :: getNumLikes))
+                    .collect(Collectors.toCollection(ArrayList<Post> :: new));
+        }
+        addPostsToScrollView(filteredPosts, inflater, true); // Pass true for the reload.
     }
 
     public void addCommentAndView(Post post, LayoutInflater inflater) {
