@@ -226,7 +226,10 @@ public class FeedFragment extends Fragment {
                 tags += "#"+s +", ";
             }
 
-            tags = tags.substring(0, tags.length()-2); // Format correct, again would probably be avoided using StringBuilder.
+            if (tagList.length > 0) {
+                tags = tags.substring(0, tags.length() - 2); // Format correct, again would probably be avoided using StringBuilder.
+            }
+
             postTags.setText(tags);
 
             TextView postLikes = postView.findViewById(R.id.postLikes);
