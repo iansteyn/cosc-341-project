@@ -65,7 +65,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         // Initialize PostListManager instance
         postListManager = PostListManager.getInstance(this.getContext());
-        postListManager.addFakePosts(); // Add fake posts
 
         // Set up the download button
         Button downloadButton = binding.downloadMapButton;
