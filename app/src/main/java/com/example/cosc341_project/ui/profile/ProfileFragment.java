@@ -1,5 +1,7 @@
 package com.example.cosc341_project.ui.profile;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,8 +31,9 @@ public class ProfileFragment extends Fragment {
     private User currentUser = UserList.get(UserList.CURRENT_USER_ID);
     private LinearLayout postsContainer;
     private PostListManager plm;
-    private ArrayList<Post> posts;
+    private ArrayList<Post> postList;
     private  ArrayList <Post> userPost;
+    private TextView profileNumPosts;
 
     private FragmentProfileBinding binding;
 
@@ -46,11 +51,11 @@ public class ProfileFragment extends Fragment {
         if (plm.postList.isEmpty()) {
             plm.addFakePosts();
         }
-        posts = plm.postList;
+        postList = plm.postList;
 
        userPost = new ArrayList<>();
 
-        for (Post post: posts){
+        for (Post post: postList){
             if (post.getUserId() == currentUser.getUserId()){
                 userPost.add(post);
             }
@@ -63,7 +68,7 @@ public class ProfileFragment extends Fragment {
         textView.setText(currentUser.getUserName());
        // profileViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        final TextView profileNumPosts = binding.textViewNumOfPosts;
+        profileNumPosts = binding.textViewNumOfPosts;
         profileNumPosts.setText("You have made "+userPost.size()+" posts:");
 
         addUserPostsToProfile(inflater, userPost);
@@ -73,6 +78,7 @@ public class ProfileFragment extends Fragment {
 
     private void addUserPostsToProfile(LayoutInflater inflater, ArrayList<Post> posts){
 
+        postsContainer.removeAllViews();
         for (Post post: posts){
             if (post.getUserId() == currentUser.getUserId()){
 
@@ -99,6 +105,34 @@ public class ProfileFragment extends Fragment {
                     location.setVisibility(View.GONE);
                     type.setText("Discussion");
                 }
+
+                Button deleteButton = userPostView.findViewById(R.id.deleteButton);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new AlertDialog.Builder(view.getContext())
+                                .setTitle("Delete Post:")
+                                .setMessage("Are you sure you want to delete this post:\n"+post.getTitle())
+                                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        posts.remove(post);
+                                        postList.remove(post);
+                                        profileNumPosts.setText("You have made "+posts.size()+" posts:");
+                                        Toast.makeText(getContext(), "Post deleted successfully.", Toast.LENGTH_LONG).show();
+                                        addUserPostsToProfile(inflater, posts);
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+                });
+
 
                 postsContainer.addView(userPostView);
 
