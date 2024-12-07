@@ -7,20 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.post.createPost">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/showTags"
+    <TextView
+        android:id="@+id/tags2"
+        android:layout_width="66dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="548dp"
+        android:text="Tags:"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="33dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/done1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discussionText"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+        android:layout_marginStart="10dp"
+        android:text="Ogopogo"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tags2"
+        app:layout_constraintTop_toTopOf="@+id/tags2" />
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Sasquatch"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/checkBox3"
+        app:layout_constraintTop_toTopOf="@+id/checkBox3" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -79,17 +95,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/SelectImage"
         app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/tags"
-        android:layout_width="283dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="548dp"
-        android:text="Tags:"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/Location"
