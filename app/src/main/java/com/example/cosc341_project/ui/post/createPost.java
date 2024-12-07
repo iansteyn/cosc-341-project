@@ -85,12 +85,6 @@ public class createPost extends AppCompatActivity {
             getSupportActionBar().setTitle("Report a Sighting");
         }
 
-        //TODO remove
-        // set tags list
-//        tags = new String[]{"ogopogo", "sasquatch"};
-//        selectedTags = new String[tags.length];
-//        Arrays.fill(selectedTags, " ");
-
         // CONFIGURE BUTTONS
         // -----------------
 
@@ -151,35 +145,6 @@ public class createPost extends AppCompatActivity {
             }}
         });
 
-        // configure the tags button
-        //TODO remove
-//        showTags.setOnClickListener(v -> {
-//
-//            tagsText.setText("Tags: "+ getArrayString(selectedTags));
-//            PopupMenu popupMenu = new PopupMenu(createPost.this, v);
-//            for (int i = 0; i < tags.length; i++) {
-//                popupMenu.getMenu().add(tags[i]);
-//            }
-//
-//            popupMenu.setOnMenuItemClickListener(item -> {
-//                String tag = item.getTitle().toString();
-//
-//                if (!haveTag(selectedTags,tag)) {
-//                    selectedTags[index] = tag;
-//                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
-//                    index++;
-//                } else {
-//                    removeTag(selectedTags,tag);
-//                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
-//                    index--;
-//                }
-//                return true;
-//            });
-//
-//            popupMenu.show();
-//
-//        });
-
         // configure image chooser
         if (creatingSightingPost) {
             chooseImage.setOnClickListener(v -> {
@@ -218,39 +183,6 @@ public class createPost extends AppCompatActivity {
 
         return checkedTags;
     }
-
-//    String getArrayString(String[] array){
-//        String string ="";
-//        for (int i = 0; i < tags.length; i++) {
-//            if(!array[i].equals(" ")) {
-//                string = string + " " + array[i]+",";
-//            }
-//        }
-//        return string;
-//    }
-//
-//    boolean haveTag(String[] array, String string){
-//        for (String s : array) {
-//            if (s.equals(string)) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//    void removeTag(String[] array, String value) {
-//
-//        for (int i = 0; i < array.length; i++) {
-//            if (array[i] != null && array[i].equals(value)) {
-//
-//                for (int j = i; j < array.length - 1; j++) {
-//                    array[j] = array[j + 1];
-//                }
-//                array[array.length - 1] = " ";
-//                break;
-//            }
-//        }
-//    }
 
     // IMAGE CHOOSING METHODS
     // ----------------------
