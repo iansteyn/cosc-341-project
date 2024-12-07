@@ -49,6 +49,7 @@ public class createPost extends AppCompatActivity {
     EditText title;
     CheckBox ogopogoCheckBox;
     CheckBox sasquatchCheckBox;
+    TextView locationLabel;
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
@@ -69,6 +70,7 @@ public class createPost extends AppCompatActivity {
         title = findViewById(R.id.editTextText);
         ogopogoCheckBox = findViewById(R.id.ogopogoCheckBox);
         sasquatchCheckBox = findViewById(R.id.sasquatchCheckBox);
+        locationLabel = findViewById(R.id.locationLabel);
         index = 0;
         location = "";
 
@@ -76,6 +78,7 @@ public class createPost extends AppCompatActivity {
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
             locationButton.setVisibility(View.GONE);
+            locationLabel.setVisibility(View.GONE);
         }
 
         //TODO remove
