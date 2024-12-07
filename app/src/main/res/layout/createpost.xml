@@ -14,7 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:gravity="top"
-        android:text="Ogopogo"
+        android:text="ogopogo"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/tags2"
         app:layout_constraintTop_toTopOf="@+id/tags2" />
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:gravity="top"
-        android:text="Sasquatch"
+        android:text="sasquatch"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/ogopogoCheckBox"
         app:layout_constraintTop_toTopOf="@+id/ogopogoCheckBox" />
