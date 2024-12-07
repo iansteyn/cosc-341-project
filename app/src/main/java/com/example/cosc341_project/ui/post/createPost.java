@@ -99,47 +99,43 @@ public class createPost extends AppCompatActivity {
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
 
-
             // Validate title and description
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
                 Toast("Please enter both a description and title");
-                return;
             }
+            else {
+                PostListManager plm = PostListManager.getInstance(this);
+                Post newPost;
 
-            // Validate location
-            String selectedLocation = locationSpinner.getSelectedItem().toString();
-            double[] coordinates = LocationList.get(selectedLocation);
-            if (coordinates == null) { // Handles "Select Location"
-                Toast("Please select a valid location");
-                return;
+                if (!creatingSightingPost) {
+                    newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
+                } else {
+
+                    String selectedLocation = locationSpinner.getSelectedItem().toString();
+                    double[] coordinates = LocationList.getCoordinates(selectedLocation);
+
+                    // Validate location
+                    if (coordinates == null) {
+                        Toast("Please select a valid location");
+                        return;
+                    }
+
+                    newPost = new SightingPost(
+                            UserList.CURRENT_USER_ID,
+                            titleText,
+                            descriptionText,
+                            tags,
+                            imageId,
+                            selectedLocation,
+                            coordinates[0],
+                            coordinates[1]
+                    );
+                }
+
+                plm.postList.add(newPost);
+                plm.saveToFile(this);
+                finish();
             }
-
-            double latitude = coordinates[0];
-            double longitude = coordinates[1];
-
-            // Add and save the post
-            PostListManager plm = PostListManager.getInstance(this);
-            Post newPost = new SightingPost(
-                    UserList.CURRENT_USER_ID,
-                    titleText,
-                    descriptionText,
-                    tags,
-                    imageId,
-                    selectedLocation,
-                    latitude,
-                    longitude
-            );
-
-            plm.postList.add(newPost);
-
-            // Add this log
-
-            plm.postList.add(newPost);
-            Log.d("PostCreationDebug", "New post created: " + newPost.toString());
-
-            plm.saveToFile(this);
-            Log.d("PostCreationDebug", "Post saved to file");
-            finish();
         });
 
         // configure the tags button
