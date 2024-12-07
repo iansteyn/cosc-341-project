@@ -24,6 +24,7 @@ import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
@@ -39,13 +40,15 @@ public class createPost extends AppCompatActivity {
     int imageId;
     AlertDialog galleryDialog;
 
-    String[] tags;//Currently only four tags
+//    String[] tags;//Currently only four tags //TODO remove
     String[] selectedTags;
     String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
     EditText title;
+    CheckBox ogopogoCheckBox;
+    CheckBox sasquatchCheckBox;
 
     @RequiresExtension(extension = Build.VERSION_CODES.R, version = 2)
     @Override
@@ -64,8 +67,8 @@ public class createPost extends AppCompatActivity {
         locationButton = findViewById(R.id.Location);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
-        showTags = findViewById(R.id.showTags);
-        tagsText = findViewById(R.id.tags);
+        ogopogoCheckBox = findViewById(R.id.ogopogoCheckBox);
+        sasquatchCheckBox = findViewById(R.id.sasquatchCheckBox);
         index = 0;
         location = "";
 
@@ -75,10 +78,11 @@ public class createPost extends AppCompatActivity {
             locationButton.setVisibility(View.GONE);
         }
 
+        //TODO remove
         // set tags list
-        tags = new String[]{"ogopogo", "sasquatch"};
-        selectedTags = new String[tags.length];
-        Arrays.fill(selectedTags, " ");
+//        tags = new String[]{"ogopogo", "sasquatch"};
+//        selectedTags = new String[tags.length];
+//        Arrays.fill(selectedTags, " ");
 
         // CONFIGURE BUTTONS
         // -----------------
@@ -95,6 +99,7 @@ public class createPost extends AppCompatActivity {
             // get Post arguments
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
+            String[] tags = getCheckedTags();
 
             //if location is empty, show error message
             if (location.isEmpty()&&creatingSightingPost) {
@@ -137,32 +142,33 @@ public class createPost extends AppCompatActivity {
         });
 
         // configure the tags button
-        showTags.setOnClickListener(v -> {
-
-            tagsText.setText("Tags: "+ getArrayString(selectedTags));
-            PopupMenu popupMenu = new PopupMenu(createPost.this, v);
-            for (int i = 0; i < tags.length; i++) {
-                popupMenu.getMenu().add(tags[i]);
-            }
-
-            popupMenu.setOnMenuItemClickListener(item -> {
-                String tag = item.getTitle().toString();
-
-                if (!haveTag(selectedTags,tag)) {
-                    selectedTags[index] = tag;
-                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
-                    index++;
-                } else {
-                    removeTag(selectedTags,tag);
-                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
-                    index--;
-                }
-                return true;
-            });
-
-            popupMenu.show();
-
-        });
+        //TODO remove
+//        showTags.setOnClickListener(v -> {
+//
+//            tagsText.setText("Tags: "+ getArrayString(selectedTags));
+//            PopupMenu popupMenu = new PopupMenu(createPost.this, v);
+//            for (int i = 0; i < tags.length; i++) {
+//                popupMenu.getMenu().add(tags[i]);
+//            }
+//
+//            popupMenu.setOnMenuItemClickListener(item -> {
+//                String tag = item.getTitle().toString();
+//
+//                if (!haveTag(selectedTags,tag)) {
+//                    selectedTags[index] = tag;
+//                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+//                    index++;
+//                } else {
+//                    removeTag(selectedTags,tag);
+//                    tagsText.setText("Tags: "+ getArrayString(selectedTags));
+//                    index--;
+//                }
+//                return true;
+//            });
+//
+//            popupMenu.show();
+//
+//        });
 
         // configure image chooser
         if (creatingSightingPost) {
@@ -184,38 +190,57 @@ public class createPost extends AppCompatActivity {
 
     // TAG HELPER METHODS
     // --------------
-    String getArrayString(String[] array){
-        String string ="";
-        for (int i = 0; i < tags.length; i++) {
-            if(!array[i].equals(" ")) {
-                string = string + " " + array[i]+",";
-            }
+    private String[] getCheckedTags() {
+
+        String[] checkedTags;
+        if (ogopogoCheckBox.isChecked() && sasquatchCheckBox.isChecked()) {
+            checkedTags = new String[] {ogopogoCheckBox.getText().toString(), sasquatchCheckBox.getText().toString()};
         }
-        return string;
+        else if (ogopogoCheckBox.isChecked()) {
+            checkedTags = new String[] {ogopogoCheckBox.getText().toString()};
+        }
+        else if (sasquatchCheckBox.isChecked()) {
+            checkedTags = new String[] {sasquatchCheckBox.getText().toString()};
+        }
+        else {
+            checkedTags = new String[] {};
+        }
+
+        return checkedTags;
     }
 
-    boolean haveTag(String[] array, String string){
-        for (String s : array) {
-            if (s.equals(string)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    void removeTag(String[] array, String value) {
-
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null && array[i].equals(value)) {
-
-                for (int j = i; j < array.length - 1; j++) {
-                    array[j] = array[j + 1];
-                }
-                array[array.length - 1] = " ";
-                break;
-            }
-        }
-    }
+//    String getArrayString(String[] array){
+//        String string ="";
+//        for (int i = 0; i < tags.length; i++) {
+//            if(!array[i].equals(" ")) {
+//                string = string + " " + array[i]+",";
+//            }
+//        }
+//        return string;
+//    }
+//
+//    boolean haveTag(String[] array, String string){
+//        for (String s : array) {
+//            if (s.equals(string)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    void removeTag(String[] array, String value) {
+//
+//        for (int i = 0; i < array.length; i++) {
+//            if (array[i] != null && array[i].equals(value)) {
+//
+//                for (int j = i; j < array.length - 1; j++) {
+//                    array[j] = array[j + 1];
+//                }
+//                array[array.length - 1] = " ";
+//                break;
+//            }
+//        }
+//    }
 
     // IMAGE CHOOSING METHODS
     // ----------------------

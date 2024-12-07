@@ -8,7 +8,7 @@
     tools:context=".ui.post.createPost">
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/ogopogoCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -31,15 +31,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/sasquatchCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:gravity="top"
         android:text="Sasquatch"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-        app:layout_constraintTop_toTopOf="@+id/checkBox3" />
+        app:layout_constraintStart_toEndOf="@+id/ogopogoCheckBox"
+        app:layout_constraintTop_toTopOf="@+id/ogopogoCheckBox" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -80,7 +80,7 @@
         android:layout_marginTop="12dp"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="@+id/tags2"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox3"
+        app:layout_constraintTop_toBottomOf="@+id/ogopogoCheckBox"
         tools:src="@drawable/camera" />
 
     <EditText
