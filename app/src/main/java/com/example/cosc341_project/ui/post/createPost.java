@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.annotation.RequiresExtension;
@@ -24,8 +23,7 @@ import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
 
@@ -33,6 +31,7 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
+    Button backButton;
     Button locationButton;
     EditText description;
     Bitmap PostImage;
@@ -64,7 +63,8 @@ public class createPost extends AppCompatActivity {
 
         // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
-        nextButton = findViewById(R.id.startMap);
+        nextButton = findViewById(R.id.nextButton);
+        backButton = findViewById(R.id.backButton);
         locationButton = findViewById(R.id.Location);
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
@@ -79,6 +79,10 @@ public class createPost extends AppCompatActivity {
             chooseImage.setVisibility(View.GONE);
             locationButton.setVisibility(View.GONE);
             locationLabel.setVisibility(View.GONE);
+            getSupportActionBar().setTitle("Create a Discussion");
+        }
+        else {
+            getSupportActionBar().setTitle("Report a Sighting");
         }
 
         //TODO remove
@@ -95,6 +99,9 @@ public class createPost extends AppCompatActivity {
             location = "placeholder";
         });
 
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
 
         // configure nextButton text and action
         nextButton.setText("Done");

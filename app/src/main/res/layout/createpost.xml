@@ -55,7 +55,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/startMap"
+        android:id="@+id/nextButton"
         android:layout_width="155dp"
         android:layout_height="61dp"
         android:layout_marginBottom="28dp"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="@+id/editTextTextMultiLine2" />
 
     <Button
-        android:id="@+id/startMap2"
+        android:id="@+id/backButton"
         android:layout_width="155dp"
         android:layout_height="61dp"
         android:layout_marginBottom="28dp"
