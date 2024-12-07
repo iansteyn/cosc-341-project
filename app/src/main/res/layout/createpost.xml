@@ -80,7 +80,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="@+id/tags2"
         app:layout_constraintTop_toBottomOf="@+id/ogopogoCheckBox"
-        tools:src="@drawable/camera" />
+        tools:src="@drawable/placeholder_select_image" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine2"

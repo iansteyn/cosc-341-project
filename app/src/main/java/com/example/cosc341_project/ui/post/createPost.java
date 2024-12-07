@@ -82,6 +82,7 @@ public class createPost extends AppCompatActivity {
             getSupportActionBar().setTitle("Create a Discussion");
         }
         else {
+            chooseImage.setImageResource(R.drawable.placeholder_select_image);
             getSupportActionBar().setTitle("Report a Sighting");
         }
 
