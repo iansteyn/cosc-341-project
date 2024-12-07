@@ -25,4 +25,11 @@
         <item>Most Recent</item>
         <item>Most Liked</item>
     </string-array>
+
+    <string-array name="location_options">
+        <item>Select Location</item>
+        <item>Mission Creek</item>
+        <item>Bear Creek Provincial Park</item>
+    </string-array>
+
 </resources>

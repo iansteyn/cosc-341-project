@@ -91,13 +91,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <Spinner
         android:id="@+id/Location"
         android:layout_width="199dp"
         android:layout_height="49dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="66dp"
         android:text="Add Location"
+        android:spinnerMode="dropdown"
+        android:entries="@array/location_options"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

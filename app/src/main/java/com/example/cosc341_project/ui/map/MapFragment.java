@@ -2,6 +2,7 @@ package com.example.cosc341_project.ui.map;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,23 +115,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addPostMarkers() {
-        if (mMap == null) return;  // Ensure mMap is initialized
+        if (mMap == null) {
+            Log.d("MapDebug", "GoogleMap instance is null");
+            return;
+        }
 
-        markerList.clear();  // Clear the marker list
+        markerList.clear(); // Clear any existing markers
 
         for (Post post : postListManager.postList) {
+            Log.d("MapDebug", "Processing post: " + post.toString());
+
+            // Check if the post is a SightingPost
             if (post instanceof SightingPost) {
                 SightingPost sightingPost = (SightingPost) post;
-                LatLng postLocation = new LatLng(sightingPost.getLatitude(), sightingPost.getLongitude());
 
+                // Log location details
+                Log.d("MapDebug", "Location for post: " + sightingPost.getLocation());
+                Log.d("MapDebug", "Coordinates: " + sightingPost.getLatitude() + ", " + sightingPost.getLongitude());
+
+                // Add a marker for the SightingPost
+                LatLng postLocation = new LatLng(sightingPost.getLatitude(), sightingPost.getLongitude());
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(postLocation)
                         .title(sightingPost.getTitle()));
-                marker.setTag(sightingPost);
+                marker.setTag(sightingPost); // Attach the SightingPost as a tag
                 markerList.add(marker);
+            } else {
+                // Log for non-SightingPost objects
+                Log.d("MapDebug", "Skipping non-SightingPost: " + post.getTitle());
             }
         }
     }
+
 
     private void showPostPopup(Post post) {
         // Inflate the custom layout
@@ -230,6 +246,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     marker.setTag(sightingPost);
                     markerList.add(marker);
                 }
+
             }
         }
     }
@@ -257,4 +274,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(getContext(), "Map downloaded successfully!", Toast.LENGTH_SHORT).show();
         }, 3000);
     }
+
 }

@@ -25,6 +25,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
 
@@ -32,7 +34,7 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
-    Button locationButton;
+    Spinner locationSpinner;
     EditText description;
     Bitmap PostImage;
 
@@ -61,7 +63,20 @@ public class createPost extends AppCompatActivity {
         // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.startMap);
-        locationButton = findViewById(R.id.Location);
+        locationSpinner = findViewById(R.id.Location);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.location_options, // Ensure this array exists in strings.xml
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(adapter);
+
+        HashMap<String, double[]> locationCoordinates = new HashMap<>();
+        locationCoordinates.put("Mission Creek", new double[]{49.8625, -119.4550});
+        locationCoordinates.put("Bear Creek Provincial Park", new double[]{49.9152, -119.5126}); // Example
+        locationCoordinates.put("Select Location", null);
+
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
@@ -72,7 +87,7 @@ public class createPost extends AppCompatActivity {
         // if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
-            locationButton.setVisibility(View.GONE);
+            locationSpinner.setVisibility(View.GONE);
         }
 
         // set tags list
@@ -83,57 +98,52 @@ public class createPost extends AppCompatActivity {
         // CONFIGURE BUTTONS
         // -----------------
 
-        locationButton.setOnClickListener(v -> {
-            // TODO (Mehdi)- get location data
-            location = "placeholder";
-        });
-
 
         // configure nextButton text and action
-        nextButton.setText("Done");
         nextButton.setOnClickListener(v -> {
-            // get Post arguments
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
+            String selectedLocation = locationSpinner.getSelectedItem().toString();
 
-            //if location is empty, show error message
-            if (location.isEmpty()&&creatingSightingPost) {
-                Toast("Please enter a Location");
-            }else{
-            // if fields are empty, show error message
+            // Validate title and description
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
                 Toast("Please enter both a description and title");
+                return;
             }
-            // otherwise, add and save post, and end activity
-            else {
-                PostListManager plm = PostListManager.getInstance(this);
 
-                Post newPost;
-                if (! creatingSightingPost) {
-                    newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
-                }
-                else {
-                    // TODO (Mehdi)- get location data
-                    String location = "Placeholder Location";
-                    double latitude = 49.8801;
-                    double longitude = -119.4436;
-                    newPost = new SightingPost(
-                            UserList.CURRENT_USER_ID,
-                            titleText,
-                            descriptionText,
-                            tags,
-                            imageId,
-                            location,
-                            latitude,
-                            longitude
-                    );
-                }
+            // Validate location
+            double[] coordinates = locationCoordinates.get(selectedLocation);
+            if (coordinates == null) { // Handles "Select Location"
+                Toast("Please select a valid location");
+                return;
+            }
 
-                plm.postList.add(newPost);
-                Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
-                plm.saveToFile(this);
-                finish();
-            }}
+            double latitude = coordinates[0];
+            double longitude = coordinates[1];
+
+            // Add and save the post
+            PostListManager plm = PostListManager.getInstance(this);
+            Post newPost = new SightingPost(
+                    UserList.CURRENT_USER_ID,
+                    titleText,
+                    descriptionText,
+                    tags,
+                    imageId,
+                    selectedLocation,
+                    latitude,
+                    longitude
+            );
+
+            plm.postList.add(newPost);
+
+            // Add this log
+
+            plm.postList.add(newPost);
+            Log.d("PostCreationDebug", "New post created: " + newPost.toString());
+
+            plm.saveToFile(this);
+            Log.d("PostCreationDebug", "Post saved to file");
+            finish();
         });
 
         // configure the tags button
