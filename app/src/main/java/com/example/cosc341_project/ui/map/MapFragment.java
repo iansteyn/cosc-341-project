@@ -218,8 +218,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 // Apply creature filter
                 boolean creatureMatches = creatureFilter.equals("All") ||
-                        Arrays.asList(sightingPost.getTags()).contains(creatureFilter.toLowerCase());
-
+                        Arrays.asList(sightingPost.getTags())
+                                .stream()
+                                .anyMatch(tag -> tag.equalsIgnoreCase(creatureFilter));
                 // If both filters match, add the marker
                 if (dateMatches && creatureMatches) {
                     LatLng postLocation = new LatLng(sightingPost.getLatitude(), sightingPost.getLongitude());
