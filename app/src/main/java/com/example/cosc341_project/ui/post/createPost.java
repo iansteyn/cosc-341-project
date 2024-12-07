@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
+import com.example.cosc341_project.data_classes.LocationList;
 import com.example.cosc341_project.data_classes.Post;
 import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -72,11 +73,6 @@ public class createPost extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(adapter);
 
-        HashMap<String, double[]> locationCoordinates = new HashMap<>();
-        locationCoordinates.put("Mission Creek", new double[]{49.8625, -119.4550});
-        locationCoordinates.put("Bear Creek Provincial Park", new double[]{49.9152, -119.5126}); // Example
-        locationCoordinates.put("Select Location", null);
-
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         showTags = findViewById(R.id.showTags);
@@ -98,12 +94,11 @@ public class createPost extends AppCompatActivity {
         // CONFIGURE BUTTONS
         // -----------------
 
-
         // configure nextButton text and action
         nextButton.setOnClickListener(v -> {
             String titleText = title.getText().toString();
             String descriptionText = description.getText().toString();
-            String selectedLocation = locationSpinner.getSelectedItem().toString();
+
 
             // Validate title and description
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
@@ -112,7 +107,8 @@ public class createPost extends AppCompatActivity {
             }
 
             // Validate location
-            double[] coordinates = locationCoordinates.get(selectedLocation);
+            String selectedLocation = locationSpinner.getSelectedItem().toString();
+            double[] coordinates = LocationList.get(selectedLocation);
             if (coordinates == null) { // Handles "Select Location"
                 Toast("Please select a valid location");
                 return;
