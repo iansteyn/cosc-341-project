@@ -25,4 +25,14 @@
         <item>Most Recent</item>
         <item>Most Liked</item>
     </string-array>
+
+    <string-array name="location_options">
+        <item>Select Location</item>
+        <item>UBCO</item>
+        <item>Glenrosa</item>
+        <item>Rutland</item>
+        <item>Penticton City Center</item>
+        <item>Kin Beach, Vernon</item>
+    </string-array>
+
 </resources>

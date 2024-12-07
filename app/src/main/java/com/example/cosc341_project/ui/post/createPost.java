@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -18,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cosc341_project.R;
+import com.example.cosc341_project.data_classes.LocationList;
 import com.example.cosc341_project.data_classes.Post;
 import com.example.cosc341_project.data_classes.UserList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,17 +31,16 @@ public class createPost extends AppCompatActivity {
 
     ImageButton chooseImage;
     Button nextButton;
+    Spinner locationSpinner;
     Button backButton;
-    Button locationButton;
     EditText description;
     Bitmap PostImage;
 
     int imageId;
     AlertDialog galleryDialog;
 
-//    String[] tags;//Currently only four tags //TODO remove
+
     String[] selectedTags;
-    String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
@@ -59,25 +58,33 @@ public class createPost extends AppCompatActivity {
         // get intent and set layout
         boolean creatingSightingPost = getIntent().getBooleanExtra("creatingSightingPost", false);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.createpost);
+        setContentView(R.layout.activity_create_post);
 
         // Find xml elements
         chooseImage = findViewById(R.id.SelectImage); // ImageButton to choose image
         nextButton = findViewById(R.id.nextButton);
         backButton = findViewById(R.id.backButton);
-        locationButton = findViewById(R.id.Location);
+        locationSpinner = findViewById(R.id.locationSpinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.location_options, // Ensure this array exists in strings.xml
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        locationSpinner.setAdapter(adapter);
+
         description = findViewById(R.id.editTextTextMultiLine2);
         title = findViewById(R.id.editTextText);
         ogopogoCheckBox = findViewById(R.id.ogopogoCheckBox);
         sasquatchCheckBox = findViewById(R.id.sasquatchCheckBox);
         locationLabel = findViewById(R.id.locationLabel);
         index = 0;
-        location = "";
 
         // if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
             chooseImage.setVisibility(View.GONE);
-            locationButton.setVisibility(View.GONE);
+            locationSpinner.setVisibility(View.GONE);
             locationLabel.setVisibility(View.GONE);
             getSupportActionBar().setTitle("Create a Discussion");
         }
@@ -88,11 +95,6 @@ public class createPost extends AppCompatActivity {
 
         // CONFIGURE BUTTONS
         // -----------------
-
-        locationButton.setOnClickListener(v -> {
-            // TODO (Mehdi)- get location data
-            location = "placeholder";
-        });
 
         backButton.setOnClickListener(v -> {
             finish();
@@ -106,44 +108,44 @@ public class createPost extends AppCompatActivity {
             String descriptionText = description.getText().toString();
             String[] tags = getCheckedTags();
 
-            //if location is empty, show error message
-            if (location.isEmpty()&&creatingSightingPost) {
-                Toast("Please enter a Location");
-            }else{
-            // if fields are empty, show error message
+            // Validate title and description
             if (titleText.isEmpty() || descriptionText.isEmpty()) {
                 Toast("Please enter both a description and title");
             }
             // otherwise, add and save post, and end activity
             else {
                 PostListManager plm = PostListManager.getInstance(this);
-
                 Post newPost;
-                if (! creatingSightingPost) {
+
+                if (!creatingSightingPost) {
                     newPost = new Post(UserList.CURRENT_USER_ID, titleText, descriptionText, tags);
                 }
                 else {
-                    // TODO (Mehdi)- get location data
-                    String location = "Placeholder Location";
-                    double latitude = 49.8801;
-                    double longitude = -119.4436;
+                    String selectedLocation = locationSpinner.getSelectedItem().toString();
+                    double[] coordinates = LocationList.getCoordinates(selectedLocation);
+
+                    // Validate location
+                    if (coordinates == null) {
+                        Toast("Please select a valid location");
+                        return;
+                    }
+
                     newPost = new SightingPost(
                             UserList.CURRENT_USER_ID,
                             titleText,
                             descriptionText,
                             tags,
                             imageId,
-                            location,
-                            latitude,
-                            longitude
+                            selectedLocation,
+                            coordinates[0],
+                            coordinates[1]
                     );
                 }
 
                 plm.postList.add(newPost);
-                Log.d("IAN DEBUG", "postList after adding in createPost:\n" + plm.postList.toString());
                 plm.saveToFile(this);
                 finish();
-            }}
+            }
         });
 
         // configure image chooser

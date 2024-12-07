@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Title"
         android:inputType="text"
@@ -87,7 +87,7 @@
         android:layout_width="333dp"
         android:layout_height="193dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#444444"
         android:backgroundTintMode="screen"
         android:ems="10"
@@ -102,14 +102,20 @@
         android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Location"
+        android:layout_marginTop="20dp"
+        android:text="Location:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/SelectImage"
         app:layout_constraintTop_toBottomOf="@+id/SelectImage" />
 
-    <Button
-        android:id="@+id/Location"
+    <Spinner
+        android:id="@+id/locationSpinner"
+        android:layout_width="226dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/locationLabel"
+        app:layout_constraintEnd_toEndOf="@+id/SelectImage"
+        app:layout_constraintTop_toTopOf="@+id/locationLabel" />
+    =======
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -117,5 +123,6 @@
         android:text="Location"
         app:layout_constraintEnd_toEndOf="@+id/SelectImage"
         app:layout_constraintTop_toBottomOf="@+id/SelectImage" />
+>>>>>>> main
 
 </androidx.constraintlayout.widget.ConstraintLayout>
