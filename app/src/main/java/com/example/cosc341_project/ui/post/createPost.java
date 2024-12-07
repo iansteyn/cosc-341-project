@@ -26,7 +26,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import com.example.cosc341_project.data_classes.SightingPost;
 import com.example.cosc341_project.data_classes.PostListManager;
@@ -44,7 +43,6 @@ public class createPost extends AppCompatActivity {
 
     String[] tags;//Currently only four tags
     String[] selectedTags;
-    String location;
     FloatingActionButton showTags;
     int index;
     TextView tagsText;
@@ -78,7 +76,6 @@ public class createPost extends AppCompatActivity {
         showTags = findViewById(R.id.showTags);
         tagsText = findViewById(R.id.tags);
         index = 0;
-        location = "";
 
         // if this is a discussion post, remove image and location options
         if (! creatingSightingPost) {
