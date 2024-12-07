@@ -28,9 +28,11 @@
 
     <string-array name="location_options">
         <item>Select Location</item>
-        <item>Mission Creek</item>
-        <item>Bear Creek Provincial Park</item>
         <item>UBCO</item>
+        <item>Glenrosa</item>
+        <item>Rutland</item>
+        <item>Penticton City Center</item>
+        <item>Kin Beach, Vernon</item>
     </string-array>
 
 </resources>
